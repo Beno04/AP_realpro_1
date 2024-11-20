@@ -2,4 +2,4 @@
 realisation professionnelle 1 avec le site web
 
 
-caca
+mise en place de la connexion a la BDD et début de script index.php
