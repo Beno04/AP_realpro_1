@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : mer. 04 déc. 2024 à 09:09
+-- Généré le : mer. 04 déc. 2024 à 11:04
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -32,6 +32,14 @@ CREATE TABLE `Affecter` (
   `id_bateau` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Déchargement des données de la table `Affecter`
+--
+
+INSERT INTO `Affecter` (`id_travers`, `id_bateau`) VALUES
+(1, 1),
+(2, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -46,6 +54,14 @@ CREATE TABLE `Bateau` (
   `vitesse_bateau` decimal(10,2) DEFAULT NULL,
   `id_cat` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `Bateau`
+--
+
+INSERT INTO `Bateau` (`id_bateau`, `nom_bateau`, `long_bateau`, `larg_bateau`, `vitesse_bateau`, `id_cat`) VALUES
+(1, 'Luce Isle', 37.20, 8.60, 26.00, NULL),
+(2, 'Al\'xi', 25.00, 7.00, 16.00, NULL);
 
 -- --------------------------------------------------------
 
@@ -75,6 +91,17 @@ CREATE TABLE `Client` (
   `id_user` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Déchargement des données de la table `Client`
+--
+
+INSERT INTO `Client` (`id_client`, `nom_client`, `prenom_client`, `adresse_client`, `tel_client`, `mail_client`, `id_user`) VALUES
+(1, 'Dupont', 'Jean', '12 rue de Paris', '0601234567', 'jean.dupont@example.com', NULL),
+(2, 'Martin', 'Sophie', '8 avenue de Lyon, 69001 Lyon', '0612345678', 'sophie.martin@example.com', 2),
+(3, 'Durand', 'Paul', '14 boulevard des Champs, 31000 Toulouse', '0623456789', 'paul.durand@example.com', 3),
+(4, 'Bernard', 'Lucie', '5 impasse des Lilas, 44000 Nantes', '0634567890', 'lucie.bernard@example.com', 4),
+(5, 'Moreau', 'Emma', '10 place de l\'Eglise, 33000 Bordeaux', '0645678901', 'emma.moreau@example.com', 5);
+
 -- --------------------------------------------------------
 
 --
@@ -97,6 +124,16 @@ CREATE TABLE `Equipement` (
   `desc_equip` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Déchargement des données de la table `Equipement`
+--
+
+INSERT INTO `Equipement` (`id_equip`, `desc_equip`) VALUES
+(1, 'Accès Handicapé'),
+(2, 'Bar'),
+(3, 'Pont Promenade'),
+(4, 'Salon Vidéo');
+
 -- --------------------------------------------------------
 
 --
@@ -107,6 +144,16 @@ CREATE TABLE `Etre_Equipe` (
   `id_bateau` int(11) NOT NULL,
   `id_equip` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `Etre_Equipe`
+--
+
+INSERT INTO `Etre_Equipe` (`id_bateau`, `id_equip`) VALUES
+(1, 1),
+(1, 2),
+(2, 1),
+(2, 3);
 
 -- --------------------------------------------------------
 
@@ -122,6 +169,15 @@ CREATE TABLE `Liaison` (
   `id_port_arrivee` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Déchargement des données de la table `Liaison`
+--
+
+INSERT INTO `Liaison` (`id_liaison`, `dist_milles`, `id_secteur`, `id_port_depart`, `id_port_arrivee`) VALUES
+(1, 8.30, 1, 1, 2),
+(2, 8.00, 1, 1, 3),
+(3, 7.70, 3, 4, 5);
+
 -- --------------------------------------------------------
 
 --
@@ -133,6 +189,15 @@ CREATE TABLE `Liaison_Type_Tarif` (
   `id_type` int(11) NOT NULL,
   `id_liaison` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `Liaison_Type_Tarif`
+--
+
+INSERT INTO `Liaison_Type_Tarif` (`id_tarif`, `id_type`, `id_liaison`) VALUES
+(1, 1, 1),
+(2, 1, 1),
+(3, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -146,6 +211,15 @@ CREATE TABLE `Periode` (
   `date_fin` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Déchargement des données de la table `Periode`
+--
+
+INSERT INTO `Periode` (`id_periode`, `date_debut`, `date_fin`) VALUES
+(1, '2024-01-01', '2024-06-15'),
+(2, '2024-06-16', '2024-09-15'),
+(3, '2024-09-16', '2024-12-31');
+
 -- --------------------------------------------------------
 
 --
@@ -156,6 +230,17 @@ CREATE TABLE `Port` (
   `id_port` int(11) NOT NULL,
   `nom_port` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `Port`
+--
+
+INSERT INTO `Port` (`id_port`, `nom_port`) VALUES
+(1, 'Quiberon'),
+(2, 'Le Palais'),
+(3, 'Sauzon'),
+(4, 'Lorient'),
+(5, 'Port-Tudy');
 
 -- --------------------------------------------------------
 
@@ -170,6 +255,13 @@ CREATE TABLE `Reservation` (
   `id_type` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Déchargement des données de la table `Reservation`
+--
+
+INSERT INTO `Reservation` (`id_resa`, `date_resa`, `id_client`, `id_type`) VALUES
+(1, '2024-07-01', 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -180,6 +272,15 @@ CREATE TABLE `Secteur` (
   `id_secteur` int(11) NOT NULL,
   `nom_secteur` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `Secteur`
+--
+
+INSERT INTO `Secteur` (`id_secteur`, `nom_secteur`) VALUES
+(1, 'Belle-Ile-en-Mer'),
+(2, 'Houat'),
+(3, 'Ile de Groix');
 
 -- --------------------------------------------------------
 
@@ -192,6 +293,15 @@ CREATE TABLE `Tarifer` (
   `tarif` decimal(10,2) DEFAULT NULL,
   `id_periode` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `Tarifer`
+--
+
+INSERT INTO `Tarifer` (`id_tarif`, `tarif`, `id_periode`) VALUES
+(1, 18.00, 1),
+(2, 20.00, 2),
+(3, 19.00, 3);
 
 -- --------------------------------------------------------
 
@@ -206,6 +316,14 @@ CREATE TABLE `Traversee` (
   `id_liaison` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Déchargement des données de la table `Traversee`
+--
+
+INSERT INTO `Traversee` (`id_travers`, `date_travers`, `heure_travers`, `id_liaison`) VALUES
+(1, '2024-07-10', '07:45:00', 1),
+(2, '2024-07-10', '09:15:00', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -216,6 +334,20 @@ CREATE TABLE `Type` (
   `id_type` int(11) NOT NULL,
   `desc_type` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `Type`
+--
+
+INSERT INTO `Type` (`id_type`, `desc_type`) VALUES
+(1, 'Adulte'),
+(2, 'Junior 8 à 18 ans'),
+(3, 'Enfant 0 à 7 ans '),
+(4, 'Voiture long.inf.4m'),
+(5, 'Voiture long.inf.5m'),
+(6, 'Fourgon'),
+(7, 'Camping Car'),
+(8, 'Camion');
 
 -- --------------------------------------------------------
 
@@ -231,6 +363,18 @@ CREATE TABLE `Utilisateur` (
   `mdp_user` varchar(255) DEFAULT NULL,
   `type_user` enum('client','gestionnaire') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `Utilisateur`
+--
+
+INSERT INTO `Utilisateur` (`id_user`, `nom_user`, `prenom_user`, `mail_user`, `mdp_user`, `type_user`) VALUES
+(1, 'Dupont', 'Jean', 'jean.dupont@example.com', 'hashedpassword1', 'client'),
+(2, 'Martin', 'Sophie', 'sophie.martin@example.com', 'hashedpassword2', 'client'),
+(3, 'Durand', 'Paul', 'paul.durand@example.com', 'hashedpassword3', 'client'),
+(4, 'Bernard', 'Lucie', 'lucie.bernard@example.com', 'hashedpassword4', 'client'),
+(5, 'Moreau', 'Emma', 'emma.moreau@example.com', 'hashedpassword5', 'client'),
+(6, 'Lucas', 'Beno', 'lucas.benault@example.com', 'hashedpassword7', 'gestionnaire');
 
 --
 -- Index pour les tables déchargées
@@ -362,7 +506,7 @@ ALTER TABLE `Utilisateur`
 -- AUTO_INCREMENT pour la table `Bateau`
 --
 ALTER TABLE `Bateau`
-  MODIFY `id_bateau` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_bateau` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `Categorie`
@@ -374,67 +518,67 @@ ALTER TABLE `Categorie`
 -- AUTO_INCREMENT pour la table `Client`
 --
 ALTER TABLE `Client`
-  MODIFY `id_client` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_client` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `Equipement`
 --
 ALTER TABLE `Equipement`
-  MODIFY `id_equip` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_equip` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `Liaison`
 --
 ALTER TABLE `Liaison`
-  MODIFY `id_liaison` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_liaison` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `Periode`
 --
 ALTER TABLE `Periode`
-  MODIFY `id_periode` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_periode` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `Port`
 --
 ALTER TABLE `Port`
-  MODIFY `id_port` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_port` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `Reservation`
 --
 ALTER TABLE `Reservation`
-  MODIFY `id_resa` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_resa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `Secteur`
 --
 ALTER TABLE `Secteur`
-  MODIFY `id_secteur` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_secteur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `Tarifer`
 --
 ALTER TABLE `Tarifer`
-  MODIFY `id_tarif` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_tarif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `Traversee`
 --
 ALTER TABLE `Traversee`
-  MODIFY `id_travers` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_travers` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `Type`
 --
 ALTER TABLE `Type`
-  MODIFY `id_type` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_type` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT pour la table `Utilisateur`
 --
 ALTER TABLE `Utilisateur`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Contraintes pour les tables déchargées
