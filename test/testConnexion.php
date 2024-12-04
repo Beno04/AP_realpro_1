@@ -1,6 +1,6 @@
 <?php
 
-include "connexionBDD.php";
+include "../Fonctions/script.php";
 
 $test = connexionBDD();
 
