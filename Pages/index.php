@@ -1,6 +1,6 @@
 <html lang="fr">
   <head>
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="../Style/style.css" />
     <meta charset="utf-8" />
     <title>MarieTeam</title>
   </head>
@@ -9,11 +9,11 @@
     <!-- Barre de navigation -->
     <nav class="menu">
       <ul>
-        <li class="titre-marieteam" ><a href="a_propos.html"><b>MarieTeam</b></a></li>
+        <li class="titre-marieteam" ><a href="index.php"><b>MarieTeam</b></a></li>
         <div class="nav-buttons">
-          <li><a href="reserver.html">Réserver</a></li>
-          <li><a class="active" href="a_propos.html">À propos</a></li>
-          <li><a href="connexion.html"><b class="connexion-btn">Connexion</b></a></li>
+          <li><a href="reserver.php">Réserver</a></li>
+          <li><a class="active" href="index.php">À propos</a></li>
+          <li><a href="connexion.php"><b class="connexion-btn">Connexion</b></a></li>
         </div>
       </ul>
     </nav>

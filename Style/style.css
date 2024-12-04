@@ -11,6 +11,9 @@ body {
     height: 100%;
 }
 
+
+/** Propriétés de la barre de navigation ________________________________________________________________________________**/
+
 .active {
    font-weight: bold; /* arrière-plan quand les boutons sont cliqués */
    color: #1B263B; /* couleur du texte */
@@ -68,10 +71,13 @@ b {
     cursor: pointer;
     background-color: #415A77; /* couleur de fond bleue */
     color: white; /* couleur du texte */
-    padding: 8px 8px; /* même padding que les autres boutons */
+    padding: 10px 8px; /* même padding que les autres boutons */
     border-radius: 20px; /* arrondir les coins */
     text-decoration: none; /* enlever le soulignement */
 }
+
+/** Propriétés de la page d'accueil ______________________________________________________________________________________**/
+/** Propriétés de l'intro 1 ______________________________________________________________________________________**/
 
 .intro {
     text-align: center; /* Centre le texte */
@@ -112,6 +118,18 @@ b {
     padding: 0 20px; /* Ajoute un espace de 20 pixels à gauche et à droite */
 }
 
+/** Propriétés de l'intro 2 ______________________________________________________________________________________**/
+
+.reservation {
+    text-align: center; /* Centre le texte */
+    padding: 20px; /* Ajoute un peu d'espace autour de la section */
+}
+
+.reservation h1 {
+    font-size: 3em; /* Titre très gros */
+    margin: 0; /* Supprime la marge par défaut */
+}
+
 .titre2 {
     font-size: 1em; /* Même taille que h1 */
     margin: 0; /* Supprime la marge par défaut */
@@ -129,4 +147,14 @@ b {
     max-width: 800px; /* Limite la largeur maximale du paragraphe */
     margin: 20 auto; /* Centre le paragraphe horizontalement */
     padding: 0 20px; /* Ajoute un espace de 20 pixels à gauche et à droite */
+}
+
+.btn-reserver {
+    margin: 20 auto; /* Centre le paragraphe horizontalement */
+    font-size: xx-large;
+    cursor: pointer;
+    background-color: #415A77; /* couleur de fond bleue */
+    color: white; /* couleur du texte */
+    padding: 10px 30px; /* même padding que les autres boutons */
+    border-radius: 20px; /* arrondir les coins */
 }
