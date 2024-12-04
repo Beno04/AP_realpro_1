@@ -158,3 +158,39 @@ b {
     padding: 10px 30px; /* même padding que les autres boutons */
     border-radius: 20px; /* arrondir les coins */
 }
+
+/** Propriétés de l'onglet connexion et inscription ______________________________________________________________________________________**/
+
+.connexion {
+    text-align: center; /* Centre le texte */
+    margin-top: -70; /* Assure que la section est en haut de la page */
+    padding: 20px; /* Ajoute un peu d'espace autour de la section */
+}
+
+.connexion h1 {
+    font-size: 3em; /* Titre très gros */
+    margin: 0; /* Supprime la marge par défaut */
+}
+
+.form-group {
+    margin-bottom: 20px; /* Espace entre les groupes de champs */
+}
+
+input {
+    width: 100%; /* Prend toute la largeur du conteneur */
+    border: 1px solid #ccc; /* Bordure du champ */
+    border-radius: 10px; /* Coins arrondis */
+    max-width: 800px; /* Limite la largeur maximale du paragraphe */
+    margin: 30 auto; /* Centre le paragraphe horizontalement */
+    padding: 8;
+}
+
+.btn-connexion {
+    margin: 20 auto; /* Centre le paragraphe horizontalement */
+    font-size: xx-large;
+    cursor: pointer;
+    background-color: #415A77; /* couleur de fond bleue */
+    color: white; /* couleur du texte */
+    padding: 10px 30px; /* même padding que les autres boutons */
+    border-radius: 20px; /* arrondir les coins */
+}
