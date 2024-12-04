@@ -1,0 +1,62 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Dancing Script", Helvetica, sans-serif;
+    font-size: x-large; /* propriété commune à tout le site */
+}
+
+body {
+    background-image: #ACB7C3; 
+    background-attachment: fixed;
+    height: 100%;
+}
+
+li a:hover {
+    background-color: #146b17; /* hover pour les boutons */
+}
+
+.active {
+    background-color: #4CAF50; /* arrière-plan quand les boutons sont cliqués */
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #E0E1DD;  /* propriété de la barre de navigation */
+    display: flex;
+    align-items: center; /* centre verticalement */
+}
+
+.titre-marieteam {
+    margin-right: auto; /* pousse les autres éléments à droite */
+}
+
+.nav-buttons {
+    display: flex; /* permet d'aligner les boutons horizontalement */
+}
+
+li {
+    margin-left: 20px; /* espace entre les éléments */
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none; /* permet de gérer le texte dans la navbar */
+}
+
+li a:hover {
+    background-color: #146b17; /* hover pour les boutons */
+}
+
+b {
+    font-weight: bold;
+}
+
+.connexion-btn {
+    cursor: pointer;
+}

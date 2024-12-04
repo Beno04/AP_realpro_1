@@ -9,11 +9,11 @@
     <!-- Barre de navigation -->
     <nav class="menu">
       <ul>
-        <li class="left"><b>MarieTeam</b></li>
-        <div class="right">
+        <li class="titre-marieteam"><b>MarieTeam</b></li>
+        <div class="nav-buttons">
           <li><a href="reserver.html">Réserver</a></li>
           <li><a class="active" href="a_propos.html">À propos</a></li>
-          <li><a class="connexion-btn" href="connexion.html">Connexion</a></li>
+          <li><a href="connexion.html"><b class="connexion-btn">Connexion</b></a></li>
         </div>
       </ul>
     </nav>
