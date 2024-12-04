@@ -33,6 +33,7 @@ ul {
     margin-right: auto; /* pousse les autres éléments à droite */
 }
 
+
 .nav-buttons {
     display: flex; /* permet d'aligner les boutons horizontalement */
 }
