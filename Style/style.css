@@ -194,3 +194,24 @@ input {
     padding: 10px 30px; /* même padding que les autres boutons */
     border-radius: 20px; /* arrondir les coins */
 }
+
+/** Propriétés de Reservation ______________________________________________________________________________________________**/
+ 
+.blockR {
+    margin: 0;
+    padding: 1%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+ 
+.destination {
+    display: flex;
+    width: 20%;
+}
+ 
+.destination ul {
+    display: flex;
+    width: 70%;
+    list-style: none;
+}
