@@ -173,7 +173,13 @@ b {
 }
 
 .form-group {
+    display: flex;
+    flex-direction: column; /* Aligne le label au-dessus du champ de saisie */
     margin-bottom: 20px; /* Espace entre les groupes de champs */
+}
+
+label {
+    font-weight: bold; /* Met le label en gras pour le rendre plus visible */
 }
 
 input {
