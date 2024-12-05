@@ -2,7 +2,8 @@
 
 include "../Fonctions/script.php";
 
-$test = connexionBDD();
+$test = connexionBase($servername = "127.0.0.1","marieteam","marieteam","marieteam");
+
 
 var_dump($test);
 
