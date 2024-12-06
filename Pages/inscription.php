@@ -5,7 +5,6 @@
     <title>MarieTeam - Inscription</title>
     <script src="../JavaScript/validInscription.js" defer></script> <!-- Inclure le fichier JavaScript -->
 </head>
-
 <body>
     <?php
     include '../Fonctions/script.php'; // Inclure le fichier PHP
@@ -43,7 +42,7 @@
                 <label for="email">Adresse mail :</label>
                 <input type="email" id="email" name="email" required />
                 <div id="errorEmailExist" class="error"></div>
-                <div id="errorEmailInvalid" class="error"></div>
+                <div id="errorEmailInvalid" class="error"></div> <!-- Zones d'erreur pour email -->
             </div>
             <div class="form-group">
                 <label for="password">Mot de passe :</label>
@@ -51,8 +50,8 @@
                 <div id="errorPwd"></div> <!-- Zone d'erreur pour le mot de passe -->
             </div>
             <button type="submit" class="btn-connexion">Inscription</button>
-            <div id="erreurInscription"></div>
-            <div id="messageInscription"></div>
+            <div id="erreurInscription"></div> <!-- Zone d'erreur pour l'inscription -->
+            <div id="messageInscription"></div> <!-- Zone de message de succès -->
         </form>
     </section>
 </body>
