@@ -7,7 +7,7 @@
 </head>
 <body>
     <?php
-    include '../Fonctions/script.php'; // Inclure le fichier PHP
+    include '../Fonctions/scriptInscription.php'; // Inclure le fichier PHP
     ?>
 
     <!-- Barre de navigation -->
