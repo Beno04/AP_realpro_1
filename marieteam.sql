@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `Bateau` (
-  `id_bateau` int(11) NOT NULL,
+  `id_bateau` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `nom_bateau` varchar(50) DEFAULT NULL,
   `long_bateau` decimal(4,2) DEFAULT NULL,
   `larg_bateau` decimal(4,2) DEFAULT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE `Bateau` (
 --
 
 CREATE TABLE `Catégorie` (
-  `id_cat` int(11) NOT NULL,
+  `id_cat` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `desc_cat` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -75,7 +75,7 @@ CREATE TABLE `Classer` (
 --
 
 CREATE TABLE `Client` (
-  `id_client` int(11) NOT NULL,
+  `id_client` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `nom_client` varchar(50) DEFAULT NULL,
   `prenom_client` varchar(50) DEFAULT NULL,
   `adresse_client` varchar(50) DEFAULT NULL,
@@ -115,7 +115,7 @@ CREATE TABLE `Enregistrer` (
 --
 
 CREATE TABLE `Equipement` (
-  `id_equip` int(11) NOT NULL,
+  `id_equip` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `desc_equip` varchar(150) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -126,7 +126,7 @@ CREATE TABLE `Equipement` (
 --
 
 CREATE TABLE `Liaison` (
-  `id_liaison` int(11) NOT NULL,
+  `id_liaison` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `dist_milles` decimal(4,2) DEFAULT NULL,
   `id_port` int(11) NOT NULL,
   `id_port_1` int(11) NOT NULL,
@@ -141,7 +141,7 @@ CREATE TABLE `Liaison` (
 --
 
 CREATE TABLE `Port` (
-  `id_port` int(11) NOT NULL,
+  `id_port` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `nom_port` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -163,7 +163,7 @@ CREATE TABLE `Période` (
 --
 
 CREATE TABLE `Reservation` (
-  `id_resa` int(11) NOT NULL,
+  `id_resa` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `date_resa` date DEFAULT NULL,
   `id_travers` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -175,7 +175,7 @@ CREATE TABLE `Reservation` (
 --
 
 CREATE TABLE `Secteur` (
-  `id_secteur` int(11) NOT NULL,
+  `id_secteur` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `nom_secteur` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -199,7 +199,7 @@ CREATE TABLE `Tarifer` (
 --
 
 CREATE TABLE `Traversée` (
-  `id_travers` int(11) NOT NULL,
+  `id_travers` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `date_travers` date DEFAULT NULL,
   `heure_travers` datetime DEFAULT NULL,
   `id_bateau` int(11) NOT NULL
@@ -212,7 +212,7 @@ CREATE TABLE `Traversée` (
 --
 
 CREATE TABLE `Type` (
-  `id_type` int(11) NOT NULL,
+  `id_type` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `desc_type` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -223,7 +223,7 @@ CREATE TABLE `Type` (
 --
 
 CREATE TABLE `Utilisateur` (
-  `id_utilisateur` int(11) NOT NULL,
+  `id_utilisateur` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `nom_user` varchar(50) DEFAULT NULL,
   `prenom_user` varchar(50) DEFAULT NULL,
   `mail_user` varchar(50) DEFAULT NULL,
