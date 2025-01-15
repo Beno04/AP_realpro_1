@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : mer. 15 jan. 2025 à 09:54
--- Version du serveur : 10.3.39-MariaDB-0+deb10u1
--- Version de PHP : 8.2.7
+-- Généré le : mer. 15 jan. 2025 à 12:01
+-- Version du serveur : 10.4.28-MariaDB
+-- Version de PHP : 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `marieteam`
+-- Base de données : `marieteam2`
 --
 
 -- --------------------------------------------------------
@@ -35,6 +35,14 @@ CREATE TABLE `Bateau` (
   `vitesse_bateau` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Déchargement des données de la table `Bateau`
+--
+
+INSERT INTO `Bateau` (`id_bateau`, `nom_bateau`, `long_bateau`, `larg_bateau`, `vitesse_bateau`) VALUES
+(1, 'Luce Isle', 37.20, 8.60, '26 noeuds'),
+(2, 'Al\'xi', 25.00, 7.00, '16 noeuds');
+
 -- --------------------------------------------------------
 
 --
@@ -45,6 +53,15 @@ CREATE TABLE `Catégorie` (
   `id_cat` int(11) NOT NULL,
   `desc_cat` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `Catégorie`
+--
+
+INSERT INTO `Catégorie` (`id_cat`, `desc_cat`) VALUES
+(1, 'Passager'),
+(2, 'Veh.inf.2m'),
+(3, 'Veh.sup.2m');
 
 -- --------------------------------------------------------
 
@@ -96,6 +113,18 @@ CREATE TABLE `Contenir` (
   `capac_bateau_pass` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Déchargement des données de la table `Contenir`
+--
+
+INSERT INTO `Contenir` (`id_bateau`, `id_cat`, `capac_bateau_pass`) VALUES
+(1, 1, 500),
+(1, 2, 20),
+(1, 3, 10),
+(2, 1, 300),
+(2, 2, 15),
+(2, 3, 5);
+
 -- --------------------------------------------------------
 
 --
@@ -118,6 +147,16 @@ CREATE TABLE `Equipement` (
   `id_equip` int(11) NOT NULL,
   `desc_equip` varchar(150) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `Equipement`
+--
+
+INSERT INTO `Equipement` (`id_equip`, `desc_equip`) VALUES
+(1, 'Accès Handicapé'),
+(2, 'Bar'),
+(3, 'Pont Promenade'),
+(4, 'Salon Vidéo');
 
 -- --------------------------------------------------------
 
@@ -145,6 +184,19 @@ CREATE TABLE `Port` (
   `nom_port` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Déchargement des données de la table `Port`
+--
+
+INSERT INTO `Port` (`id_port`, `nom_port`) VALUES
+(1, 'Quiberon'),
+(2, 'Le Palais'),
+(3, 'Sauzon'),
+(4, 'Vannes'),
+(5, 'Port St Gildas'),
+(6, 'Lorient'),
+(7, 'Port-Tudy');
+
 -- --------------------------------------------------------
 
 --
@@ -155,6 +207,15 @@ CREATE TABLE `Période` (
   `date_debut` date NOT NULL,
   `date_fin` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `Période`
+--
+
+INSERT INTO `Période` (`date_debut`, `date_fin`) VALUES
+('2023-09-01', '2024-06-15'),
+('2024-06-16', '2024-09-15'),
+('2024-09-16', '2025-05-31');
 
 -- --------------------------------------------------------
 
@@ -179,6 +240,15 @@ CREATE TABLE `Secteur` (
   `nom_secteur` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Déchargement des données de la table `Secteur`
+--
+
+INSERT INTO `Secteur` (`id_secteur`, `nom_secteur`) VALUES
+(1, 'Belle-Ile-en-Mer'),
+(2, 'Houat'),
+(3, 'Ile de Groix');
+
 -- --------------------------------------------------------
 
 --
@@ -201,9 +271,42 @@ CREATE TABLE `Tarifer` (
 CREATE TABLE `Traversée` (
   `id_travers` int(11) NOT NULL,
   `date_travers` date DEFAULT NULL,
-  `heure_travers` datetime DEFAULT NULL,
+  `heure_travers` time DEFAULT NULL,
+  `desc_travers` varchar(50) NOT NULL,
   `id_bateau` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `Traversée`
+--
+
+INSERT INTO `Traversée` (`id_travers`, `date_travers`, `heure_travers`, `desc_travers`, `id_bateau`) VALUES
+(2, '2019-07-10', '07:45:00', 'Quiberon-Le Palais', 1),
+(3, '2019-07-10', '09:15:00', 'Quiberon-Le Palais', 1),
+(4, '2019-07-10', '10:50:00', 'Quiberon-Le Palais', 1),
+(5, '2019-07-10', '12:15:00', 'Quiberon-Le Palais', 1),
+(6, '2019-07-10', '14:30:00', 'Quiberon-Le Palais', 1),
+(7, '2019-07-10', '16:45:00', 'Quiberon-Le Palais', 1),
+(8, '2019-07-10', '18:15:00', 'Quiberon-Le Palais', 1),
+(9, '2019-07-10', '19:45:00', 'Quiberon-Le Palais', 1),
+(10, '2019-07-10', '07:00:00', 'Le Palais-Quiberon', 1),
+(11, '2019-07-10', '08:30:00', 'Le Palais-Quiberon', 1),
+(12, '2019-07-10', '10:00:00', 'Le Palais-Quiberon', 1),
+(13, '2019-07-10', '11:30:00', 'Le Palais-Quiberon', 1),
+(14, '2019-07-10', '13:45:00', 'Le Palais-Quiberon', 1),
+(15, '2019-07-10', '15:15:00', 'Le Palais-Quiberon', 1),
+(16, '2019-07-10', '17:30:00', 'Le Palais-Quiberon', 1),
+(17, '2019-07-10', '19:00:00', 'Le Palais-Quiberon', 1),
+(18, '2019-07-10', '08:30:00', 'Vannes-Le Palais', 2),
+(19, '2019-07-10', '11:30:00', 'Vannes-Le Palais', 2),
+(20, '2019-07-10', '14:00:00', 'Vannes-Le Palais', 2),
+(21, '2019-07-10', '17:00:00', 'Vannes-Le Palais', 2),
+(22, '2019-07-10', '19:00:00', 'Vannes-Le Palais', 2),
+(23, '2019-07-10', '10:00:00', 'Le Palais-Vannes', 2),
+(24, '2019-07-10', '13:00:00', 'Le Palais-Vannes', 2),
+(25, '2019-07-10', '15:30:00', 'Le Palais-Vannes', 2),
+(26, '2019-07-10', '19:30:00', 'Le Palais-Vannes', 2),
+(27, '2019-07-10', '21:30:00', 'Le Palais-Vannes', 2);
 
 -- --------------------------------------------------------
 
@@ -215,6 +318,20 @@ CREATE TABLE `Type` (
   `id_type` int(11) NOT NULL,
   `desc_type` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `Type`
+--
+
+INSERT INTO `Type` (`id_type`, `desc_type`) VALUES
+(1, 'Adulte'),
+(2, 'Junior 8 à 18 ans'),
+(3, 'Enfant 0 à 7'),
+(4, 'Voiture long.inf.4m'),
+(5, 'Voiture long.inf.5m'),
+(6, 'Fourgon'),
+(7, 'Camping Car'),
+(8, 'Camion');
 
 -- --------------------------------------------------------
 
@@ -230,6 +347,16 @@ CREATE TABLE `Utilisateur` (
   `mdp_user` varchar(50) DEFAULT NULL,
   `typer_user` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `Utilisateur`
+--
+
+INSERT INTO `Utilisateur` (`id_utilisateur`, `nom_user`, `prenom_user`, `mail_user`, `mdp_user`, `typer_user`) VALUES
+(1, 'Jean', 'Bolenger', 'Jean.bolenger@gmail.com', 'hasspass1', 'Client'),
+(2, 'Lucas', 'Beno', 'lucas.beno@gmail.com', 'hasspass2', 'Client'),
+(3, 'Axel', 'Verdon', 'axel.verdon@gmail.com', 'hasspass3', 'Client'),
+(4, 'admin', 'admin', 'admin.marieteam@gmail.com', 'hasspass4', 'Gestionnaire');
 
 -- --------------------------------------------------------
 
@@ -376,13 +503,13 @@ ALTER TABLE `Être_équipé`
 -- AUTO_INCREMENT pour la table `Bateau`
 --
 ALTER TABLE `Bateau`
-  MODIFY `id_bateau` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_bateau` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `Catégorie`
 --
 ALTER TABLE `Catégorie`
-  MODIFY `id_cat` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_cat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `Client`
@@ -394,7 +521,7 @@ ALTER TABLE `Client`
 -- AUTO_INCREMENT pour la table `Equipement`
 --
 ALTER TABLE `Equipement`
-  MODIFY `id_equip` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_equip` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `Liaison`
@@ -406,7 +533,7 @@ ALTER TABLE `Liaison`
 -- AUTO_INCREMENT pour la table `Port`
 --
 ALTER TABLE `Port`
-  MODIFY `id_port` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_port` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `Reservation`
@@ -418,25 +545,25 @@ ALTER TABLE `Reservation`
 -- AUTO_INCREMENT pour la table `Secteur`
 --
 ALTER TABLE `Secteur`
-  MODIFY `id_secteur` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_secteur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `Traversée`
 --
 ALTER TABLE `Traversée`
-  MODIFY `id_travers` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_travers` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT pour la table `Type`
 --
 ALTER TABLE `Type`
-  MODIFY `id_type` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_type` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT pour la table `Utilisateur`
 --
 ALTER TABLE `Utilisateur`
-  MODIFY `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Contraintes pour les tables déchargées
