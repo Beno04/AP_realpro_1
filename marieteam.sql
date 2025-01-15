@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : mer. 15 jan. 2025 à 09:39
--- Version du serveur : 10.4.28-MariaDB
--- Version de PHP : 8.2.4
+-- Généré le : mer. 15 jan. 2025 à 09:48
+-- Version du serveur : 10.3.39-MariaDB-0+deb10u1
+-- Version de PHP : 8.2.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `Bateau` (
-  `id_bateau` int(11) NOT NULL AUTO_INCREMENT,
+  `id_bateau` int(11) NOT NULL,
   `nom_bateau` varchar(50) DEFAULT NULL,
   `long_bateau` decimal(4,2) DEFAULT NULL,
   `larg_bateau` decimal(4,2) DEFAULT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE `Bateau` (
 --
 
 CREATE TABLE `Catégorie` (
-  `id_cat` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cat` int(11) NOT NULL,
   `desc_cat` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -75,7 +75,7 @@ CREATE TABLE `Classer` (
 --
 
 CREATE TABLE `Client` (
-  `id_client` int(11) NOT NULL AUTO_INCREMENT,
+  `id_client` int(11) NOT NULL,
   `nom_client` varchar(50) DEFAULT NULL,
   `prenom_client` varchar(50) DEFAULT NULL,
   `adresse_client` varchar(50) DEFAULT NULL,
@@ -115,7 +115,7 @@ CREATE TABLE `Enregistrer` (
 --
 
 CREATE TABLE `Equipement` (
-  `id_equip` int(11) NOT NULL AUTO_INCREMENT,
+  `id_equip` int(11) NOT NULL,
   `desc_equip` varchar(150) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -126,7 +126,7 @@ CREATE TABLE `Equipement` (
 --
 
 CREATE TABLE `Liaison` (
-  `id_liaison` int(11) NOT NULL AUTO_INCREMENT,
+  `id_liaison` int(11) NOT NULL,
   `dist_milles` decimal(4,2) DEFAULT NULL,
   `id_port` int(11) NOT NULL,
   `id_port_1` int(11) NOT NULL,
@@ -141,7 +141,7 @@ CREATE TABLE `Liaison` (
 --
 
 CREATE TABLE `Port` (
-  `id_port` int(11) NOT NULL AUTO_INCREMENT,
+  `id_port` int(11) NOT NULL,
   `nom_port` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -163,7 +163,7 @@ CREATE TABLE `Période` (
 --
 
 CREATE TABLE `Reservation` (
-  `id_resa` int(11) NOT NULL AUTO_INCREMENT,
+  `id_resa` int(11) NOT NULL,
   `date_resa` date DEFAULT NULL,
   `id_travers` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -175,7 +175,7 @@ CREATE TABLE `Reservation` (
 --
 
 CREATE TABLE `Secteur` (
-  `id_secteur` int(11) NOT NULL AUTO_INCREMENT,
+  `id_secteur` int(11) NOT NULL,
   `nom_secteur` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -199,7 +199,7 @@ CREATE TABLE `Tarifer` (
 --
 
 CREATE TABLE `Traversée` (
-  `id_travers` int(11) NOT NULL AUTO_INCREMENT,
+  `id_travers` int(11) NOT NULL,
   `date_travers` date DEFAULT NULL,
   `heure_travers` datetime DEFAULT NULL,
   `id_bateau` int(11) NOT NULL
@@ -212,7 +212,7 @@ CREATE TABLE `Traversée` (
 --
 
 CREATE TABLE `Type` (
-  `id_type` int(11) NOT NULL AUTO_INCREMENT,
+  `id_type` int(11) NOT NULL,
   `desc_type` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -223,7 +223,7 @@ CREATE TABLE `Type` (
 --
 
 CREATE TABLE `Utilisateur` (
-  `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT,
+  `id_utilisateur` int(11) NOT NULL,
   `nom_user` varchar(50) DEFAULT NULL,
   `prenom_user` varchar(50) DEFAULT NULL,
   `mail_user` varchar(50) DEFAULT NULL,
@@ -269,7 +269,7 @@ ALTER TABLE `Choisir`
 -- Index pour la table `Classer`
 --
 ALTER TABLE `Classer`
-  ADD PRIMARY KEY (`id_type`,`id_cat`),
+  ADD PRIMARY KEY (`id_type`),
   ADD KEY `id_cat` (`id_cat`);
 
 --
@@ -367,6 +367,76 @@ ALTER TABLE `Utilisateur`
 ALTER TABLE `Être_équipé`
   ADD PRIMARY KEY (`id_bateau`,`id_equip`),
   ADD KEY `id_equip` (`id_equip`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `Bateau`
+--
+ALTER TABLE `Bateau`
+  MODIFY `id_bateau` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `Catégorie`
+--
+ALTER TABLE `Catégorie`
+  MODIFY `id_cat` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `Client`
+--
+ALTER TABLE `Client`
+  MODIFY `id_client` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `Equipement`
+--
+ALTER TABLE `Equipement`
+  MODIFY `id_equip` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `Liaison`
+--
+ALTER TABLE `Liaison`
+  MODIFY `id_liaison` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `Port`
+--
+ALTER TABLE `Port`
+  MODIFY `id_port` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `Reservation`
+--
+ALTER TABLE `Reservation`
+  MODIFY `id_resa` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `Secteur`
+--
+ALTER TABLE `Secteur`
+  MODIFY `id_secteur` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `Traversée`
+--
+ALTER TABLE `Traversée`
+  MODIFY `id_travers` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `Type`
+--
+ALTER TABLE `Type`
+  MODIFY `id_type` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `Utilisateur`
+--
+ALTER TABLE `Utilisateur`
+  MODIFY `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Contraintes pour les tables déchargées
