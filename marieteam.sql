@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.1.3
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost
--- Généré le : mer. 15 jan. 2025 à 12:01
--- Version du serveur : 10.4.28-MariaDB
--- Version de PHP : 8.2.4
+-- Hôte : 127.0.0.1
+-- Généré le : lun. 24 fév. 2025 à 11:52
+-- Version du serveur : 10.4.24-MariaDB
+-- Version de PHP : 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,45 +20,47 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `marieteam`
 --
+CREATE DATABASE IF NOT EXISTS `marieteam` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `marieteam`;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Bateau`
+-- Structure de la table `bateau`
 --
 
-CREATE TABLE `Bateau` (
+CREATE TABLE `bateau` (
   `id_bateau` int(11) NOT NULL,
   `nom_bateau` varchar(50) DEFAULT NULL,
   `long_bateau` decimal(4,2) DEFAULT NULL,
   `larg_bateau` decimal(4,2) DEFAULT NULL,
   `vitesse_bateau` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `Bateau`
+-- Déchargement des données de la table `bateau`
 --
 
-INSERT INTO `Bateau` (`id_bateau`, `nom_bateau`, `long_bateau`, `larg_bateau`, `vitesse_bateau`) VALUES
-(1, 'Luce Isle', 37.20, 8.60, '26 noeuds'),
-(2, 'Al\'xi', 25.00, 7.00, '16 noeuds');
+INSERT INTO `bateau` (`id_bateau`, `nom_bateau`, `long_bateau`, `larg_bateau`, `vitesse_bateau`) VALUES
+(1, 'Luce Isle', '37.20', '8.60', '26 noeuds'),
+(2, 'Al\'xi', '25.00', '7.00', '16 noeuds');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Catégorie`
+-- Structure de la table `catégorie`
 --
 
-CREATE TABLE `Catégorie` (
+CREATE TABLE `catégorie` (
   `id_cat` int(11) NOT NULL,
   `desc_cat` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `Catégorie`
+-- Déchargement des données de la table `catégorie`
 --
 
-INSERT INTO `Catégorie` (`id_cat`, `desc_cat`) VALUES
+INSERT INTO `catégorie` (`id_cat`, `desc_cat`) VALUES
 (1, 'Passager'),
 (2, 'Veh.inf.2m'),
 (3, 'Veh.sup.2m');
@@ -66,32 +68,32 @@ INSERT INTO `Catégorie` (`id_cat`, `desc_cat`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Choisir`
+-- Structure de la table `choisir`
 --
 
-CREATE TABLE `Choisir` (
+CREATE TABLE `choisir` (
   `id_client` int(11) NOT NULL,
   `id_resa` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Classer`
+-- Structure de la table `classer`
 --
 
-CREATE TABLE `Classer` (
+CREATE TABLE `classer` (
   `id_type` int(11) NOT NULL,
   `id_cat` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Client`
+-- Structure de la table `client`
 --
 
-CREATE TABLE `Client` (
+CREATE TABLE `client` (
   `id_client` int(11) NOT NULL,
   `nom_client` varchar(50) DEFAULT NULL,
   `prenom_client` varchar(50) DEFAULT NULL,
@@ -99,25 +101,25 @@ CREATE TABLE `Client` (
   `tel_client` varchar(50) DEFAULT NULL,
   `mail_client` varchar(50) DEFAULT NULL,
   `id_utilisateur` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Contenir`
+-- Structure de la table `contenir`
 --
 
-CREATE TABLE `Contenir` (
+CREATE TABLE `contenir` (
   `id_bateau` int(11) NOT NULL,
   `id_cat` int(11) NOT NULL,
   `capac_bateau_pass` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `Contenir`
+-- Déchargement des données de la table `contenir`
 --
 
-INSERT INTO `Contenir` (`id_bateau`, `id_cat`, `capac_bateau_pass`) VALUES
+INSERT INTO `contenir` (`id_bateau`, `id_cat`, `capac_bateau_pass`) VALUES
 (1, 1, 500),
 (1, 2, 20),
 (1, 3, 10),
@@ -128,31 +130,31 @@ INSERT INTO `Contenir` (`id_bateau`, `id_cat`, `capac_bateau_pass`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Enregistrer`
+-- Structure de la table `enregistrer`
 --
 
-CREATE TABLE `Enregistrer` (
+CREATE TABLE `enregistrer` (
   `id_resa` int(11) NOT NULL,
   `id_type` int(11) NOT NULL,
   `quantité` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Equipement`
+-- Structure de la table `equipement`
 --
 
-CREATE TABLE `Equipement` (
+CREATE TABLE `equipement` (
   `id_equip` int(11) NOT NULL,
   `desc_equip` varchar(150) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `Equipement`
+-- Déchargement des données de la table `equipement`
 --
 
-INSERT INTO `Equipement` (`id_equip`, `desc_equip`) VALUES
+INSERT INTO `equipement` (`id_equip`, `desc_equip`) VALUES
 (1, 'Accès Handicapé'),
 (2, 'Bar'),
 (3, 'Pont Promenade'),
@@ -161,34 +163,47 @@ INSERT INTO `Equipement` (`id_equip`, `desc_equip`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Liaison`
+-- Structure de la table `liaison`
 --
 
-CREATE TABLE `Liaison` (
+CREATE TABLE `liaison` (
   `id_liaison` int(11) NOT NULL,
   `dist_milles` decimal(4,2) DEFAULT NULL,
   `id_port` int(11) NOT NULL,
   `id_port_1` int(11) NOT NULL,
   `id_secteur` int(11) NOT NULL,
   `id_travers` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `liaison`
+--
+
+INSERT INTO `liaison` (`id_liaison`, `dist_milles`, `id_port`, `id_port_1`, `id_secteur`, `id_travers`) VALUES
+(1, '8.30', 1, 2, 1, 2),
+(2, '9.00', 2, 1, 1, 15),
+(3, '8.80', 1, 5, 2, 30),
+(4, '8.80', 5, 1, 2, 31),
+(5, '7.70', 6, 7, 3, 32),
+(6, '7.40', 7, 6, 3, 33),
+(7, '8.80', 1, 2, 1, 3);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Port`
+-- Structure de la table `port`
 --
 
-CREATE TABLE `Port` (
+CREATE TABLE `port` (
   `id_port` int(11) NOT NULL,
   `nom_port` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `Port`
+-- Déchargement des données de la table `port`
 --
 
-INSERT INTO `Port` (`id_port`, `nom_port`) VALUES
+INSERT INTO `port` (`id_port`, `nom_port`) VALUES
 (1, 'Quiberon'),
 (2, 'Le Palais'),
 (3, 'Sauzon'),
@@ -200,19 +215,19 @@ INSERT INTO `Port` (`id_port`, `nom_port`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Période`
+-- Structure de la table `période`
 --
 
-CREATE TABLE `Période` (
+CREATE TABLE `période` (
   `date_debut` date NOT NULL,
   `date_fin` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `Période`
+-- Déchargement des données de la table `période`
 --
 
-INSERT INTO `Période` (`date_debut`, `date_fin`) VALUES
+INSERT INTO `période` (`date_debut`, `date_fin`) VALUES
 ('2023-09-01', '2024-06-15'),
 ('2024-06-16', '2024-09-15'),
 ('2024-09-16', '2025-05-31');
@@ -220,31 +235,31 @@ INSERT INTO `Période` (`date_debut`, `date_fin`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Reservation`
+-- Structure de la table `reservation`
 --
 
-CREATE TABLE `Reservation` (
+CREATE TABLE `reservation` (
   `id_resa` int(11) NOT NULL,
   `date_resa` date DEFAULT NULL,
   `id_travers` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Secteur`
+-- Structure de la table `secteur`
 --
 
-CREATE TABLE `Secteur` (
+CREATE TABLE `secteur` (
   `id_secteur` int(11) NOT NULL,
   `nom_secteur` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `Secteur`
+-- Déchargement des données de la table `secteur`
 --
 
-INSERT INTO `Secteur` (`id_secteur`, `nom_secteur`) VALUES
+INSERT INTO `secteur` (`id_secteur`, `nom_secteur`) VALUES
 (1, 'Belle-Ile-en-Mer'),
 (2, 'Houat'),
 (3, 'Ile de Groix');
@@ -252,37 +267,37 @@ INSERT INTO `Secteur` (`id_secteur`, `nom_secteur`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Tarifer`
+-- Structure de la table `tarifer`
 --
 
-CREATE TABLE `Tarifer` (
+CREATE TABLE `tarifer` (
   `id_liaison` int(11) NOT NULL,
   `id_type` int(11) NOT NULL,
   `date_debut` date NOT NULL,
   `Tarif` decimal(5,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Traversée`
+-- Structure de la table `traversée`
 --
 
-CREATE TABLE `Traversée` (
+CREATE TABLE `traversée` (
   `id_travers` int(11) NOT NULL,
   `date_travers` date DEFAULT NULL,
   `heure_travers` time DEFAULT NULL,
   `desc_travers` varchar(50) NOT NULL,
   `id_bateau` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `Traversée`
+-- Déchargement des données de la table `traversée`
 --
 
-INSERT INTO `Traversée` (`id_travers`, `date_travers`, `heure_travers`, `desc_travers`, `id_bateau`) VALUES
-(2, '2019-07-10', '07:45:00', 'Quiberon-Le Palais', 1),
-(3, '2019-07-10', '09:15:00', 'Quiberon-Le Palais', 1),
+INSERT INTO `traversée` (`id_travers`, `date_travers`, `heure_travers`, `desc_travers`, `id_bateau`) VALUES
+(2, '2025-12-05', '07:45:00', 'Quiberon-Le Palais', 1),
+(3, '2025-12-06', '09:15:00', 'Quiberon-Le Palais', 1),
 (4, '2019-07-10', '10:50:00', 'Quiberon-Le Palais', 1),
 (5, '2019-07-10', '12:15:00', 'Quiberon-Le Palais', 1),
 (6, '2019-07-10', '14:30:00', 'Quiberon-Le Palais', 1),
@@ -290,7 +305,6 @@ INSERT INTO `Traversée` (`id_travers`, `date_travers`, `heure_travers`, `desc_t
 (8, '2019-07-10', '18:15:00', 'Quiberon-Le Palais', 1),
 (9, '2019-07-10', '19:45:00', 'Quiberon-Le Palais', 1),
 (10, '2019-07-10', '07:00:00', 'Le Palais-Quiberon', 1),
-(11, '2019-07-10', '08:30:00', 'Le Palais-Quiberon', 1),
 (12, '2019-07-10', '10:00:00', 'Le Palais-Quiberon', 1),
 (13, '2019-07-10', '11:30:00', 'Le Palais-Quiberon', 1),
 (14, '2019-07-10', '13:45:00', 'Le Palais-Quiberon', 1),
@@ -306,24 +320,30 @@ INSERT INTO `Traversée` (`id_travers`, `date_travers`, `heure_travers`, `desc_t
 (24, '2019-07-10', '13:00:00', 'Le Palais-Vannes', 2),
 (25, '2019-07-10', '15:30:00', 'Le Palais-Vannes', 2),
 (26, '2019-07-10', '19:30:00', 'Le Palais-Vannes', 2),
-(27, '2019-07-10', '21:30:00', 'Le Palais-Vannes', 2);
+(27, '2019-07-10', '21:30:00', 'Le Palais-Vannes', 2),
+(28, '2025-08-15', '10:54:03', 'Quiberon-Sauzon', 2),
+(29, '2025-08-15', '10:54:03', 'Sauzon-Quiberon', 2),
+(30, '2025-08-16', '10:54:03', 'Giberon-PortStGildas', 1),
+(31, '2025-08-16', '10:54:03', 'PortStGildas-Giberon', 2),
+(32, '2025-08-17', '10:54:03', 'Lorient-PortTudy', 2),
+(33, '2025-08-17', '10:54:03', 'PortTudy-Lorient', 1);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Type`
+-- Structure de la table `type`
 --
 
-CREATE TABLE `Type` (
+CREATE TABLE `type` (
   `id_type` int(11) NOT NULL,
   `desc_type` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `Type`
+-- Déchargement des données de la table `type`
 --
 
-INSERT INTO `Type` (`id_type`, `desc_type`) VALUES
+INSERT INTO `type` (`id_type`, `desc_type`) VALUES
 (1, 'Adulte'),
 (2, 'Junior 8 à 18 ans'),
 (3, 'Enfant 0 à 7'),
@@ -336,23 +356,23 @@ INSERT INTO `Type` (`id_type`, `desc_type`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Utilisateur`
+-- Structure de la table `utilisateur`
 --
 
-CREATE TABLE `Utilisateur` (
+CREATE TABLE `utilisateur` (
   `id_utilisateur` int(11) NOT NULL,
   `nom_user` varchar(50) DEFAULT NULL,
   `prenom_user` varchar(50) DEFAULT NULL,
   `mail_user` varchar(50) DEFAULT NULL,
   `mdp_user` varchar(50) DEFAULT NULL,
   `typer_user` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `Utilisateur`
+-- Déchargement des données de la table `utilisateur`
 --
 
-INSERT INTO `Utilisateur` (`id_utilisateur`, `nom_user`, `prenom_user`, `mail_user`, `mdp_user`, `typer_user`) VALUES
+INSERT INTO `utilisateur` (`id_utilisateur`, `nom_user`, `prenom_user`, `mail_user`, `mdp_user`, `typer_user`) VALUES
 (1, 'Jean', 'Bolenger', 'Jean.bolenger@gmail.com', 'hasspass1', 'Client'),
 (2, 'Lucas', 'Beno', 'lucas.beno@gmail.com', 'hasspass2', 'Client'),
 (3, 'Axel', 'Verdon', 'axel.verdon@gmail.com', 'hasspass3', 'Client'),
@@ -361,75 +381,75 @@ INSERT INTO `Utilisateur` (`id_utilisateur`, `nom_user`, `prenom_user`, `mail_us
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Être_équipé`
+-- Structure de la table `être_équipé`
 --
 
-CREATE TABLE `Être_équipé` (
+CREATE TABLE `être_équipé` (
   `id_bateau` int(11) NOT NULL,
   `id_equip` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Index pour les tables déchargées
 --
 
 --
--- Index pour la table `Bateau`
+-- Index pour la table `bateau`
 --
-ALTER TABLE `Bateau`
+ALTER TABLE `bateau`
   ADD PRIMARY KEY (`id_bateau`);
 
 --
--- Index pour la table `Catégorie`
+-- Index pour la table `catégorie`
 --
-ALTER TABLE `Catégorie`
+ALTER TABLE `catégorie`
   ADD PRIMARY KEY (`id_cat`);
 
 --
--- Index pour la table `Choisir`
+-- Index pour la table `choisir`
 --
-ALTER TABLE `Choisir`
+ALTER TABLE `choisir`
   ADD PRIMARY KEY (`id_client`,`id_resa`),
   ADD KEY `id_resa` (`id_resa`);
 
 --
--- Index pour la table `Classer`
+-- Index pour la table `classer`
 --
-ALTER TABLE `Classer`
+ALTER TABLE `classer`
   ADD PRIMARY KEY (`id_type`),
   ADD KEY `id_cat` (`id_cat`);
 
 --
--- Index pour la table `Client`
+-- Index pour la table `client`
 --
-ALTER TABLE `Client`
+ALTER TABLE `client`
   ADD PRIMARY KEY (`id_client`),
   ADD UNIQUE KEY `id_utilisateur` (`id_utilisateur`);
 
 --
--- Index pour la table `Contenir`
+-- Index pour la table `contenir`
 --
-ALTER TABLE `Contenir`
+ALTER TABLE `contenir`
   ADD PRIMARY KEY (`id_bateau`,`id_cat`),
   ADD KEY `id_cat` (`id_cat`);
 
 --
--- Index pour la table `Enregistrer`
+-- Index pour la table `enregistrer`
 --
-ALTER TABLE `Enregistrer`
+ALTER TABLE `enregistrer`
   ADD PRIMARY KEY (`id_resa`,`id_type`),
   ADD KEY `id_type` (`id_type`);
 
 --
--- Index pour la table `Equipement`
+-- Index pour la table `equipement`
 --
-ALTER TABLE `Equipement`
+ALTER TABLE `equipement`
   ADD PRIMARY KEY (`id_equip`);
 
 --
--- Index pour la table `Liaison`
+-- Index pour la table `liaison`
 --
-ALTER TABLE `Liaison`
+ALTER TABLE `liaison`
   ADD PRIMARY KEY (`id_liaison`),
   ADD KEY `id_port` (`id_port`),
   ADD KEY `id_port_1` (`id_port_1`),
@@ -437,61 +457,61 @@ ALTER TABLE `Liaison`
   ADD KEY `id_travers` (`id_travers`);
 
 --
--- Index pour la table `Port`
+-- Index pour la table `port`
 --
-ALTER TABLE `Port`
+ALTER TABLE `port`
   ADD PRIMARY KEY (`id_port`);
 
 --
--- Index pour la table `Période`
+-- Index pour la table `période`
 --
-ALTER TABLE `Période`
+ALTER TABLE `période`
   ADD PRIMARY KEY (`date_debut`);
 
 --
--- Index pour la table `Reservation`
+-- Index pour la table `reservation`
 --
-ALTER TABLE `Reservation`
+ALTER TABLE `reservation`
   ADD PRIMARY KEY (`id_resa`),
   ADD KEY `id_travers` (`id_travers`);
 
 --
--- Index pour la table `Secteur`
+-- Index pour la table `secteur`
 --
-ALTER TABLE `Secteur`
+ALTER TABLE `secteur`
   ADD PRIMARY KEY (`id_secteur`);
 
 --
--- Index pour la table `Tarifer`
+-- Index pour la table `tarifer`
 --
-ALTER TABLE `Tarifer`
+ALTER TABLE `tarifer`
   ADD PRIMARY KEY (`id_liaison`,`id_type`,`date_debut`),
   ADD KEY `id_type` (`id_type`),
   ADD KEY `date_debut` (`date_debut`);
 
 --
--- Index pour la table `Traversée`
+-- Index pour la table `traversée`
 --
-ALTER TABLE `Traversée`
+ALTER TABLE `traversée`
   ADD PRIMARY KEY (`id_travers`),
   ADD KEY `id_bateau` (`id_bateau`);
 
 --
--- Index pour la table `Type`
+-- Index pour la table `type`
 --
-ALTER TABLE `Type`
+ALTER TABLE `type`
   ADD PRIMARY KEY (`id_type`);
 
 --
--- Index pour la table `Utilisateur`
+-- Index pour la table `utilisateur`
 --
-ALTER TABLE `Utilisateur`
+ALTER TABLE `utilisateur`
   ADD PRIMARY KEY (`id_utilisateur`);
 
 --
--- Index pour la table `Être_équipé`
+-- Index pour la table `être_équipé`
 --
-ALTER TABLE `Être_équipé`
+ALTER TABLE `être_équipé`
   ADD PRIMARY KEY (`id_bateau`,`id_equip`),
   ADD KEY `id_equip` (`id_equip`);
 
@@ -500,69 +520,69 @@ ALTER TABLE `Être_équipé`
 --
 
 --
--- AUTO_INCREMENT pour la table `Bateau`
+-- AUTO_INCREMENT pour la table `bateau`
 --
-ALTER TABLE `Bateau`
+ALTER TABLE `bateau`
   MODIFY `id_bateau` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT pour la table `Catégorie`
+-- AUTO_INCREMENT pour la table `catégorie`
 --
-ALTER TABLE `Catégorie`
+ALTER TABLE `catégorie`
   MODIFY `id_cat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT pour la table `Client`
+-- AUTO_INCREMENT pour la table `client`
 --
-ALTER TABLE `Client`
+ALTER TABLE `client`
   MODIFY `id_client` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `Equipement`
+-- AUTO_INCREMENT pour la table `equipement`
 --
-ALTER TABLE `Equipement`
+ALTER TABLE `equipement`
   MODIFY `id_equip` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT pour la table `Liaison`
+-- AUTO_INCREMENT pour la table `liaison`
 --
-ALTER TABLE `Liaison`
-  MODIFY `id_liaison` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `liaison`
+  MODIFY `id_liaison` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT pour la table `Port`
+-- AUTO_INCREMENT pour la table `port`
 --
-ALTER TABLE `Port`
+ALTER TABLE `port`
   MODIFY `id_port` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT pour la table `Reservation`
+-- AUTO_INCREMENT pour la table `reservation`
 --
-ALTER TABLE `Reservation`
+ALTER TABLE `reservation`
   MODIFY `id_resa` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `Secteur`
+-- AUTO_INCREMENT pour la table `secteur`
 --
-ALTER TABLE `Secteur`
+ALTER TABLE `secteur`
   MODIFY `id_secteur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT pour la table `Traversée`
+-- AUTO_INCREMENT pour la table `traversée`
 --
-ALTER TABLE `Traversée`
-  MODIFY `id_travers` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+ALTER TABLE `traversée`
+  MODIFY `id_travers` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
--- AUTO_INCREMENT pour la table `Type`
+-- AUTO_INCREMENT pour la table `type`
 --
-ALTER TABLE `Type`
+ALTER TABLE `type`
   MODIFY `id_type` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT pour la table `Utilisateur`
+-- AUTO_INCREMENT pour la table `utilisateur`
 --
-ALTER TABLE `Utilisateur`
+ALTER TABLE `utilisateur`
   MODIFY `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
@@ -570,74 +590,74 @@ ALTER TABLE `Utilisateur`
 --
 
 --
--- Contraintes pour la table `Choisir`
+-- Contraintes pour la table `choisir`
 --
-ALTER TABLE `Choisir`
-  ADD CONSTRAINT `choisir_ibfk_1` FOREIGN KEY (`id_client`) REFERENCES `Client` (`id_client`),
-  ADD CONSTRAINT `choisir_ibfk_2` FOREIGN KEY (`id_resa`) REFERENCES `Reservation` (`id_resa`);
+ALTER TABLE `choisir`
+  ADD CONSTRAINT `choisir_ibfk_1` FOREIGN KEY (`id_client`) REFERENCES `client` (`id_client`),
+  ADD CONSTRAINT `choisir_ibfk_2` FOREIGN KEY (`id_resa`) REFERENCES `reservation` (`id_resa`);
 
 --
--- Contraintes pour la table `Classer`
+-- Contraintes pour la table `classer`
 --
-ALTER TABLE `Classer`
-  ADD CONSTRAINT `classer_ibfk_1` FOREIGN KEY (`id_type`) REFERENCES `Type` (`id_type`),
-  ADD CONSTRAINT `classer_ibfk_2` FOREIGN KEY (`id_cat`) REFERENCES `Catégorie` (`id_cat`);
+ALTER TABLE `classer`
+  ADD CONSTRAINT `classer_ibfk_1` FOREIGN KEY (`id_type`) REFERENCES `type` (`id_type`),
+  ADD CONSTRAINT `classer_ibfk_2` FOREIGN KEY (`id_cat`) REFERENCES `catégorie` (`id_cat`);
 
 --
--- Contraintes pour la table `Client`
+-- Contraintes pour la table `client`
 --
-ALTER TABLE `Client`
-  ADD CONSTRAINT `client_ibfk_1` FOREIGN KEY (`id_utilisateur`) REFERENCES `Utilisateur` (`id_utilisateur`);
+ALTER TABLE `client`
+  ADD CONSTRAINT `client_ibfk_1` FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateur` (`id_utilisateur`);
 
 --
--- Contraintes pour la table `Contenir`
+-- Contraintes pour la table `contenir`
 --
-ALTER TABLE `Contenir`
-  ADD CONSTRAINT `contenir_ibfk_1` FOREIGN KEY (`id_bateau`) REFERENCES `Bateau` (`id_bateau`),
-  ADD CONSTRAINT `contenir_ibfk_2` FOREIGN KEY (`id_cat`) REFERENCES `Catégorie` (`id_cat`);
+ALTER TABLE `contenir`
+  ADD CONSTRAINT `contenir_ibfk_1` FOREIGN KEY (`id_bateau`) REFERENCES `bateau` (`id_bateau`),
+  ADD CONSTRAINT `contenir_ibfk_2` FOREIGN KEY (`id_cat`) REFERENCES `catégorie` (`id_cat`);
 
 --
--- Contraintes pour la table `Enregistrer`
+-- Contraintes pour la table `enregistrer`
 --
-ALTER TABLE `Enregistrer`
-  ADD CONSTRAINT `enregistrer_ibfk_1` FOREIGN KEY (`id_resa`) REFERENCES `Reservation` (`id_resa`),
-  ADD CONSTRAINT `enregistrer_ibfk_2` FOREIGN KEY (`id_type`) REFERENCES `Type` (`id_type`);
+ALTER TABLE `enregistrer`
+  ADD CONSTRAINT `enregistrer_ibfk_1` FOREIGN KEY (`id_resa`) REFERENCES `reservation` (`id_resa`),
+  ADD CONSTRAINT `enregistrer_ibfk_2` FOREIGN KEY (`id_type`) REFERENCES `type` (`id_type`);
 
 --
--- Contraintes pour la table `Liaison`
+-- Contraintes pour la table `liaison`
 --
-ALTER TABLE `Liaison`
-  ADD CONSTRAINT `liaison_ibfk_1` FOREIGN KEY (`id_port`) REFERENCES `Port` (`id_port`),
-  ADD CONSTRAINT `liaison_ibfk_2` FOREIGN KEY (`id_port_1`) REFERENCES `Port` (`id_port`),
-  ADD CONSTRAINT `liaison_ibfk_3` FOREIGN KEY (`id_secteur`) REFERENCES `Secteur` (`id_secteur`),
-  ADD CONSTRAINT `liaison_ibfk_4` FOREIGN KEY (`id_travers`) REFERENCES `Traversée` (`id_travers`);
+ALTER TABLE `liaison`
+  ADD CONSTRAINT `liaison_ibfk_1` FOREIGN KEY (`id_port`) REFERENCES `port` (`id_port`),
+  ADD CONSTRAINT `liaison_ibfk_2` FOREIGN KEY (`id_port_1`) REFERENCES `port` (`id_port`),
+  ADD CONSTRAINT `liaison_ibfk_3` FOREIGN KEY (`id_secteur`) REFERENCES `secteur` (`id_secteur`),
+  ADD CONSTRAINT `liaison_ibfk_4` FOREIGN KEY (`id_travers`) REFERENCES `traversée` (`id_travers`);
 
 --
--- Contraintes pour la table `Reservation`
+-- Contraintes pour la table `reservation`
 --
-ALTER TABLE `Reservation`
-  ADD CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`id_travers`) REFERENCES `Traversée` (`id_travers`);
+ALTER TABLE `reservation`
+  ADD CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`id_travers`) REFERENCES `traversée` (`id_travers`);
 
 --
--- Contraintes pour la table `Tarifer`
+-- Contraintes pour la table `tarifer`
 --
-ALTER TABLE `Tarifer`
-  ADD CONSTRAINT `tarifer_ibfk_1` FOREIGN KEY (`id_liaison`) REFERENCES `Liaison` (`id_liaison`),
-  ADD CONSTRAINT `tarifer_ibfk_2` FOREIGN KEY (`id_type`) REFERENCES `Type` (`id_type`),
-  ADD CONSTRAINT `tarifer_ibfk_3` FOREIGN KEY (`date_debut`) REFERENCES `Période` (`date_debut`);
+ALTER TABLE `tarifer`
+  ADD CONSTRAINT `tarifer_ibfk_1` FOREIGN KEY (`id_liaison`) REFERENCES `liaison` (`id_liaison`),
+  ADD CONSTRAINT `tarifer_ibfk_2` FOREIGN KEY (`id_type`) REFERENCES `type` (`id_type`),
+  ADD CONSTRAINT `tarifer_ibfk_3` FOREIGN KEY (`date_debut`) REFERENCES `période` (`date_debut`);
 
 --
--- Contraintes pour la table `Traversée`
+-- Contraintes pour la table `traversée`
 --
-ALTER TABLE `Traversée`
-  ADD CONSTRAINT `traversée_ibfk_1` FOREIGN KEY (`id_bateau`) REFERENCES `Bateau` (`id_bateau`);
+ALTER TABLE `traversée`
+  ADD CONSTRAINT `traversée_ibfk_1` FOREIGN KEY (`id_bateau`) REFERENCES `bateau` (`id_bateau`);
 
 --
--- Contraintes pour la table `Être_équipé`
+-- Contraintes pour la table `être_équipé`
 --
-ALTER TABLE `Être_équipé`
-  ADD CONSTRAINT `être_équipé_ibfk_1` FOREIGN KEY (`id_bateau`) REFERENCES `Bateau` (`id_bateau`),
-  ADD CONSTRAINT `être_équipé_ibfk_2` FOREIGN KEY (`id_equip`) REFERENCES `Equipement` (`id_equip`);
+ALTER TABLE `être_équipé`
+  ADD CONSTRAINT `être_équipé_ibfk_1` FOREIGN KEY (`id_bateau`) REFERENCES `bateau` (`id_bateau`),
+  ADD CONSTRAINT `être_équipé_ibfk_2` FOREIGN KEY (`id_equip`) REFERENCES `equipement` (`id_equip`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
