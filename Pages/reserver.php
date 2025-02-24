@@ -17,22 +17,47 @@
                 </div>
             </ul>
         </nav>
+        <?php
+        $servername = "localhost"; 
+        $username = "votre_utilisateur";
+        $password = "votre_mot_de_passe";
+        $dbname = "votre_base_de_donnees";
+
+        $pdo = connexionBase($servername, $username, $password, $dbname);
+
+        // Vérifie si la connexion est réussie avant d'exécuter la requête
+        if ($pdo) {
+            $secteurs = getSecteurs($pdo);
+        } else {
+            $secteurs = []; // En cas d'erreur, on retourne une liste vide
+        }
+        ?>
         <div class="blockR">
             <div class="destination">
-                <lu>
-                    <li>Belle-Île-en-mer</li>
-                    <li>Houat</li>
-                    <li>Ile de Groix</li>
-                    <li>Ouessant</li>
-                    <li>Molène</li>
-                    <li>Sein</li>
-                    <li>Bréhat</li>
-                    <li>Batz</li>
-                    <li>Aix</li>
-                    <li>Yeu</li>
-                </lu>
+                <ul>
+                    <?php foreach ($secteurs as $secteur): ?>
+                        <li><?php echo htmlspecialchars($secteur['nom_secteur']); ?></li>
+                    <?php endforeach; ?>
+                </ul>
             </div>
             <div class="tableauReservation">
+                <?php
+                $traversees = $pdo ? getDescTraversées($pdo, $secteur) : [];
+                ?>
+
+                <!-- Liste déroulante -->
+                <label for="traversees">Choisissez une traversée :</label>
+                <select id="traversees" name="traversees">
+                    <?php if (!empty($traversees)): ?>
+                        <?php foreach ($traversees as $traversee): ?>
+                            <option value="<?php echo htmlspecialchars($traversee['desc_travers']); ?>">
+                                <?php echo htmlspecialchars($traversee['desc_travers']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <option value="">Aucune traversée disponible</option>
+                    <?php endif; ?>
+                </select>
                 <table>
                     <tr>
                     </tr>
