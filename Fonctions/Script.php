@@ -29,3 +29,9 @@ $sql = "SELECT id_travers, heure_travers, bateau.nom_bateau , contenir.capac_bat
 FROM `traversée`
 INNER JOIN bateau ON traversée.id_bateau = bateau.id_bateau
 WHERE heure_travers = '07:45:00'"
+
+$sql = "SELECT COUNT(quantité)
+FROM enregistrer
+INNER JOIN reservation ON enregistrer.id_resa = reservation.id_resa
+INNER JOIN traversée ON reservation.id_travers = traversée.id_travers
+WHERE traversée.date_travers ="
