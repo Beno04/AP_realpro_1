@@ -29,17 +29,24 @@
     <section class="connexion">
         <h1>Connexion à votre <span class="titre1">Compte</span></h1>
         <br><br>
-        <form action="traitement_connexion.php" method="POST" id="connexionForm">
+        <form action="connexion.php" method="POST" id="connexionForm">
             <div class="form-group">
                 <label for="email">Adresse e-mail :</label>
-                <input type="email" id="email" name="email" required />
+                <input type="email" id="email" name="email" />
                 <div id="errorEmailExist"></div> <!-- Zone d'erreur pour l'email -->
             </div>
             <div class="form-group">
                 <label for="password">Mot de passe :</label>
-                <input type="password" id="password" name="password" required />
+                <input type="password" id="password" name="password"  />
                 <div id="errorPwd"></div> <!-- Zone d'erreur pour le mot de passe -->
             </div>
+                    <!-- Affichage des erreurs -->
+        <?php
+        if (isset($_SESSION['error'])) {
+            echo '<p class="error-message">' . $_SESSION['error'] . '</p>';
+            unset($_SESSION['error']); // Supprime l'erreur après affichage
+        }
+        ?>
             <button type="submit" class="btn-connexion">Connexion</button>
             <br><br>
             <p class="inscription">Si vous n'avez pas de compte, <a href="inscription.php">cliquez ici pour vous inscrire</a>.</p>

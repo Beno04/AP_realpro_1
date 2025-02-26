@@ -6,14 +6,31 @@
   </head>
 
   <body>
+
+    <?php
+    // Inclure le fichier qui vérifie si l'utilisateur est connecté et récupère son prénom et nom
+    include '../Fonctions/scriptUserConnecte.php'; 
+    ?>
+
     <!-- Barre de navigation -->
     <nav class="menu">
       <ul>
-        <li class="titre-marieteam" ><a href="index.php"><b>MarieTeam</b></a></li>
+        <li class="titre-marieteam"><a href="index.php"><b>MarieTeam</b></a></li>
         <div class="nav-buttons">
-          <li><a href="reserver.php">Réserver</a></li>
+
+        <?php if (isset($prenom) && isset($nom)): ?>
+            <li><a href="reserver.php">Réserver</a></li>
+          <?php else: ?>
+            <li><a href="connexion.php">Réserver</a></li>
+          <?php endif; ?>
+
           <li><a class="active" href="index.php">À propos</a></li>
-          <li><a href="connexion.php"><b class="connexion-btn">Connexion</b></a></li>
+
+          <?php if (isset($prenom) && isset($nom)): ?>
+            <li><a href="profile.php"><b class="connexion-btn"><?php echo $nom . ' ' . $prenom; ?></b></a></li>
+          <?php else: ?>
+            <li><a href="connexion.php"><b class="connexion-btn">Connexion</b></a></li>
+          <?php endif; ?>
         </div>
       </ul>
     </nav>
@@ -34,15 +51,27 @@
     <!-- Ligne de séparation -->
     <hr class="separator" />
 
-    <!-- Section de réservation -->
-    <section class="reservation">
-      <h1>Réservation en Ligne <span class="titre2">Simplifiée</span></h1>
-      <p>
-        Notre interface de réservation en ligne vous permet de planifier vos traversées en toute simplicité. 
-        Consultez les horaires, découvrez nos tarifs et réservez votre place en quelques clics. 
-        Nous mettons à jour en temps réel le nombre de places disponibles pour vous éviter tout désagrément.
-      </p>
-      <button class="btn-reserver">Réserver</button>
-    </section>
+<!-- Section de réservation -->
+<section class="reservation">
+  <h1>Réservation en Ligne <span class="titre2">Simplifiée</span></h1>
+  <p>
+    Notre interface de réservation en ligne vous permet de planifier vos traversées en toute simplicité. 
+    Consultez les horaires, découvrez nos tarifs et réservez votre place en quelques clics. 
+    Nous mettons à jour en temps réel le nombre de places disponibles pour vous éviter tout désagrément.
+  </p>
+  <button class="btn-reserver" id="reservationBtn">Réserver</button>
+</section>
+
+<script>
+// Ajouter un gestionnaire d'événements au bouton
+document.getElementById('reservationBtn').addEventListener('click', function() {
+  <?php if (isset($prenom) && isset($nom)): ?>
+    window.location.href = 'reserver.php'; // Redirige vers la page de réservation si connecté
+  <?php else: ?>
+    window.location.href = 'connexion.php'; // Redirige vers la page de connexion si non connecté
+  <?php endif; ?>
+});
+</script>
+
   </body>
 </html>

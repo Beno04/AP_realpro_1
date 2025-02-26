@@ -89,8 +89,8 @@ function insertUser ($connexion, $nom, $prenom, $email, $password) {
 
 if (isset($_POST["nom"]) && isset($_POST["prenom"]) && isset($_POST["email"]) && isset($_POST["password"])) {
     $servername = "127.0.0.1";
-    $username = "marieteam";
-    $password = "marieteam";
+    $username = "root";
+    $password = "";
     $dbname = "marieteam";
 
     $connexion = connexionBase($servername, $username, $password, $dbname);
