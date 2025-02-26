@@ -1,78 +1,89 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="../Style/style.css">
-        <title>MarieTeam</title>
-    </head>
-    <body>
-        <!-- Barre de navigation -->
-        <nav class="menu">
-            <ul>
-                <li class="titre-marieteam" ><a href="index.php"><b>MarieTeam</b></a></li>
-                    <div class="nav-buttons">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../Style/style.css">
+    <title>MarieTeam</title>
+</head>
+<body>
+    <!-- Barre de navigation -->
+    <nav class="menu">
+        <ul>
+            <li class="titre-marieteam"><a href="index.php"><b>MarieTeam</b></a></li>
+            <div class="nav-buttons">
                 <li><a class="active" href="reserver.php">Réserver</a></li>
                 <li><a href="index.php">À propos</a></li>
                 <li><a href="connexion.php"><b class="connexion-btn">Connexion</b></a></li>
-                </div>
+            </div>
+        </ul>
+    </nav>
+
+    <?php
+        session_start();
+        include '../Fonctions/Script.php';
+
+        // Récupérer tous les secteurs
+        $secteurs = getSecteurs();
+    ?>
+
+    <div class="blockR">
+        <div class="destination">
+            <ul>
+                <?php foreach ($secteurs as $secteurItem): ?>
+                    <li>
+                        <?php echo htmlspecialchars($secteurItem['nom_secteur']); ?>
+                        <button type="button" onclick="selectionnerSecteur('<?php echo htmlspecialchars($secteurItem['nom_secteur']); ?>')">
+                            Sélectionner
+                        </button>
+                    </li>
+                <?php endforeach; ?>
             </ul>
-        </nav>
-        <?php
-        $servername = "localhost"; 
-        $username = "votre_utilisateur";
-        $password = "votre_mot_de_passe";
-        $dbname = "votre_base_de_donnees";
-
-        $pdo = connexionBase($servername, $username, $password, $dbname);
-
-        // Vérifie si la connexion est réussie avant d'exécuter la requête
-        if ($pdo) {
-            $secteurs = getSecteurs($pdo);
-        } else {
-            $secteurs = []; // En cas d'erreur, on retourne une liste vide
-        }
-        ?>
-        <div class="blockR">
-            <div class="destination">
-                <ul>
-                    <?php foreach ($secteurs as $secteur): ?>
-                        <li><?php echo htmlspecialchars($secteur['nom_secteur']); ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-            <div class="tableauReservation">
-                <?php
-                $traversees = $pdo ? getDescTraversées($pdo, $secteur) : [];
-                ?>
-
-                <!-- Liste déroulante -->
-                <label for="traversees">Choisissez une traversée :</label>
-                <select id="traversees" name="traversees">
-                    <?php if (!empty($traversees)): ?>
-                        <?php foreach ($traversees as $traversee): ?>
-                            <option value="<?php echo htmlspecialchars($traversee['desc_travers']); ?>">
-                                <?php echo htmlspecialchars($traversee['desc_travers']); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <option value="">Aucune traversée disponible</option>
-                    <?php endif; ?>
-                </select>
-                <table>
-                    <tr>
-                    </tr>
-                </table>
-            </div>
-
-
-
-
-
-
-
-
-
-
         </div>
-    </body>
+
+        <div class="tableauReservation">
+            <p id="secteur-selectionne">Aucun secteur sélectionné.</p>
+
+            <!-- Liste déroulante -->
+            <label for="traversees">Choisissez une traversée :</label>
+            <select id="traversees" name="traversees">
+                <option value="">Sélectionnez un secteur d'abord</option>
+            </select>
+        </div>
+    </div>
+
+    <script>
+        function selectionnerSecteur(nomSecteur) {
+            // Envoyer la requête AJAX
+            fetch('get_traversees.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'nom_secteur=' + encodeURIComponent(nomSecteur)
+            })
+            .then(response => response.json()) // Récupérer la réponse JSON
+            .then(data => {
+                // Mettre à jour l'affichage du secteur sélectionné
+                document.getElementById("secteur-selectionne").innerHTML = "Secteur sélectionné : " + nomSecteur;
+
+                // Mettre à jour la liste déroulante
+                let select = document.getElementById("traversees");
+                select.innerHTML = ""; // Vider les anciennes options
+
+                if (data.length > 0) {
+                    data.forEach(traversee => {
+                        let option = document.createElement("option");
+                        option.value = traversee.desc_travers;
+                        option.textContent = traversee.desc_travers;
+                        select.appendChild(option);
+                    });
+                } else {
+                    let option = document.createElement("option");
+                    option.value = "";
+                    option.textContent = "Aucune traversée disponible";
+                    select.appendChild(option);
+                }
+            });
+        }
+    </script>
+
+</body>
 </html>

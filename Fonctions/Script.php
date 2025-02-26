@@ -1,13 +1,33 @@
 <?php
 
+function connexionBase($servername, $username, $password, $dbname) {
+    try {
+        return new PDO("mysql:host=$servername;dbname=$dbname", $username, $password, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        ]);
+    } catch (PDOException $e) {
+        echo "Erreur de connexion : " . $e->getMessage();
+        return null;
+    }
+}
+
+
+
 // Fonction pour récupérer les secteurs
-function getSecteurs(PDO $pdo) {
+function getSecteurs() {
+    $servername = "localhost"; 
+    $username = "MarieTeam";
+    $password = "1234";
+    $dbname = "marieteam";
     $sql = "SELECT nom_secteur 
             FROM `secteur` 
             INNER JOIN liaison ON liaison.id_secteur = secteur.id_secteur
             INNER JOIN traversée ON traversée.id_travers = liaison.id_travers
             WHERE traversée.date_travers > CURRENT_DATE
             GROUP BY secteur.nom_secteur";
+    
+    $pdo = connexionBase($servername, $username, $password, $dbname);
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
@@ -15,9 +35,31 @@ function getSecteurs(PDO $pdo) {
     return $stmt->fetchAll();
 }
 
+function getIdSecteurs($nom_secteur) {
+    $servername = "localhost"; 
+    $username = "MarieTeam";
+    $password = "1234";
+    $dbname = "marieteam";
+    $sql = "SELECT id_secteur 
+            FROM `secteur` 
+            WHERE nom_secteur=:nom_secteur";
+    
+    $pdo = connexionBase($servername, $username, $password, $dbname);
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':nom_secteur', $nom_secteur, PDO::PARAM_STR);
+    $stmt->execute();
+
+    return $stmt->fetchAll();
+}
+
 
 // Fonction pour récupérer les descriptions des traversées
-function getDescTraversées(PDO $pdo, $id_secteur) {
+function getDescTraversées($id_secteur) {
+    $servername = "localhost"; 
+    $username = "MarieTeam";
+    $password = "1234";
+    $dbname = "marieteam";
     $sql = "SELECT traversée.desc_travers
             FROM `liaison` 
             INNER JOIN traversée ON liaison.id_travers = traversée.id_travers
@@ -25,6 +67,7 @@ function getDescTraversées(PDO $pdo, $id_secteur) {
             AND traversée.date_travers > CURRENT_DATE
             GROUP BY traversée.desc_travers";
 
+    $pdo = connexionBase($servername, $username, $password, $dbname);
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':id_secteur', $id_secteur, PDO::PARAM_INT);
     $stmt->execute();
