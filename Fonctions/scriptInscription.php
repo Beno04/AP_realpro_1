@@ -72,19 +72,13 @@ function ifExistEmail($connexion, $email) {
 function insertUser ($connexion, $nom, $prenom, $email, $password) {
     $pwdHach = password_hash($password, PASSWORD_DEFAULT);
 
-    $monObjPdoStatement = $connexion->prepare("INSERT INTO Utilisateur (nom_user, prenom_user, mail_user, mdp_user) VALUES (:nom, :prenom, :mail, :mdp)"); 
+    $monObjPdoStatement = $connexion->prepare("INSERT INTO Utilisateur (nom_user, prenom_user, mail_user, mdp_user, typer_user) VALUES (:nom, :prenom, :mail, :mdp, 'Client')"); 
     $monObjPdoStatement->bindValue(':nom', $nom, PDO::PARAM_STR);
     $monObjPdoStatement->bindValue(':prenom', $prenom, PDO::PARAM_STR);
     $monObjPdoStatement->bindValue(':mail', $email, PDO::PARAM_STR);
     $monObjPdoStatement->bindValue(':mdp', $pwdHach, PDO::PARAM_STR);
     
     $executionOK = $monObjPdoStatement->execute(); 
-
-    if ($executionOK) {
-        echo "Inscription réussie.";
-    } else {
-        echo "Erreur lors de l'inscription.";
-    }
 }
 
 if (isset($_POST["nom"]) && isset($_POST["prenom"]) && isset($_POST["email"]) && isset($_POST["password"])) {

@@ -35,7 +35,7 @@ function validPwd($password) {
 }
 
 function getUserByEmail($connexion, $email) {
-    $query = $connexion->prepare("SELECT id_utilisateur, mail_user, mdp_user FROM utilisateur WHERE mail_user = :email");
+    $query = $connexion->prepare("SELECT id_utilisateur, mail_user, mdp_user, typer_user FROM utilisateur WHERE mail_user = :email");
     $query->bindValue(':email', $email, PDO::PARAM_STR);
     $query->execute();
     return $query->fetch();
@@ -64,10 +64,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit();
             }
 
-            if ($password === $user['mdp_user']) {
+            // Vérification du mot de passe avec password_verify()
+            if (password_verify($password, $user['mdp_user'])) {
                 session_regenerate_id(true); // Sécurisation de la session
                 $_SESSION['user_id'] = $user['id_utilisateur'];
-                header("Location: ../Pages/index.php");
+                $_SESSION['typer_user'] = $user['typer_user']; // Stocke le type d'utilisateur
+
+                // Redirection selon le type d'utilisateur
+                if ($user['typer_user'] === 'Gestionnaire') {
+                    header("Location: ../Pages/accueilAdmin.php"); // Page gestionnaire
+                } else {
+                    header("Location: ../Pages/index.php"); // Page client
+                }
                 exit();
             } else {
                 $_SESSION['error'] = "Email ou mot de passe incorrect.";

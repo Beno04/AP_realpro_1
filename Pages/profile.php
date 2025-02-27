@@ -15,12 +15,19 @@
     <!-- Barre de navigation -->
     <nav class="menu">
       <ul>
-        <li class="titre-marieteam"><a href="index.php"><b>MarieTeam</b></a></li> <!-- mettre un if en php pour recuperer si admin ou pas pour renvoyer vers la bonne pages pareil pour en dessous -->
-        <div class="nav-buttons">
+          <?php if ($_SESSION['typer_user'] === 'Gestionnaire'): ?>
+          <li class="titre-marieteam"><a href="accueilAdmin.php"><b>MarieTeam</b></a></li>
+          <?php else: ?>
+              <li class="titre-marieteam"><a href="index.php"><b>MarieTeam</b></a></li>
+          <?php endif; ?>        <div class="nav-buttons">
 
 
-          <li><a href="index.php">Accueil</a></li>
-
+          <?php if ($_SESSION['typer_user'] === 'Gestionnaire'): ?>
+          <li class="titre-marieteam"><a href="accueilAdmin.php">Accueil</a></li>
+          <?php else: ?>
+              <li class="titre-marieteam"><a href="index.php">Accueil</a></li>
+          <?php endif; ?>
+          
           <?php if (isset($prenom) && isset($nom)): ?>
             <li><a href="profile.php"><b class="connexion-btn"><?php echo $nom . ' ' . $prenom; ?></b></a></li>
           <?php else: ?>
@@ -56,7 +63,8 @@
                 <input type="password" id="password" name="password" required />
                 <div id="errorPwd"></div> <!-- Zone d'erreur pour le mot de passe -->
             </div>
-            <button type="submit" class="btn-connexion">Enregistrer les modifications</button>
+            <button type="submit" class="btn-connexion">Enregistrer les modifications</button><br>
+            <button type="button" class="btn-deconnexion" onclick="window.location.href='deconnexion.php'">Déconnexion</button>
             <div id="erreurInscription"></div> <!-- Zone d'erreur pour l'inscription -->
             <div id="messageInscription"></div> <!-- Zone de message de succès -->
         </form>

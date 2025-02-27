@@ -15,7 +15,11 @@
     <!-- Barre de navigation -->
     <nav class="menu">
       <ul>
-        <li class="titre-marieteam"><a href="index.php"><b>MarieTeam</b></a></li>
+          <?php if (isset($typerUser) && $typerUser === 'Gestionnaire'): ?>
+          <li class="titre-marieteam"><a href="accueilAdmin.php"><b>MarieTeam</b></a></li>
+          <?php else: ?>
+              <li class="titre-marieteam"><a href="index.php"><b>MarieTeam</b></a></li>
+          <?php endif; ?>
         <div class="nav-buttons">
 
         <?php if (isset($prenom) && isset($nom)): ?>
@@ -23,7 +27,6 @@
           <?php else: ?>
             <li><a href="connexion.php">Réserver</a></li>
           <?php endif; ?>
-
           <li><a class="active" href="index.php">À propos</a></li>
 
           <?php if (isset($prenom) && isset($nom)): ?>

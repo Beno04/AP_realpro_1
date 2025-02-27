@@ -15,8 +15,13 @@
     <!-- Barre de navigation -->
     <nav class="menu">
       <ul>
-        <li class="titre-marieteam"><a href="accueilAdmin.php"><b>MarieTeam</b></a></li>
-        <div class="nav-buttons">
+          <?php if ($_SESSION['typer_user'] === 'Gestionnaire'): ?>
+          <li class="titre-marieteam"><a href="accueilAdmin.php"><b>MarieTeam</b></a></li>
+          <?php else: ?>
+              <li class="titre-marieteam"><a href="index.php"><b>MarieTeam</b></a></li>
+          <?php endif; ?>        
+          
+          <div class="nav-buttons">
 
         <?php if (isset($prenom) && isset($nom)): ?>
             <li><a href="adminStats.php">Statistiques réservation</a></li>

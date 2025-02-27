@@ -42,9 +42,7 @@ if (isset($_SESSION['user_id'])) {
         exit();
     }
 } else {
-    // Ne pas rediriger immédiatement vers la connexion
-    // L'utilisateur peut accéder à la page d'accueil sans être connecté
-    // mais l'affichage des informations personnalisées (prénom, nom) sera conditionnel
+    // L'utilisateur n'est pas connecté, donc on laisse $prenom et $nom à null
     $prenom = null;
     $nom = null;
 }

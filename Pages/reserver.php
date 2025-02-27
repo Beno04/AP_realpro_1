@@ -6,12 +6,22 @@
     <title>MarieTeam</title>
 </head>
 <body>
+
+
+    <?php
+    // Inclure le fichier qui vérifie si l'utilisateur est connecté et récupère son prénom et nom
+    include '../Fonctions/scriptUserConnecte.php'; 
+    ?>
+
     
     <!-- Barre de navigation -->
     <nav class="menu">
       <ul>
-        <li class="titre-marieteam"><a href="index.php"><b>MarieTeam</b></a></li>
-        <div class="nav-buttons">
+        <?php if ($_SESSION['typer_user'] === 'Gestionnaire'): ?>
+          <li class="titre-marieteam"><a href="accueilAdmin.php"><b>MarieTeam</b></a></li>
+          <?php else: ?>
+              <li class="titre-marieteam"><a href="index.php"><b>MarieTeam</b></a></li>
+          <?php endif; ?>        <div class="nav-buttons">
 
         <?php if (isset($prenom) && isset($nom)): ?>
             <li><a href="reserver.php">Réserver</a></li>
@@ -31,7 +41,6 @@
     </nav>
 
     <?php
-        session_start();
         include '../Fonctions/Script.php';
 
         // Récupérer tous les secteurs
@@ -41,60 +50,47 @@
     <div class="blockR">
         <div class="destination">
             <ul>
-                <?php foreach ($secteurs as $secteurItem): ?>
-                    <li>
-                        <?php echo htmlspecialchars($secteurItem['nom_secteur']); ?>
-                        <button type="button" onclick="selectionnerSecteur('<?php echo htmlspecialchars($secteurItem['nom_secteur']); ?>')">
-                            Sélectionner
-                        </button>
-                    </li>
-                <?php endforeach; ?>
+            <?php foreach ($secteurs as $secteurItem): ?>
+                <li>
+                    <?php echo htmlspecialchars($secteurItem['nom_secteur']); ?>
+                    <button type="button" onclick="selectionnerSecteur('<?php echo htmlspecialchars($secteurItem['nom_secteur']); ?>')">
+                        Sélectionner
+                    </button>
+                </li>
+            <?php endforeach; ?>
             </ul>
         </div>
 
         <div class="tableauReservation">
-            <p id="secteur-selectionne">Aucun secteur sélectionné.</p>
-
-            <!-- Liste déroulante -->
-            <label for="traversees">Choisissez une traversée :</label>
-            <select id="traversees" name="traversees">
-                <option value="">Sélectionnez un secteur d'abord</option>
+            <select name="traversee">
+                <option value="">Sélectionner une traversée</option>
+                <?php foreach ($descriptions as $desc) : ?>
+                    <option value="<?= htmlspecialchars($desc) ?>"><?= htmlspecialchars($desc) ?></option>
+                <?php endforeach; ?>
             </select>
         </div>
     </div>
 
     <script>
-        function selectionnerSecteur(nomSecteur) {
-            // Envoyer la requête AJAX
-            fetch('get_traversees.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: 'nom_secteur=' + encodeURIComponent(nomSecteur)
-            })
-            .then(response => response.json()) // Récupérer la réponse JSON
+    function selectionnerSecteur(nomSecteur) {
+        // Envoi de la requête AJAX
+        fetch('get_traversees.php?nom_secteur=' + encodeURIComponent(nomSecteur))
+            .then(response => response.json())
             .then(data => {
-                // Mettre à jour l'affichage du secteur sélectionné
-                document.getElementById("secteur-selectionne").innerHTML = "Secteur sélectionné : " + nomSecteur;
-
-                // Mettre à jour la liste déroulante
-                let select = document.getElementById("traversees");
-                select.innerHTML = ""; // Vider les anciennes options
-
-                if (data.length > 0) {
-                    data.forEach(traversee => {
-                        let option = document.createElement("option");
-                        option.value = traversee.desc_travers;
-                        option.textContent = traversee.desc_travers;
-                        select.appendChild(option);
-                    });
-                } else {
-                    let option = document.createElement("option");
-                    option.value = "";
-                    option.textContent = "Aucune traversée disponible";
+                // Récupérer la liste déroulante
+                let select = document.querySelector('select[name="traversee"]');
+                select.innerHTML = '<option value="">Sélectionner une traversée</option>';
+                
+                // Ajouter les nouvelles options
+                data.forEach(desc => {
+                    let option = document.createElement('option');
+                    option.value = desc;
+                    option.textContent = desc;
                     select.appendChild(option);
-                }
-            });
-        }
+                });
+            })
+            .catch(error => console.error('Erreur AJAX:', error));
+    }
     </script>
 
 </body>
