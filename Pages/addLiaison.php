@@ -19,12 +19,12 @@
         <div class="nav-buttons">
 
         <?php if (isset($prenom) && isset($nom)): ?>
-            <li><a class="active" href="adminStats.php">Statistiques réservation</a></li>
+            <li><a href="adminStats.php">Statistiques réservation</a></li>
           <?php else: ?>
             <li><a href="connexion.php">Réserver</a></li>
           <?php endif; ?>
 
-          <li><a href="addLiaison.php">Gestion des liaisons</a></li>
+          <li><a class="active" href="addLiaison.php">Gestion des liaisons</a></li>
 
           <?php if (isset($prenom) && isset($nom)): ?>
             <li><a href="profile.php"><b class="connexion-btn"><?php echo $nom . ' ' . $prenom; ?></b></a></li>
@@ -35,37 +35,5 @@
       </ul>
     </nav>
 
-        <div class="blockR">
-            <div class="destination">
-                <lu>
-                    <li>Belle-Île-en-mer</li>
-                    <li>Houat</li>
-                    <li>Ile de Groix</li>
-                    <li>Ouessant</li>
-                    <li>Molène</li>
-                    <li>Sein</li>
-                    <li>Bréhat</li>
-                    <li>Batz</li>
-                    <li>Aix</li>
-                    <li>Yeu</li>
-                </lu>
-            </div>
-            <div class="tableauReservation">
-                <table>
-                    <tr>
-                    </tr>
-                </table>
-            </div>
-
-
-
-
-
-
-
-
-
-
-        </div>
-    </body>
+  </body>
 </html>
