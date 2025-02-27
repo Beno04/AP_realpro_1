@@ -43,7 +43,9 @@
       MarieTeam vous offre un accès complet à la gestion des liaisons maritimes et à l'administration des réservations. En tant qu'administrateur, vous avez la possibilité de gérer les liaisons, 
       modifier les informations de chaque traversée, ou ajouter de nouvelles liaisons selon les besoins. <br><br>
       Grâce à l'interface intuitive, vous pouvez également consulter les statistiques des réservations en temps réel, 
-      ce qui vous permet de suivre l'activité de votre flotte, de gérer la capacité des navires, et d'optimiser la gestion des places disponibles.
+      ce qui vous permet de suivre l'activité de votre flotte, de gérer la capacité des navires, et d'optimiser la gestion des places disponibles. <br><br>
+      Que vous soyez en train de gérer les horaires ou d'analyser les réservations, notre tableau de bord vous fournit toutes les informations nécessaires pour prendre des décisions 
+      éclairées et assurer le bon fonctionnement des services maritimes.
       </p>
     </section>
 
@@ -67,9 +69,7 @@
   <h1>Statistiques des <span class="titre2">réservations</span></h1>
   <p>
   Accédez à des rapports détaillés sur les réservations, consultez le nombre de passagers réservés pour chaque traversée et optimisez la gestion des disponibilités. 
-  Vous avez également la possibilité de visualiser les tendances de réservation et d'anticiper les besoins futurs. <br><br>
-  Que vous soyez en train de gérer les horaires ou d'analyser les réservations, notre tableau de bord vous fournit toutes les informations nécessaires pour prendre des décisions 
-  éclairées et assurer le bon fonctionnement des services maritimes.
+  Vous avez également la possibilité de visualiser les tendances de réservation et d'anticiper les besoins futurs.
   </p>
   <button class="btn-reserver" id="adminStatsBtn">Statistiques</button>
 </section>
