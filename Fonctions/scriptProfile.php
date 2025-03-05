@@ -1,66 +1,121 @@
 <?php
-session_start();
 
 // Vérifier si l'utilisateur est connecté
-if (isset($_SESSION['user_id'])) {
-    // Paramètres de connexion à la base de données
+if (!isset($_SESSION['user_id'])) {
+    echo "<p style='color: red;'>Vous devez être connecté pour modifier vos informations.</p>";
+    exit();
+}
+
+function connexionBase($servername, $username, $password, $dbname) {
+    try {
+        return new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    } catch(PDOException $e) {
+        echo "Erreur de connexion : " . $e->getMessage();
+        return null;
+    }
+}
+
+function validNom($nom) {
+    if (trim(htmlspecialchars($nom)) == "") {
+        echo "<p style='color: red;'>Un nom est requis.</p>";
+        return false;
+    } else {
+        if (!preg_match("/^[a-zA-Z]+$/", $nom)) {
+            echo "<p style='color: red;'>Le nom doit contenir seulement des lettres.</p>";
+            return false;
+        }
+    }
+    return true;
+}
+
+function validPrenom($prenom) {
+    if (trim(htmlspecialchars($prenom)) == "") {
+        echo "<p style='color: red;'>Un prénom est requis.</p>";
+        return false;
+    } else {
+        if (!preg_match("/^[a-zA-Z]+$/", $prenom)) {
+            echo "<p style='color: red;'>Le prénom doit contenir seulement des lettres.</p>";
+            return false;
+        }
+    }
+    return true;
+}
+
+function validEmail($email) {
+    if (trim(htmlspecialchars($email)) == "") {
+        echo "<p style='color: red;'>Une adresse e-mail est requise.</p>";
+        return false;
+    } else {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo "<p style='color: red;'>L'adresse e-mail n'est pas valide.</p>";
+            return false;
+        }
+    }
+    return true;
+}
+
+function validPwd($password) {
+    if (trim(htmlspecialchars($password)) == "") {
+        echo "<p style='color: red;'>Un mot de passe est requis.</p>";
+        return false;
+    } else {
+        if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{12,}$/", $password)){
+            echo "<p style='color: red;'>Le mot de passe doit faire au moins 12 caractères et contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial.</p>";
+            return false;
+        }
+    }
+    return true;
+}
+
+function ifExistEmail($connexion, $email) {
+    $emailExist = $connexion->prepare("SELECT COUNT(*) as nbemail FROM Utilisateur WHERE mail_user = :email");
+    $emailExist->bindValue(':email', $email, PDO::PARAM_STR);
+    $emailExist->execute();
+    $laLigne = $emailExist->fetch();
+    return $laLigne['nbemail'] > 0;
+}
+
+
+function updateUser($connexion, $idUtilisateur, $nom, $prenom, $email, $password) {
+    $pwdHach = password_hash($password, PASSWORD_DEFAULT);
+
+    $query = "UPDATE utilisateur SET nom_user = :nom, prenom_user = :prenom, mail_user = :email, mdp_user = :pwdHach WHERE id_utilisateur = :id";
+    $params = [':nom' => $nom, ':prenom' => $prenom, ':email' => $email, ':id' => $idUtilisateur, ':pwdHach' => $pwdHach] ;
+    
+    $stmt = $connexion->prepare($query);
+    
+    return $stmt->execute($params);
+}
+
+// Récupération des données du formulaire
+if (isset($_POST["nom"], $_POST["prenom"], $_POST["email"], $_POST["password"])) {
     $servername = "127.0.0.1";
     $username = "root";
     $password = "";
     $dbname = "marieteam";
 
-    try {
-        // Créer une connexion à la base de données avec PDO
-        $connexion = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password, [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES => false
-        ]);
-        
-        // Récupérer l'ID utilisateur de la session
+    $connexion = connexionBase($servername, $username, $password, $dbname);
+
+    if ($connexion) {
         $idUtilisateur = $_SESSION['user_id'];
+        $nom = trim($_POST["nom"]);
+        $prenom = trim($_POST["prenom"]);
+        $email = trim($_POST["email"]);
+        $newPassword = trim($_POST["password"]);
 
-        // Traitement du formulaire lorsque l'utilisateur soumet ses nouvelles informations
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Récupérer les données du formulaire
-            $nouveauNom = $_POST['nom'];
-            $nouveauPrenom = $_POST['prenom'];
-            $nouvelEmail = $_POST['email'];
-            $motDePasse = $_POST['password'];
+        // Validation des entrées
+        $validNom = validNom($nom);
+        $validPrenom = validPrenom($prenom);
+        $validEmail = validEmail($email);
+        $validPwd = validPwd($newPassword);
 
-            // Vérifier le mot de passe actuel de l'utilisateur
-            $query = "SELECT mdp_user FROM utilisateur WHERE id = :id";
-            $stmt = $connexion->prepare($query);
-            $stmt->bindParam(':id', $idUtilisateur, PDO::PARAM_INT);
-            $stmt->execute();
-
-            // Vérifier si le mot de passe correspond
-            if ($password_verify($motDePasse)) {
-                // Le mot de passe est correct, on peut procéder à la mise à jour des informations
-                $updateQuery = "UPDATE utilisateur SET nom_user = :nom_user, prenom_user = :prenom_user, mail_user = :mail_user WHERE id = :id";
-                $updateStmt = $connexion->prepare($updateQuery);
-                $updateStmt->bindParam(':nom_user', $nouveauNom, PDO::PARAM_STR);
-                $updateStmt->bindParam(':prenom_user', $nouveauPrenom, PDO::PARAM_STR);
-                $updateStmt->bindParam(':mail_user', $nouvelEmail, PDO::PARAM_STR);
-                $updateStmt->bindParam(':id', $idUtilisateur, PDO::PARAM_INT);
-
-                // Exécuter la mise à jour
-                if ($updateStmt->execute()) {
-                    // Succès, afficher un message
-                    echo "<div class='success'>Les informations ont été mises à jour avec succès.</div>";
-                } else {
-                    echo "<div class='error'>Une erreur est survenue lors de la mise à jour des informations.</div>";
-                }
-            } else {
-                // Mot de passe incorrect
-                echo "<div class='error'>Le mot de passe actuel est incorrect.</div>";
-            }
+        // Après la mise à jour réussie des données utilisateur
+        if ($validNom && $validPrenom && $validEmail && $validPwd) {
+            if (!ifExistEmail($connexion, $email)) {
+                updateUser($connexion, $idUtilisateur, $nom, $prenom, $email, $newPassword);
+                $_SESSION['messageUpdate'] = "Informations mises à jour avec succès!";
+            } 
         }
-    } catch (PDOException $e) {
-        // En cas d'erreur de connexion à la base de données
-        echo "Erreur de connexion à la base de données : " . $e->getMessage();
     }
-} else {
-    echo "Vous devez être connecté pour modifier vos informations.";
 }
 ?>

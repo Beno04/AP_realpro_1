@@ -1,23 +1,32 @@
 <?php
-session_start(); // Démarrer la session pour avoir accès aux données de session
+session_start(); // Démarrer la session
 
-// Supprime toutes les variables de session
+// Récupérer les paramètres du cookie de session
+$params = session_get_cookie_params();
+
+// Supprimer toutes les variables de session
 $_SESSION = [];
 
-// Supprime la session en cours
-session_unset(); 
+// Détruire la session côté serveur
+session_unset();
 session_destroy();
 
-// Supprime le cookie de session si il existe
-if (ini_get("session.use_cookies")) {
-    $params = session_get_cookie_params();
-    setcookie(session_name(), '', time() - 42000, 
-        $params["path"], $params["domain"], 
-        $params["secure"], $params["httponly"]
-    );
+// Supprimer explicitement le cookie de session
+setcookie(session_name(), '', time() - 42000, 
+    $params['path'] ?? '/', 
+    $params['domain'] ?? '', 
+    $params['secure'] ?? false, 
+    $params['httponly'] ?? false
+);
+
+// Supprimer aussi directement PHPSESSID pour éviter toute persistance
+setcookie("PHPSESSID", "", time() - 42000, "/", "", false, true);
+
+// **Forcer la suppression en vérifiant après**
+if (isset($_COOKIE['PHPSESSID'])) {
+    unset($_COOKIE['PHPSESSID']); // Supprimer la variable côté PHP
 }
 
-// Redirection vers la page d'accueil (index.php par exemple)
-header("Location: index.php");
-exit(); // Ne pas oublier d'ajouter exit() après header() pour arrêter le script
-?>
+// Redirection vers la page d'accueil après suppression
+header("Location: ../Pages/index.php");
+exit();

@@ -13,8 +13,8 @@ const myErrorPrenom = document.getElementById('errorPrenom');
 const myErrorEmailExist = document.getElementById('errorEmailExist');
 const myErrorEmailInvalid = document.getElementById('errorEmailInvalid');
 const myErrorPwd = document.getElementById('errorPwd');
-const myErrorInscription = document.getElementById('erreurInscription');
-const myMsgInscription = document.getElementById('messageInscription');
+const myErrorUpdate = document.getElementById('erreurUpdate');
+const myMsgUpdate = document.getElementById('messageUpdate');
 
 // Initialiser la couleur des erreurs
 myErrorNom.style.color = "red";
@@ -22,11 +22,11 @@ myErrorPrenom.style.color = "red";
 myErrorEmailExist.style.color = "red";
 myErrorEmailInvalid.style.color = "red";
 myErrorPwd.style.color = "red";
-myErrorInscription.style.color = "red";
-myMsgInscription.style.color = "green"; // Message de succès en vert
+myErrorUpdate.style.color = "red";
+myMsgUpdate.style.color = "green"; // Message de succès en vert
 
 function validationForm() {
-  
+
   // Validation du nom
   if (myNom.value.trim() === "") {
     myErrorNom.innerHTML = "Un nom est requis.";
@@ -66,12 +66,10 @@ function validationForm() {
 }
 
 myForm.addEventListener('submit', function(e) {
-  validationForm(); // Appelle la fonction qui permet de valider le formulaire
-
-  // Si des erreurs sont présentes, empêcher l'envoi du formulaire
-  if (myErrorNom.innerHTML || myErrorPrenom.innerHTML || myErrorEmailExist.innerHTML || myErrorEmailInvalid.innerHTML || myErrorPwd.innerHTML) {
-    e.preventDefault(); // Empêcher l'actualisation de la page
-  } else {
-    myMsgInscription.innerHTML = "Inscription réussie !!"; // Afficher un message de succès
-  }
-});
+    validationForm(); // Appelle la fonction qui permet de valider le formulaire
+  
+    // Si des erreurs sont présentes, empêcher l'envoi du formulaire
+    if (myErrorNom.innerHTML || myErrorPrenom.innerHTML || myErrorEmailExist.innerHTML || myErrorEmailInvalid.innerHTML || myErrorPwd.innerHTML) {
+      e.preventDefault(); // Empêcher l'actualisation de la page
+    } 
+  });

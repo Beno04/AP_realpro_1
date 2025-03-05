@@ -25,7 +25,7 @@
           <li><a class="active" href="index.php">À propos</a></li>
 
           <?php if (isset($prenom) && isset($nom)): ?>
-            <li><a href="profile.php"><b class="connexion-btn"><?php echo $nom . ' ' . $prenom; ?></b></a></li>
+            <li><a href="profile.php"><b class="connexion-btn"><?php echo $prenom . ' ' . $nom; ?></b></a></li>
           <?php else: ?>
             <li><a href="connexion.php"><b class="connexion-btn">Connexion</b></a></li>
           <?php endif; ?>
