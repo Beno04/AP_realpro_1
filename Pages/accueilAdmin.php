@@ -29,7 +29,7 @@
             <li><a href="connexion.php">Réserver</a></li>
           <?php endif; ?>
 
-          <li><a href="addLiaison.php">Gestion des liaisons</a></li>
+          <li><a href="gestLiaison.php">Gestion des liaisons</a></li>
 
           <?php if (isset($prenom) && isset($nom)): ?>
             <li><a href="profile.php"><b class="connexion-btn"><?php echo $prenom . ' ' . $nom; ?></b></a></li>
@@ -57,47 +57,47 @@
     <!-- Ligne de séparation -->
     <hr class="separator" />
 
-<!-- Section de réservation -->
-<section class="reservation">
-  <h1>Gestion des <span class="titre2">liaisons</span></h1>
-  <p>
-  Ajoutez, modifiez ou supprimez des liaisons maritimes en quelques clics. Gérez les horaires, les destinations et les informations relatives aux traversées.
-  </p>
-  <button class="btn-reserver" id="addLiaisonBtn">Gestion</button>
-</section>
+    <!-- Section de réservation -->
+    <section class="reservation">
+      <h1>Gestion des <span class="titre2">liaisons</span></h1>
+      <p>
+      Ajoutez, modifiez ou supprimez des liaisons maritimes en quelques clics. Gérez les horaires, les destinations et les informations relatives aux traversées.
+      </p>
+      <button class="btn-reserver" id="addLiaisonBtn">Gestion</button>
+    </section>
 
-<!-- Ligne de séparation -->
-<hr class="separator" />
+    <!-- Ligne de séparation -->
+    <hr class="separator" />
 
-<!-- Section de réservation -->
-<section class="reservation">
-  <h1>Statistiques des <span class="titre2">réservations</span></h1>
-  <p>
-  Accédez à des rapports détaillés sur les réservations, consultez le nombre de passagers réservés pour chaque traversée et optimisez la gestion des disponibilités. 
-  Vous avez également la possibilité de visualiser les tendances de réservation et d'anticiper les besoins futurs.
-  </p>
-  <button class="btn-reserver" id="adminStatsBtn">Statistiques</button>
-</section>
+    <!-- Section de réservation -->
+    <section class="reservation">
+      <h1>Statistiques des <span class="titre2">réservations</span></h1>
+      <p>
+      Accédez à des rapports détaillés sur les réservations, consultez le nombre de passagers réservés pour chaque traversée et optimisez la gestion des disponibilités. 
+      Vous avez également la possibilité de visualiser les tendances de réservation et d'anticiper les besoins futurs.
+      </p>
+      <button class="btn-reserver" id="adminStatsBtn">Statistiques</button>
+    </section>
 
-<script>
-// Ajouter un gestionnaire d'événements au bouton
-document.getElementById('addLiaisonBtn').addEventListener('click', function() {
-  <?php if (isset($prenom) && isset($nom)): ?>
-    window.location.href = 'addLiaison.php'; // Redirige vers la page de réservation si connecté
-  <?php else: ?>
-    window.location.href = 'connexion.php'; // Redirige vers la page de connexion si non connecté
-  <?php endif; ?>
-});
+    <script>
+    // Ajouter un gestionnaire d'événements au bouton
+    document.getElementById('addLiaisonBtn').addEventListener('click', function() {
+      <?php if (isset($prenom) && isset($nom)): ?>
+        window.location.href = 'gestLiaison.php'; // Redirige vers la page de réservation si connecté
+      <?php else: ?>
+        window.location.href = 'connexion.php'; // Redirige vers la page de connexion si non connecté
+      <?php endif; ?>
+    });
 
-// Ajouter un gestionnaire d'événements au bouton
-document.getElementById('adminStatsBtn').addEventListener('click', function() {
-  <?php if (isset($prenom) && isset($nom)): ?>
-    window.location.href = 'adminStats.php'; // Redirige vers la page de réservation si connecté
-  <?php else: ?>
-    window.location.href = 'connexion.php'; // Redirige vers la page de connexion si non connecté
-  <?php endif; ?>
-});
-</script>
+    // Ajouter un gestionnaire d'événements au bouton
+    document.getElementById('adminStatsBtn').addEventListener('click', function() {
+      <?php if (isset($prenom) && isset($nom)): ?>
+        window.location.href = 'adminStats.php'; // Redirige vers la page de réservation si connecté
+      <?php else: ?>
+        window.location.href = 'connexion.php'; // Redirige vers la page de connexion si non connecté
+      <?php endif; ?>
+    });
+    </script>
 
-  </body>
-</html>
+      </body>
+    </html>

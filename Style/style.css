@@ -159,6 +159,25 @@ b {
     border-radius: 20px; /* arrondir les coins */
 }
 
+.btn-add {
+    display: block; /* Permet d'utiliser margin auto */
+    margin: 10px auto; /* Centre horizontalement */
+    font-size: xx-large;
+    cursor: pointer;
+    background-color: #415A77;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 20px;
+    text-align: center; /* Centrer le texte */
+}
+
+.container-add {
+    display: flex;
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    height: 80vh; /* Hauteur = toute la page */
+}
+
 /** Propriétés de l'onglet connexion et inscription ______________________________________________________________________________________**/
 
 .connexion {

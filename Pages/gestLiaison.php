@@ -40,6 +40,29 @@
       </ul>
     </nav>
 
-    
+    <div class="container-add">
+      <button class="btn-add" id="addLiaison">Ajouter</button>
+      <button class="btn-add" id="modifLiaison">Modifier</button>
+    </div>
+
+    <script>
+    // Ajouter un gestionnaire d'événements au bouton
+    document.getElementById('addLiaison').addEventListener('click', function() {
+      <?php if (isset($prenom) && isset($nom)): ?>
+        window.location.href = 'addLiaison.php'; // Redirige vers la page de réservation si connecté
+      <?php else: ?>
+        window.location.href = 'connexion.php'; // Redirige vers la page de connexion si non connecté
+      <?php endif; ?>
+    });
+
+    // Ajouter un gestionnaire d'événements au bouton
+    document.getElementById('modifLiaison').addEventListener('click', function() {
+      <?php if (isset($prenom) && isset($nom)): ?>
+        window.location.href = 'modifLiaison.php'; // Redirige vers la page de réservation si connecté
+      <?php else: ?>
+        window.location.href = 'connexion.php'; // Redirige vers la page de connexion si non connecté
+      <?php endif; ?>
+    });
+    </script>
   </body>
 </html>

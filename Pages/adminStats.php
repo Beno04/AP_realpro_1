@@ -29,7 +29,7 @@
             <li><a href="connexion.php">Réserver</a></li>
           <?php endif; ?>
 
-          <li><a href="addLiaison.php">Gestion des liaisons</a></li>
+          <li><a href="gestLiaison.php">Gestion des liaisons</a></li>
 
           <?php if (isset($prenom) && isset($nom)): ?>
             <li><a href="profile.php"><b class="connexion-btn"><?php echo $prenom . ' ' . $nom; ?></b></a></li>
