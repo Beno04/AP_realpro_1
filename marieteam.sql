@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : lun. 10 mars 2025 à 15:11
--- Version du serveur : 10.4.28-MariaDB
--- Version de PHP : 8.2.4
+-- Généré le : lun. 10 mars 2025 à 16:07
+-- Version du serveur : 10.3.39-MariaDB-0+deb10u1
+-- Version de PHP : 8.2.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `marieteam`
 --
+CREATE DATABASE IF NOT EXISTS `marieteam` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `marieteam`;
 
 -- --------------------------------------------------------
 
@@ -27,6 +29,7 @@ SET time_zone = "+00:00";
 -- Structure de la table `bateau`
 --
 
+DROP TABLE IF EXISTS `bateau`;
 CREATE TABLE `bateau` (
   `id_bateau` int(11) NOT NULL,
   `nom_bateau` varchar(50) DEFAULT NULL,
@@ -49,6 +52,7 @@ INSERT INTO `bateau` (`id_bateau`, `nom_bateau`, `long_bateau`, `larg_bateau`, `
 -- Structure de la table `catégorie`
 --
 
+DROP TABLE IF EXISTS `catégorie`;
 CREATE TABLE `catégorie` (
   `id_cat` int(11) NOT NULL,
   `desc_cat` varchar(50) DEFAULT NULL
@@ -69,6 +73,7 @@ INSERT INTO `catégorie` (`id_cat`, `desc_cat`) VALUES
 -- Structure de la table `choisir`
 --
 
+DROP TABLE IF EXISTS `choisir`;
 CREATE TABLE `choisir` (
   `id_client` int(11) NOT NULL,
   `id_resa` int(11) NOT NULL
@@ -80,6 +85,7 @@ CREATE TABLE `choisir` (
 -- Structure de la table `classer`
 --
 
+DROP TABLE IF EXISTS `classer`;
 CREATE TABLE `classer` (
   `id_type` int(11) NOT NULL,
   `id_cat` int(11) NOT NULL
@@ -91,6 +97,7 @@ CREATE TABLE `classer` (
 -- Structure de la table `client`
 --
 
+DROP TABLE IF EXISTS `client`;
 CREATE TABLE `client` (
   `id_client` int(11) NOT NULL,
   `nom_client` varchar(50) DEFAULT NULL,
@@ -107,6 +114,7 @@ CREATE TABLE `client` (
 -- Structure de la table `contenir`
 --
 
+DROP TABLE IF EXISTS `contenir`;
 CREATE TABLE `contenir` (
   `id_bateau` int(11) NOT NULL,
   `id_cat` int(11) NOT NULL,
@@ -131,11 +139,91 @@ INSERT INTO `contenir` (`id_bateau`, `id_cat`, `capac_bateau_pass`) VALUES
 -- Structure de la table `enregistrer`
 --
 
+DROP TABLE IF EXISTS `enregistrer`;
 CREATE TABLE `enregistrer` (
   `id_resa` int(11) NOT NULL,
   `id_type` int(11) NOT NULL,
   `quantité` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `enregistrer`
+--
+
+INSERT INTO `enregistrer` (`id_resa`, `id_type`, `quantité`) VALUES
+(1, 1, '2'),
+(1, 3, '3'),
+(1, 4, '1'),
+(1, 7, '1'),
+(2, 1, '1'),
+(3, 1, '5');
+
+--
+-- Déclencheurs `enregistrer`
+--
+DROP TRIGGER IF EXISTS `Check_PlaceDispoPassager_Before_Insert`;
+DELIMITER $$
+CREATE TRIGGER `Check_PlaceDispoPassager_Before_Insert` BEFORE INSERT ON `enregistrer` FOR EACH ROW BEGIN
+    DECLARE places_dispo INT;
+
+    -- Récupération des places disponibles pour la traversée concernée
+    SELECT PlaceDispo INTO places_dispo 
+    FROM PlaceDispoPassager 
+    WHERE id_travers = (SELECT id_travers FROM reservation WHERE id_resa = NEW.id_resa)
+    LIMIT 1;
+
+    -- Vérification si on dépasse le nombre de places disponibles
+    IF places_dispo IS NULL OR places_dispo < NEW.quantité THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Réservation refusée : plus assez de places disponibles.';
+    END IF;
+END
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `Check_PlaceDispoVéhiculeInf2m_Before_Insert`;
+DELIMITER $$
+CREATE TRIGGER `Check_PlaceDispoVéhiculeInf2m_Before_Insert` BEFORE INSERT ON `enregistrer` FOR EACH ROW BEGIN
+    DECLARE places_dispo INT;
+
+    -- Vérification que l'insertion concerne un véhicule < 2m (id_type 4 ou 5)
+    IF NEW.id_type IN (4,5) THEN
+        -- Récupération des places disponibles pour la traversée concernée
+        SELECT PlaceDispo INTO places_dispo 
+        FROM PlaceDispoVéhiculeInf2m 
+        WHERE id_travers = (SELECT id_travers FROM reservation WHERE id_resa = NEW.id_resa)
+        LIMIT 1;
+
+        -- Vérification si la réservation dépasse les places disponibles
+        IF places_dispo IS NULL OR places_dispo < NEW.quantité THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Réservation refusée : plus assez de places pour les véhicules < 2m.';
+        END IF;
+    END IF;
+END
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `Check_PlaceDispoVéhiculeSup2m_Before_Insert`;
+DELIMITER $$
+CREATE TRIGGER `Check_PlaceDispoVéhiculeSup2m_Before_Insert` BEFORE INSERT ON `enregistrer` FOR EACH ROW BEGIN
+    DECLARE places_dispo INT;
+
+    -- Vérification que l'insertion concerne un véhicule > 2m (id_type 6, 7 ou 8)
+    IF NEW.id_type IN (6,7,8) THEN
+        -- Récupération des places disponibles pour la traversée concernée
+        SELECT PlaceDispo INTO places_dispo 
+        FROM PlaceDispoVéhiculeSup2m 
+        WHERE id_travers = (SELECT id_travers FROM reservation WHERE id_resa = NEW.id_resa)
+        LIMIT 1;
+
+        -- Vérification si la réservation dépasse les places disponibles
+        IF places_dispo IS NULL OR places_dispo < NEW.quantité THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Réservation refusée : plus assez de places pour les véhicules > 2m.';
+        END IF;
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -143,6 +231,7 @@ CREATE TABLE `enregistrer` (
 -- Structure de la table `equipement`
 --
 
+DROP TABLE IF EXISTS `equipement`;
 CREATE TABLE `equipement` (
   `id_equip` int(11) NOT NULL,
   `desc_equip` varchar(150) DEFAULT NULL
@@ -164,6 +253,7 @@ INSERT INTO `equipement` (`id_equip`, `desc_equip`) VALUES
 -- Structure de la table `liaison`
 --
 
+DROP TABLE IF EXISTS `liaison`;
 CREATE TABLE `liaison` (
   `id_liaison` int(11) NOT NULL,
   `dist_milles` decimal(4,2) DEFAULT NULL,
@@ -189,9 +279,82 @@ INSERT INTO `liaison` (`id_liaison`, `dist_milles`, `id_port`, `id_port_1`, `id_
 -- --------------------------------------------------------
 
 --
+-- Doublure de structure pour la vue `nbPassagerResa`
+-- (Voir ci-dessous la vue réelle)
+--
+DROP VIEW IF EXISTS `nbPassagerResa`;
+CREATE TABLE `nbPassagerResa` (
+`id_travers` int(11)
+,`NbPersonneResa` double
+);
+
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue `nbVéhiculeInf2mResa`
+-- (Voir ci-dessous la vue réelle)
+--
+DROP VIEW IF EXISTS `nbVéhiculeInf2mResa`;
+CREATE TABLE `nbVéhiculeInf2mResa` (
+`id_travers` int(11)
+,`NbVéhiculeResa` double
+);
+
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue `NbVéhiculeSup2mResa`
+-- (Voir ci-dessous la vue réelle)
+--
+DROP VIEW IF EXISTS `NbVéhiculeSup2mResa`;
+CREATE TABLE `NbVéhiculeSup2mResa` (
+`id_travers` int(11)
+,`NbVéhiculeSup2mResa` double
+);
+
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue `PlaceDispoPassager`
+-- (Voir ci-dessous la vue réelle)
+--
+DROP VIEW IF EXISTS `PlaceDispoPassager`;
+CREATE TABLE `PlaceDispoPassager` (
+`id_travers` int(11)
+,`PlaceDispo` double
+);
+
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue `PlaceDispoVéhiculeInf2m`
+-- (Voir ci-dessous la vue réelle)
+--
+DROP VIEW IF EXISTS `PlaceDispoVéhiculeInf2m`;
+CREATE TABLE `PlaceDispoVéhiculeInf2m` (
+`id_travers` int(11)
+,`PlaceDispo` double
+);
+
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue `PlaceDispoVéhiculeSup2m`
+-- (Voir ci-dessous la vue réelle)
+--
+DROP VIEW IF EXISTS `PlaceDispoVéhiculeSup2m`;
+CREATE TABLE `PlaceDispoVéhiculeSup2m` (
+`id_travers` int(11)
+,`PlaceDispo` double
+);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `port`
 --
 
+DROP TABLE IF EXISTS `port`;
 CREATE TABLE `port` (
   `id_port` int(11) NOT NULL,
   `nom_port` varchar(50) DEFAULT NULL
@@ -216,6 +379,7 @@ INSERT INTO `port` (`id_port`, `nom_port`) VALUES
 -- Structure de la table `période`
 --
 
+DROP TABLE IF EXISTS `période`;
 CREATE TABLE `période` (
   `date_debut` date NOT NULL,
   `date_fin` date DEFAULT NULL
@@ -236,11 +400,21 @@ INSERT INTO `période` (`date_debut`, `date_fin`) VALUES
 -- Structure de la table `reservation`
 --
 
+DROP TABLE IF EXISTS `reservation`;
 CREATE TABLE `reservation` (
   `id_resa` int(11) NOT NULL,
   `date_resa` date DEFAULT NULL,
   `id_travers` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `reservation`
+--
+
+INSERT INTO `reservation` (`id_resa`, `date_resa`, `id_travers`) VALUES
+(1, '2025-03-13', 33),
+(2, '2025-03-13', 2),
+(3, '2025-03-13', 18);
 
 -- --------------------------------------------------------
 
@@ -248,6 +422,7 @@ CREATE TABLE `reservation` (
 -- Structure de la table `secteur`
 --
 
+DROP TABLE IF EXISTS `secteur`;
 CREATE TABLE `secteur` (
   `id_secteur` int(11) NOT NULL,
   `nom_secteur` varchar(50) DEFAULT NULL
@@ -268,6 +443,7 @@ INSERT INTO `secteur` (`id_secteur`, `nom_secteur`) VALUES
 -- Structure de la table `tarifer`
 --
 
+DROP TABLE IF EXISTS `tarifer`;
 CREATE TABLE `tarifer` (
   `id_liaison` int(11) NOT NULL,
   `id_type` int(11) NOT NULL,
@@ -281,6 +457,7 @@ CREATE TABLE `tarifer` (
 -- Structure de la table `traversée`
 --
 
+DROP TABLE IF EXISTS `traversée`;
 CREATE TABLE `traversée` (
   `id_travers` int(11) NOT NULL,
   `date_travers` date DEFAULT NULL,
@@ -332,6 +509,7 @@ INSERT INTO `traversée` (`id_travers`, `date_travers`, `heure_travers`, `desc_t
 -- Structure de la table `type`
 --
 
+DROP TABLE IF EXISTS `type`;
 CREATE TABLE `type` (
   `id_type` int(11) NOT NULL,
   `desc_type` varchar(50) DEFAULT NULL
@@ -357,6 +535,7 @@ INSERT INTO `type` (`id_type`, `desc_type`) VALUES
 -- Structure de la table `utilisateur`
 --
 
+DROP TABLE IF EXISTS `utilisateur`;
 CREATE TABLE `utilisateur` (
   `id_utilisateur` int(11) NOT NULL,
   `nom_user` varchar(50) DEFAULT NULL,
@@ -382,6 +561,7 @@ INSERT INTO `utilisateur` (`id_utilisateur`, `nom_user`, `prenom_user`, `mail_us
 -- Structure de la table `être_équipé`
 --
 
+DROP TABLE IF EXISTS `être_équipé`;
 CREATE TABLE `être_équipé` (
   `id_bateau` int(11) NOT NULL,
   `id_equip` int(11) NOT NULL
@@ -398,6 +578,66 @@ INSERT INTO `être_équipé` (`id_bateau`, `id_equip`) VALUES
 (2, 2),
 (2, 3),
 (2, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `nbPassagerResa`
+--
+DROP TABLE IF EXISTS `nbPassagerResa`;
+
+DROP VIEW IF EXISTS `nbPassagerResa`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`login4549`@`localhost` SQL SECURITY DEFINER VIEW `nbPassagerResa`  AS SELECT `reservation`.`id_travers` AS `id_travers`, sum(`enregistrer`.`quantité`) AS `NbPersonneResa` FROM (`enregistrer` join `reservation` on(`enregistrer`.`id_resa` = `reservation`.`id_resa`)) WHERE `enregistrer`.`id_type` in (1,2,3) GROUP BY `reservation`.`id_travers` ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `nbVéhiculeInf2mResa`
+--
+DROP TABLE IF EXISTS `nbVéhiculeInf2mResa`;
+
+DROP VIEW IF EXISTS `nbVéhiculeInf2mResa`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`login4549`@`localhost` SQL SECURITY DEFINER VIEW `nbVéhiculeInf2mResa`  AS SELECT `reservation`.`id_travers` AS `id_travers`, sum(`enregistrer`.`quantité`) AS `NbVéhiculeResa` FROM (`enregistrer` join `reservation` on(`enregistrer`.`id_resa` = `reservation`.`id_resa`)) WHERE `enregistrer`.`id_type` in (4,5) GROUP BY `reservation`.`id_travers` ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `NbVéhiculeSup2mResa`
+--
+DROP TABLE IF EXISTS `NbVéhiculeSup2mResa`;
+
+DROP VIEW IF EXISTS `NbVéhiculeSup2mResa`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`login4549`@`localhost` SQL SECURITY DEFINER VIEW `NbVéhiculeSup2mResa`  AS SELECT `reservation`.`id_travers` AS `id_travers`, sum(`enregistrer`.`quantité`) AS `NbVéhiculeSup2mResa` FROM (`enregistrer` join `reservation` on(`enregistrer`.`id_resa` = `reservation`.`id_resa`)) WHERE `enregistrer`.`id_type` in (6,7,8) GROUP BY `reservation`.`id_travers` ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `PlaceDispoPassager`
+--
+DROP TABLE IF EXISTS `PlaceDispoPassager`;
+
+DROP VIEW IF EXISTS `PlaceDispoPassager`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`login4549`@`localhost` SQL SECURITY DEFINER VIEW `PlaceDispoPassager`  AS SELECT `traversée`.`id_travers` AS `id_travers`, `contenir`.`capac_bateau_pass`- `nbPassagerResa`.`NbPersonneResa` AS `PlaceDispo` FROM (((`nbPassagerResa` join `traversée` on(`nbPassagerResa`.`id_travers` = `traversée`.`id_travers`)) join `bateau` on(`traversée`.`id_bateau` = `bateau`.`id_bateau`)) join `contenir` on(`bateau`.`id_bateau` = `contenir`.`id_bateau`)) WHERE `contenir`.`id_cat` = 1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `PlaceDispoVéhiculeInf2m`
+--
+DROP TABLE IF EXISTS `PlaceDispoVéhiculeInf2m`;
+
+DROP VIEW IF EXISTS `PlaceDispoVéhiculeInf2m`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`login4549`@`localhost` SQL SECURITY DEFINER VIEW `PlaceDispoVéhiculeInf2m`  AS SELECT `traversée`.`id_travers` AS `id_travers`, `contenir`.`capac_bateau_pass`- `nbVéhiculeInf2mResa`.`NbVéhiculeResa` AS `PlaceDispo` FROM (((`nbVéhiculeInf2mResa` join `traversée` on(`nbVéhiculeInf2mResa`.`id_travers` = `traversée`.`id_travers`)) join `bateau` on(`traversée`.`id_bateau` = `bateau`.`id_bateau`)) join `contenir` on(`bateau`.`id_bateau` = `contenir`.`id_bateau`)) WHERE `contenir`.`id_cat` = 2 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `PlaceDispoVéhiculeSup2m`
+--
+DROP TABLE IF EXISTS `PlaceDispoVéhiculeSup2m`;
+
+DROP VIEW IF EXISTS `PlaceDispoVéhiculeSup2m`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`login4549`@`localhost` SQL SECURITY DEFINER VIEW `PlaceDispoVéhiculeSup2m`  AS SELECT `traversée`.`id_travers` AS `id_travers`, `contenir`.`capac_bateau_pass`- `NbVéhiculeSup2mResa`.`NbVéhiculeSup2mResa` AS `PlaceDispo` FROM (((`NbVéhiculeSup2mResa` join `traversée` on(`NbVéhiculeSup2mResa`.`id_travers` = `traversée`.`id_travers`)) join `bateau` on(`traversée`.`id_bateau` = `bateau`.`id_bateau`)) join `contenir` on(`bateau`.`id_bateau` = `contenir`.`id_bateau`)) WHERE `contenir`.`id_cat` = 3 ;
 
 --
 -- Index pour les tables déchargées
@@ -569,7 +809,7 @@ ALTER TABLE `port`
 -- AUTO_INCREMENT pour la table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id_resa` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_resa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `secteur`
