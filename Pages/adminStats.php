@@ -40,37 +40,58 @@
       </ul>
     </nav>
 
-        <div class="blockR">
-            <div class="destination">
-                <lu>
-                    <li>Belle-Île-en-mer</li>
-                    <li>Houat</li>
-                    <li>Ile de Groix</li>
-                    <li>Ouessant</li>
-                    <li>Molène</li>
-                    <li>Sein</li>
-                    <li>Bréhat</li>
-                    <li>Batz</li>
-                    <li>Aix</li>
-                    <li>Yeu</li>
-                </lu>
-            </div>
-            <div class="tableauReservation">
-                <table>
-                    <tr>
-                    </tr>
-                </table>
-            </div>
+    <?php
+        include '../Fonctions/Script.php';
 
+        // Récupérer tous les secteurs
+        $secteurs = getSecteurs();
+    ?>
 
-
-
-
-
-
-
-
-
+    <div class="blockR">
+        <div class="destination">
+            <ul>
+            <?php foreach ($secteurs as $secteurItem): ?>
+                <li>
+                    <?php echo htmlspecialchars($secteurItem['nom_secteur']); ?>
+                    <button type="button" onclick="selectionnerSecteur('<?php echo htmlspecialchars($secteurItem['nom_secteur']); ?>')">
+                        Sélectionner
+                    </button>
+                </li>
+            <?php endforeach; ?>
+            </ul>
         </div>
-    </body>
+
+        <div class="tableauReservation">
+            <select name="traversee">
+                <option value="">Sélectionner une traversée</option>
+                <?php foreach ($descriptions as $desc) : ?>
+                    <option value="<?= htmlspecialchars($desc) ?>"><?= htmlspecialchars($desc) ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+
+    <script>
+    function selectionnerSecteur(nomSecteur) {
+        // Envoi de la requête AJAX
+        fetch('get_traversees.php?nom_secteur=' + encodeURIComponent(nomSecteur))
+            .then(response => response.json())
+            .then(data => {
+                // Récupérer la liste déroulante
+                let select = document.querySelector('select[name="traversee"]');
+                select.innerHTML = '<option value="">Sélectionner une traversée</option>';
+                
+                // Ajouter les nouvelles options
+                data.forEach(desc => {
+                    let option = document.createElement('option');
+                    option.value = desc;
+                    option.textContent = desc;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Erreur AJAX:', error));
+    }
+    </script>
+
+</body>
 </html>

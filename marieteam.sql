@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.3
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le : lun. 24 fév. 2025 à 11:52
--- Version du serveur : 10.4.24-MariaDB
--- Version de PHP : 7.4.29
+-- Hôte : localhost
+-- Généré le : lun. 10 mars 2025 à 15:11
+-- Version du serveur : 10.4.28-MariaDB
+-- Version de PHP : 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `marieteam`
 --
-CREATE DATABASE IF NOT EXISTS `marieteam` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `marieteam`;
 
 -- --------------------------------------------------------
 
@@ -35,15 +33,15 @@ CREATE TABLE `bateau` (
   `long_bateau` decimal(4,2) DEFAULT NULL,
   `larg_bateau` decimal(4,2) DEFAULT NULL,
   `vitesse_bateau` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `bateau`
 --
 
 INSERT INTO `bateau` (`id_bateau`, `nom_bateau`, `long_bateau`, `larg_bateau`, `vitesse_bateau`) VALUES
-(1, 'Luce Isle', '37.20', '8.60', '26 noeuds'),
-(2, 'Al\'xi', '25.00', '7.00', '16 noeuds');
+(1, 'Luce Isle', 37.20, 8.60, '26 noeuds'),
+(2, 'Al\'xi', 25.00, 7.00, '16 noeuds');
 
 -- --------------------------------------------------------
 
@@ -54,7 +52,7 @@ INSERT INTO `bateau` (`id_bateau`, `nom_bateau`, `long_bateau`, `larg_bateau`, `
 CREATE TABLE `catégorie` (
   `id_cat` int(11) NOT NULL,
   `desc_cat` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `catégorie`
@@ -74,7 +72,7 @@ INSERT INTO `catégorie` (`id_cat`, `desc_cat`) VALUES
 CREATE TABLE `choisir` (
   `id_client` int(11) NOT NULL,
   `id_resa` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -85,7 +83,7 @@ CREATE TABLE `choisir` (
 CREATE TABLE `classer` (
   `id_type` int(11) NOT NULL,
   `id_cat` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -101,7 +99,7 @@ CREATE TABLE `client` (
   `tel_client` varchar(50) DEFAULT NULL,
   `mail_client` varchar(50) DEFAULT NULL,
   `id_utilisateur` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -113,7 +111,7 @@ CREATE TABLE `contenir` (
   `id_bateau` int(11) NOT NULL,
   `id_cat` int(11) NOT NULL,
   `capac_bateau_pass` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `contenir`
@@ -137,7 +135,7 @@ CREATE TABLE `enregistrer` (
   `id_resa` int(11) NOT NULL,
   `id_type` int(11) NOT NULL,
   `quantité` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -148,7 +146,7 @@ CREATE TABLE `enregistrer` (
 CREATE TABLE `equipement` (
   `id_equip` int(11) NOT NULL,
   `desc_equip` varchar(150) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `equipement`
@@ -173,20 +171,20 @@ CREATE TABLE `liaison` (
   `id_port_1` int(11) NOT NULL,
   `id_secteur` int(11) NOT NULL,
   `id_travers` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `liaison`
 --
 
 INSERT INTO `liaison` (`id_liaison`, `dist_milles`, `id_port`, `id_port_1`, `id_secteur`, `id_travers`) VALUES
-(1, '8.30', 1, 2, 1, 2),
-(2, '9.00', 2, 1, 1, 15),
-(3, '8.80', 1, 5, 2, 30),
-(4, '8.80', 5, 1, 2, 31),
-(5, '7.70', 6, 7, 3, 32),
-(6, '7.40', 7, 6, 3, 33),
-(7, '8.80', 1, 2, 1, 3);
+(1, 8.30, 1, 2, 1, 2),
+(2, 9.00, 2, 1, 1, 15),
+(3, 8.80, 1, 5, 2, 30),
+(4, 8.80, 5, 1, 2, 31),
+(5, 7.70, 6, 7, 3, 32),
+(6, 7.40, 7, 6, 3, 33),
+(7, 8.80, 1, 2, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -197,7 +195,7 @@ INSERT INTO `liaison` (`id_liaison`, `dist_milles`, `id_port`, `id_port_1`, `id_
 CREATE TABLE `port` (
   `id_port` int(11) NOT NULL,
   `nom_port` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `port`
@@ -221,7 +219,7 @@ INSERT INTO `port` (`id_port`, `nom_port`) VALUES
 CREATE TABLE `période` (
   `date_debut` date NOT NULL,
   `date_fin` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `période`
@@ -242,7 +240,7 @@ CREATE TABLE `reservation` (
   `id_resa` int(11) NOT NULL,
   `date_resa` date DEFAULT NULL,
   `id_travers` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -253,7 +251,7 @@ CREATE TABLE `reservation` (
 CREATE TABLE `secteur` (
   `id_secteur` int(11) NOT NULL,
   `nom_secteur` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `secteur`
@@ -275,7 +273,7 @@ CREATE TABLE `tarifer` (
   `id_type` int(11) NOT NULL,
   `date_debut` date NOT NULL,
   `Tarif` decimal(5,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -289,7 +287,7 @@ CREATE TABLE `traversée` (
   `heure_travers` time DEFAULT NULL,
   `desc_travers` varchar(50) NOT NULL,
   `id_bateau` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `traversée`
@@ -337,7 +335,7 @@ INSERT INTO `traversée` (`id_travers`, `date_travers`, `heure_travers`, `desc_t
 CREATE TABLE `type` (
   `id_type` int(11) NOT NULL,
   `desc_type` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `type`
@@ -364,19 +362,19 @@ CREATE TABLE `utilisateur` (
   `nom_user` varchar(50) DEFAULT NULL,
   `prenom_user` varchar(50) DEFAULT NULL,
   `mail_user` varchar(50) DEFAULT NULL,
-  `mdp_user` varchar(50) DEFAULT NULL,
+  `mdp_user` varchar(200) DEFAULT NULL,
   `typer_user` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `utilisateur`
 --
 
 INSERT INTO `utilisateur` (`id_utilisateur`, `nom_user`, `prenom_user`, `mail_user`, `mdp_user`, `typer_user`) VALUES
-(1, 'Jean', 'Bolenger', 'Jean.bolenger@gmail.com', 'hasspass1', 'Client'),
-(2, 'Lucas', 'Beno', 'lucas.beno@gmail.com', 'hasspass2', 'Client'),
-(3, 'Axel', 'Verdon', 'axel.verdon@gmail.com', 'hasspass3', 'Client'),
-(4, 'admin', 'admin', 'admin.marieteam@gmail.com', 'hasspass4', 'Gestionnaire');
+(11, 'Marieteam', 'Admin', 'admin.marieteam@gmail.com', '$2y$12$R6sAeZHb8x18IARIK/qvcOmq5Z9xLyh.GujnpVns3FIuAtO/kXY2S', 'Gestionnaire'),
+(12, 'Benault', 'Lucas', 'lucas.benault@gmail.com', '$2y$12$yDMhFiPtgr5NqUe0NJAEEeMZNsnKSGw8PXGNtvDeJCV8nd/b.8bZy', 'Client'),
+(13, 'Verdon', 'Axel', 'axel.verdon@gmail.com', '$2y$12$xqn.cBypssUxd9PzhWWyNeNN9rgGRCb1hrV3nuRZfRtezyP4uPbU.', 'Client'),
+(14, 'Capitaine', 'numeroUN', 'capitaine.1@gmail.com', '$2y$12$iiY.oCGoH7BBTW6QafZ2Z.wlaj8J2.3fKlq.qJ3fR4EClSW7EhUGS', 'Capitaine');
 
 -- --------------------------------------------------------
 
@@ -387,7 +385,19 @@ INSERT INTO `utilisateur` (`id_utilisateur`, `nom_user`, `prenom_user`, `mail_us
 CREATE TABLE `être_équipé` (
   `id_bateau` int(11) NOT NULL,
   `id_equip` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `être_équipé`
+--
+
+INSERT INTO `être_équipé` (`id_bateau`, `id_equip`) VALUES
+(1, 1),
+(1, 2),
+(2, 1),
+(2, 2),
+(2, 3),
+(2, 4);
 
 --
 -- Index pour les tables déchargées
@@ -583,7 +593,7 @@ ALTER TABLE `type`
 -- AUTO_INCREMENT pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-  MODIFY `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Contraintes pour les tables déchargées
