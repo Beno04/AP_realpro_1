@@ -62,11 +62,14 @@
         </div>
 
         <div class="tableauReservation">
-            <select name="traversee">
+            <select name="traversee" onchange="selectionnerTraversee(this.value)">
                 <option value="">Sélectionner une traversée</option>
                 <?php foreach ($descriptions as $desc) : ?>
                     <option value="<?= htmlspecialchars($desc) ?>"><?= htmlspecialchars($desc) ?></option>
                 <?php endforeach; ?>
+            </select>
+            <select name="date_traversee" id="date_traversee">
+                <option value="">Sélectionner une date</option>
             </select>
         </div>
     </div>
@@ -92,6 +95,29 @@
             .catch(error => console.error('Erreur AJAX:', error));
     }
     </script>
+<script>
+    function selectionnerTraversee(descTravers) {
+    if (!descTravers) {
+        document.getElementById('date_traversee').innerHTML = '<option value="">Sélectionner une date</option>';
+        return;
+    }
+
+    fetch('get_dates.php?desc_travers=' + encodeURIComponent(descTravers))
+        .then(response => response.json())
+        .then(data => {
+            let select = document.getElementById('date_traversee');
+            select.innerHTML = '<option value="">Sélectionner une date</option>';
+
+            data.forEach(date => {
+                let option = document.createElement('option');
+                option.value = date;
+                option.textContent = date;
+                select.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Erreur AJAX:', error));
+}
+</script>
 
 </body>
 </html>

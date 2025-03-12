@@ -87,8 +87,7 @@ function GetDateTravers($desc_travers) {
     $pdo = connexionBase($servername, $username, $password, $dbname);
 
     $sql = "SELECT DISTINCT traversée.date_travers
-            FROM liaison
-            INNER JOIN traversée ON liaison.id_travers = traversée.id_travers
+            FROM traversée
             WHERE traversée.desc_travers = :desc_travers
             AND traversée.date_travers > CURRENT_DATE";
 
@@ -98,6 +97,31 @@ function GetDateTravers($desc_travers) {
 
     return $stmt->fetchAll(PDO::FETCH_COLUMN);
 }
+
+function GetInfo($desc_travers, $date_travers) {
+    $servername = "localhost"; 
+    $username = "root";
+    $password = "";
+    $dbname = "marieteam";
+
+    $pdo = connexionBase($servername, $username, $password, $dbname);
+
+    $sql = "SELECT traversée.id_travers, heure_travers, nom_bateau, placedispopassager.PlaceDispo AS 'Passager', placedispovéhiculeinf2m.PlaceDispo AS 'véhicule inf2m', placedispovéhiculesup2m.PlaceDispo AS 'véhicule sup2m'
+    FROM traversée
+    INNER JOIN bateau ON traversée.id_bateau = bateau.id_bateau
+    INNER JOIN placedispopassager ON traversée.id_travers = placedispopassager.id_travers
+    INNER JOIN placedispovéhiculeinf2m ON traversée.id_travers = placedispovéhiculeinf2m.id_travers
+    INNER JOIN placedispovéhiculesup2m ON traversée.id_travers = placedispovéhiculesup2m.id_travers
+    WHERE traversée.desc_travers = :desc_travers AND traversée.date_travers = :date_travers";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':desc_travers', $desc_travers, PDO::PARAM_STR);
+    $stmt->bindParam(':date_travers', $date_travers, PDO::PARAM_STR);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 
 
 // Récupere les secteurs qui ont des traversers après la date du jour
