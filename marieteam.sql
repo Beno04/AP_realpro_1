@@ -587,7 +587,7 @@ INSERT INTO `être_équipé` (`id_bateau`, `id_equip`) VALUES
 DROP TABLE IF EXISTS `nbPassagerResa`;
 
 DROP VIEW IF EXISTS `nbPassagerResa`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`login4549`@`localhost` SQL SECURITY DEFINER VIEW `nbPassagerResa`  AS SELECT `reservation`.`id_travers` AS `id_travers`, sum(`enregistrer`.`quantité`) AS `NbPersonneResa` FROM (`enregistrer` join `reservation` on(`enregistrer`.`id_resa` = `reservation`.`id_resa`)) WHERE `enregistrer`.`id_type` in (1,2,3) GROUP BY `reservation`.`id_travers` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`marieteam`@`localhost` SQL SECURITY DEFINER VIEW `nbPassagerResa`  AS SELECT `reservation`.`id_travers` AS `id_travers`, sum(`enregistrer`.`quantité`) AS `NbPersonneResa` FROM (`enregistrer` join `reservation` on(`enregistrer`.`id_resa` = `reservation`.`id_resa`)) WHERE `enregistrer`.`id_type` in (1,2,3) GROUP BY `reservation`.`id_travers` ;
 
 -- --------------------------------------------------------
 
@@ -597,7 +597,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`login4549`@`localhost` SQL SECURITY DEFINER 
 DROP TABLE IF EXISTS `nbVéhiculeInf2mResa`;
 
 DROP VIEW IF EXISTS `nbVéhiculeInf2mResa`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`login4549`@`localhost` SQL SECURITY DEFINER VIEW `nbVéhiculeInf2mResa`  AS SELECT `reservation`.`id_travers` AS `id_travers`, sum(`enregistrer`.`quantité`) AS `NbVéhiculeResa` FROM (`enregistrer` join `reservation` on(`enregistrer`.`id_resa` = `reservation`.`id_resa`)) WHERE `enregistrer`.`id_type` in (4,5) GROUP BY `reservation`.`id_travers` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`marieteam`@`localhost` SQL SECURITY DEFINER VIEW `nbVéhiculeInf2mResa`  AS SELECT `reservation`.`id_travers` AS `id_travers`, sum(`enregistrer`.`quantité`) AS `NbVéhiculeResa` FROM (`enregistrer` join `reservation` on(`enregistrer`.`id_resa` = `reservation`.`id_resa`)) WHERE `enregistrer`.`id_type` in (4,5) GROUP BY `reservation`.`id_travers` ;
 
 -- --------------------------------------------------------
 
@@ -607,7 +607,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`login4549`@`localhost` SQL SECURITY DEFINER 
 DROP TABLE IF EXISTS `NbVéhiculeSup2mResa`;
 
 DROP VIEW IF EXISTS `NbVéhiculeSup2mResa`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`login4549`@`localhost` SQL SECURITY DEFINER VIEW `NbVéhiculeSup2mResa`  AS SELECT `reservation`.`id_travers` AS `id_travers`, sum(`enregistrer`.`quantité`) AS `NbVéhiculeSup2mResa` FROM (`enregistrer` join `reservation` on(`enregistrer`.`id_resa` = `reservation`.`id_resa`)) WHERE `enregistrer`.`id_type` in (6,7,8) GROUP BY `reservation`.`id_travers` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`marieteam`@`localhost` SQL SECURITY DEFINER VIEW `NbVéhiculeSup2mResa`  AS SELECT `reservation`.`id_travers` AS `id_travers`, sum(`enregistrer`.`quantité`) AS `NbVéhiculeSup2mResa` FROM (`enregistrer` join `reservation` on(`enregistrer`.`id_resa` = `reservation`.`id_resa`)) WHERE `enregistrer`.`id_type` in (6,7,8) GROUP BY `reservation`.`id_travers` ;
 
 -- --------------------------------------------------------
 
@@ -617,7 +617,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`login4549`@`localhost` SQL SECURITY DEFINER 
 DROP TABLE IF EXISTS `PlaceDispoPassager`;
 
 DROP VIEW IF EXISTS `PlaceDispoPassager`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`login4549`@`localhost` SQL SECURITY DEFINER VIEW `PlaceDispoPassager`  AS SELECT `traversée`.`id_travers` AS `id_travers`, `contenir`.`capac_bateau_pass`- `nbPassagerResa`.`NbPersonneResa` AS `PlaceDispo` FROM (((`nbPassagerResa` join `traversée` on(`nbPassagerResa`.`id_travers` = `traversée`.`id_travers`)) join `bateau` on(`traversée`.`id_bateau` = `bateau`.`id_bateau`)) join `contenir` on(`bateau`.`id_bateau` = `contenir`.`id_bateau`)) WHERE `contenir`.`id_cat` = 1 ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`marieteam`@`localhost` SQL SECURITY DEFINER VIEW `PlaceDispoPassager`  AS SELECT `traversée`.`id_travers` AS `id_travers`, `contenir`.`capac_bateau_pass`- `nbPassagerResa`.`NbPersonneResa` AS `PlaceDispo` FROM (((`nbPassagerResa` join `traversée` on(`nbPassagerResa`.`id_travers` = `traversée`.`id_travers`)) join `bateau` on(`traversée`.`id_bateau` = `bateau`.`id_bateau`)) join `contenir` on(`bateau`.`id_bateau` = `contenir`.`id_bateau`)) WHERE `contenir`.`id_cat` = 1 ;
 
 -- --------------------------------------------------------
 
@@ -627,7 +627,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`login4549`@`localhost` SQL SECURITY DEFINER 
 DROP TABLE IF EXISTS `PlaceDispoVéhiculeInf2m`;
 
 DROP VIEW IF EXISTS `PlaceDispoVéhiculeInf2m`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`login4549`@`localhost` SQL SECURITY DEFINER VIEW `PlaceDispoVéhiculeInf2m`  AS SELECT `traversée`.`id_travers` AS `id_travers`, `contenir`.`capac_bateau_pass`- `nbVéhiculeInf2mResa`.`NbVéhiculeResa` AS `PlaceDispo` FROM (((`nbVéhiculeInf2mResa` join `traversée` on(`nbVéhiculeInf2mResa`.`id_travers` = `traversée`.`id_travers`)) join `bateau` on(`traversée`.`id_bateau` = `bateau`.`id_bateau`)) join `contenir` on(`bateau`.`id_bateau` = `contenir`.`id_bateau`)) WHERE `contenir`.`id_cat` = 2 ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`marieteam`@`localhost` SQL SECURITY DEFINER VIEW `PlaceDispoVéhiculeInf2m`  AS SELECT `traversée`.`id_travers` AS `id_travers`, `contenir`.`capac_bateau_pass`- `nbVéhiculeInf2mResa`.`NbVéhiculeResa` AS `PlaceDispo` FROM (((`nbVéhiculeInf2mResa` join `traversée` on(`nbVéhiculeInf2mResa`.`id_travers` = `traversée`.`id_travers`)) join `bateau` on(`traversée`.`id_bateau` = `bateau`.`id_bateau`)) join `contenir` on(`bateau`.`id_bateau` = `contenir`.`id_bateau`)) WHERE `contenir`.`id_cat` = 2 ;
 
 -- --------------------------------------------------------
 
@@ -637,7 +637,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`login4549`@`localhost` SQL SECURITY DEFINER 
 DROP TABLE IF EXISTS `PlaceDispoVéhiculeSup2m`;
 
 DROP VIEW IF EXISTS `PlaceDispoVéhiculeSup2m`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`login4549`@`localhost` SQL SECURITY DEFINER VIEW `PlaceDispoVéhiculeSup2m`  AS SELECT `traversée`.`id_travers` AS `id_travers`, `contenir`.`capac_bateau_pass`- `NbVéhiculeSup2mResa`.`NbVéhiculeSup2mResa` AS `PlaceDispo` FROM (((`NbVéhiculeSup2mResa` join `traversée` on(`NbVéhiculeSup2mResa`.`id_travers` = `traversée`.`id_travers`)) join `bateau` on(`traversée`.`id_bateau` = `bateau`.`id_bateau`)) join `contenir` on(`bateau`.`id_bateau` = `contenir`.`id_bateau`)) WHERE `contenir`.`id_cat` = 3 ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`marieteam`@`localhost` SQL SECURITY DEFINER VIEW `PlaceDispoVéhiculeSup2m`  AS SELECT `traversée`.`id_travers` AS `id_travers`, `contenir`.`capac_bateau_pass`- `NbVéhiculeSup2mResa`.`NbVéhiculeSup2mResa` AS `PlaceDispo` FROM (((`NbVéhiculeSup2mResa` join `traversée` on(`NbVéhiculeSup2mResa`.`id_travers` = `traversée`.`id_travers`)) join `bateau` on(`traversée`.`id_bateau` = `bateau`.`id_bateau`)) join `contenir` on(`bateau`.`id_bateau` = `contenir`.`id_bateau`)) WHERE `contenir`.`id_cat` = 3 ;
 
 --
 -- Index pour les tables déchargées
