@@ -37,12 +37,22 @@ $descriptions = getDescTraversées($id_secteur);
             <th>Passager</th>
             <th>Véhicule Inf2m</th>
             <th>Véhicule Sup2m</th>
+            <th>Sélection</th>
         </tr>
     </thead>
     <tbody>
         <!-- Les données du tableau seront insérées ici -->
     </tbody>
 </table>
+
+<!-- Formulaire caché pour soumettre la traversée sélectionnée -->
+<form id="selectionForm" action="nouvelle_page.php" method="POST">
+    <input type="hidden" name="travers_id" id="travers_id">
+    <input type="hidden" name="travers_desc" id="travers_desc">
+    <input type="hidden" name="travers_date" id="travers_date">
+    <input type="hidden" name="travers_heure" id="travers_heure">
+    <button type="button" onclick="submitForm()">Sélectionner cette traversée</button>
+</form>
 
 <script>
 // Fonction pour récupérer les informations et afficher le tableau
@@ -80,15 +90,47 @@ function afficherInfo(descTravers, dateTravers) {
                 tdVehiculeSup2m.textContent = row['véhicule sup2m'];
                 tr.appendChild(tdVehiculeSup2m);
 
+                // Colonne Sélection (radio button)
+                let tdSelect = document.createElement('td');
+                let radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'selectedTravers';
+                radio.value = row.id_travers;
+                radio.setAttribute('data-desc', descTravers);
+                radio.setAttribute('data-date', dateTravers);
+                radio.setAttribute('data-heure', row.heure_travers);
+                radio.onclick = updateHiddenFields;
+                tdSelect.appendChild(radio);
+                tr.appendChild(tdSelect);
+
                 tableBody.appendChild(tr);
             });
         })
         .catch(error => console.error('Erreur AJAX:', error));
 }
-</script>
 
+// Fonction pour mettre à jour les champs cachés avant soumission
+function updateHiddenFields() {
+    let selectedRadio = document.querySelector('input[name="selectedTravers"]:checked');
+    if (selectedRadio) {
+        document.getElementById('travers_id').value = selectedRadio.value;
+        document.getElementById('travers_desc').value = selectedRadio.getAttribute('data-desc');
+        document.getElementById('travers_date').value = selectedRadio.getAttribute('data-date');
+        document.getElementById('travers_heure').value = selectedRadio.getAttribute('data-heure');
+    }
+}
 
-<script>
+// Fonction pour soumettre le formulaire
+function submitForm() {
+    let selectedRadio = document.querySelector('input[name="selectedTravers"]:checked');
+
+    if (selectedRadio) {
+        document.getElementById('selectionForm').submit();
+    } else {
+        alert("Veuillez sélectionner une traversée.");
+    }
+}
+
 // Fonction pour récupérer les traversées selon le secteur sélectionné
 function selectionnerSecteur(nomSecteur) {
     fetch('get_traversees.php?nom_secteur=' + encodeURIComponent(nomSecteur))
@@ -104,7 +146,6 @@ function selectionnerSecteur(nomSecteur) {
                 select.appendChild(option);
             });
 
-            // On vide la liste des dates si le secteur change
             document.getElementById('date_traversee').innerHTML = '<option value="">Sélectionner une date</option>';
         })
         .catch(error => console.error('Erreur AJAX:', error));
@@ -130,24 +171,21 @@ function selectionnerTraversee(descTravers) {
                 select.appendChild(option);
             });
 
-            // Afficher les informations de la traversée pour la première date disponible
             if (data.length > 0) {
-                afficherInfo(descTravers, data[0]);  // Appel de la fonction pour afficher les infos dans le tableau
+                afficherInfo(descTravers, data[0]);
             }
         })
         .catch(error => console.error('Erreur AJAX:', error));
 }
+
 function selectionnerDate() {
     const descTravers = document.getElementById('traversee').value;
     const dateTravers = document.getElementById('date_traversee').value;
 
     if (!descTravers || !dateTravers) {
-        return;  // Si l'une des valeurs n'est pas définie, on ne fait rien
+        return;
     }
 
     afficherInfo(descTravers, dateTravers);
 }
-
 </script>
-
-
