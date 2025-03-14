@@ -55,9 +55,21 @@ $descriptions = getDescTraversées($id_secteur);
 </form>
 
 <script>
-// Fonction pour récupérer les informations et afficher le tableau
-function afficherInfo(descTravers, dateTravers) {
-    fetch('get_info.php?desc_travers=' + encodeURIComponent(descTravers) + '&date_travers=' + encodeURIComponent(dateTravers))
+// Fonction pour récupérer les informations en fonction des choix
+function afficherInfo(nomSecteur = '', descTravers = '', dateTravers = '') {
+    let url = 'get_info.php';
+    
+    if (!nomSecteur) {
+        url += '?all=true'; // Charge toutes les traversées
+    } else if (!descTravers) {
+        url += `?nom_secteur=${encodeURIComponent(nomSecteur)}`;
+    } else if (!dateTravers) {
+        url += `?nom_secteur=${encodeURIComponent(nomSecteur)}&desc_travers=${encodeURIComponent(descTravers)}`;
+    } else {
+        url += `?nom_secteur=${encodeURIComponent(nomSecteur)}&desc_travers=${encodeURIComponent(descTravers)}&date_travers=${encodeURIComponent(dateTravers)}`;
+    }
+
+    fetch(url)
         .then(response => response.json())
         .then(data => {
             let tableBody = document.getElementById('infoTable').getElementsByTagName('tbody')[0];
@@ -65,48 +77,80 @@ function afficherInfo(descTravers, dateTravers) {
 
             data.forEach(row => {
                 let tr = document.createElement('tr');
-                
-                let tdId = document.createElement('td');
-                tdId.textContent = row.id_travers;
-                tr.appendChild(tdId);
-                
-                let tdHeure = document.createElement('td');
-                tdHeure.textContent = row.heure_travers;
-                tr.appendChild(tdHeure);
-                
-                let tdNomBateau = document.createElement('td');
-                tdNomBateau.textContent = row.nom_bateau;
-                tr.appendChild(tdNomBateau);
-                
-                let tdPassager = document.createElement('td');
-                tdPassager.textContent = row.Passager;
-                tr.appendChild(tdPassager);
-                
-                let tdVehiculeInf2m = document.createElement('td');
-                tdVehiculeInf2m.textContent = row['véhicule inf2m'];
-                tr.appendChild(tdVehiculeInf2m);
-                
-                let tdVehiculeSup2m = document.createElement('td');
-                tdVehiculeSup2m.textContent = row['véhicule sup2m'];
-                tr.appendChild(tdVehiculeSup2m);
-
-                // Colonne Sélection (radio button)
-                let tdSelect = document.createElement('td');
-                let radio = document.createElement('input');
-                radio.type = 'radio';
-                radio.name = 'selectedTravers';
-                radio.value = row.id_travers;
-                radio.setAttribute('data-desc', descTravers);
-                radio.setAttribute('data-date', dateTravers);
-                radio.setAttribute('data-heure', row.heure_travers);
-                radio.onclick = updateHiddenFields;
-                tdSelect.appendChild(radio);
-                tr.appendChild(tdSelect);
-
+                tr.innerHTML = `
+                    <td>${row.id_travers}</td>
+                    <td>${row.heure_travers}</td>
+                    <td>${row.nom_bateau}</td>
+                    <td>${row.Passager}</td>
+                    <td>${row['véhicule inf2m']}</td>
+                    <td>${row['véhicule sup2m']}</td>
+                    <td><input type="radio" name="selectedTravers" value="${row.id_travers}" data-desc="${descTravers}" data-date="${dateTravers}" data-heure="${row.heure_travers}" onclick="updateHiddenFields()"></td>
+                `;
                 tableBody.appendChild(tr);
             });
         })
         .catch(error => console.error('Erreur AJAX:', error));
+}
+
+// Fonction pour sélectionner un secteur
+function selectionnerSecteur(nomSecteur) {
+    fetch('get_traversees.php?nom_secteur=' + encodeURIComponent(nomSecteur))
+        .then(response => response.json())
+        .then(data => {
+            let select = document.getElementById('traversee');
+            select.innerHTML = '<option value="">Sélectionner une traversée</option>';
+            
+            data.forEach(desc => {
+                let option = document.createElement('option');
+                option.value = desc;
+                option.textContent = desc;
+                select.appendChild(option);
+            });
+            
+            document.getElementById('date_traversee').innerHTML = '<option value="">Sélectionner une date</option>';
+            afficherInfo(nomSecteur); // Affiche les traversées du secteur sélectionné
+        })
+        .catch(error => console.error('Erreur AJAX:', error));
+}
+
+// Fonction pour sélectionner une traversée
+function selectionnerTraversee(descTravers) {
+    const nomSecteur = document.querySelector('li button[disabled]')?.textContent || '';
+    
+    if (!descTravers) {
+        document.getElementById('date_traversee').innerHTML = '<option value="">Sélectionner une date</option>';
+        return;
+    }
+    
+    fetch('get_dates.php?desc_travers=' + encodeURIComponent(descTravers))
+        .then(response => response.json())
+        .then(data => {
+            let select = document.getElementById('date_traversee');
+            select.innerHTML = '<option value="">Sélectionner une date</option>';
+            
+            data.forEach(date => {
+                let option = document.createElement('option');
+                option.value = date;
+                option.textContent = date;
+                select.appendChild(option);
+            });
+            
+            afficherInfo(nomSecteur, descTravers); // Affiche les traversées selon le secteur et la traversée
+        })
+        .catch(error => console.error('Erreur AJAX:', error));
+}
+
+// Fonction pour sélectionner une date
+function selectionnerDate() {
+    const nomSecteur = document.querySelector('li button[disabled]')?.textContent || '';
+    const descTravers = document.getElementById('traversee').value;
+    const dateTravers = document.getElementById('date_traversee').value;
+    
+    if (!descTravers || !dateTravers) {
+        return;
+    }
+    
+    afficherInfo(nomSecteur, descTravers, dateTravers);
 }
 
 // Fonction pour mettre à jour les champs cachés avant soumission
@@ -131,61 +175,9 @@ function submitForm() {
     }
 }
 
-// Fonction pour récupérer les traversées selon le secteur sélectionné
-function selectionnerSecteur(nomSecteur) {
-    fetch('get_traversees.php?nom_secteur=' + encodeURIComponent(nomSecteur))
-        .then(response => response.json())
-        .then(data => {
-            let select = document.getElementById('traversee');
-            select.innerHTML = '<option value="">Sélectionner une traversée</option>';
-
-            data.forEach(desc => {
-                let option = document.createElement('option');
-                option.value = desc;
-                option.textContent = desc;
-                select.appendChild(option);
-            });
-
-            document.getElementById('date_traversee').innerHTML = '<option value="">Sélectionner une date</option>';
-        })
-        .catch(error => console.error('Erreur AJAX:', error));
-}
-
-// Fonction pour récupérer les dates selon la traversée sélectionnée
-function selectionnerTraversee(descTravers) {
-    if (!descTravers) {
-        document.getElementById('date_traversee').innerHTML = '<option value="">Sélectionner une date</option>';
-        return;
-    }
-
-    fetch('get_dates.php?desc_travers=' + encodeURIComponent(descTravers))
-        .then(response => response.json())
-        .then(data => {
-            let select = document.getElementById('date_traversee');
-            select.innerHTML = '<option value="">Sélectionner une date</option>';
-
-            data.forEach(date => {
-                let option = document.createElement('option');
-                option.value = date;
-                option.textContent = date;
-                select.appendChild(option);
-            });
-
-            if (data.length > 0) {
-                afficherInfo(descTravers, data[0]);
-            }
-        })
-        .catch(error => console.error('Erreur AJAX:', error));
-}
-
-function selectionnerDate() {
-    const descTravers = document.getElementById('traversee').value;
-    const dateTravers = document.getElementById('date_traversee').value;
-
-    if (!descTravers || !dateTravers) {
-        return;
-    }
-
-    afficherInfo(descTravers, dateTravers);
-}
+// Chargement initial : afficher toutes les traversées
+window.onload = function () {
+    afficherInfo();
+};
 </script>
+

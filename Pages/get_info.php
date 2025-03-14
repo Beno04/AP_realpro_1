@@ -1,10 +1,19 @@
 <?php
-include '../Fonctions/Script.php'; // Assurez-vous que ce chemin est correct
+include '../Fonctions/Script.php';
 
-$desc_travers = $_GET['desc_travers'];
-$date_travers = $_GET['date_travers'];
+$nom_secteur = isset($_GET['nom_secteur']) ? $_GET['nom_secteur'] : '';
+$desc_travers = isset($_GET['desc_travers']) ? $_GET['desc_travers'] : '';
+$date_travers = isset($_GET['date_travers']) ? $_GET['date_travers'] : '';
 
-$info = GetInfo($desc_travers, $date_travers);
+if ($nom_secteur && $desc_travers && $date_travers) {
+    $traversees = GetInfo3option($nom_secteur, $desc_travers, $date_travers);
+} elseif ($nom_secteur && $desc_travers) {
+    $traversees = GetInfo2option($nom_secteur, $desc_travers);
+} elseif ($nom_secteur) {
+    $traversees = GetInfo1Option($nom_secteur);
+} else {
+    $traversees = GetInfo();
+}
 
-echo json_encode($info);
-?>
+header('Content-Type: application/json');
+echo json_encode($traversees);

@@ -98,7 +98,55 @@ function GetDateTravers($desc_travers) {
     return $stmt->fetchAll(PDO::FETCH_COLUMN);
 }
 
-function GetInfo($desc_travers, $date_travers) {
+function GetInfo() {
+    $servername = "localhost"; 
+    $username = "root";
+    $password = "";
+    $dbname = "marieteam";
+
+    $pdo = connexionBase($servername, $username, $password, $dbname);
+
+    $sql = "SELECT traversée.id_travers, heure_travers, nom_bateau, PlaceDispoPassager.PlaceDispo AS 'Passager', PlaceDispoVéhiculeInf2m.PlaceDispo AS 'véhicule inf2m', PlaceDispoVéhiculeSup2m.PlaceDispo AS 'véhicule sup2m'
+    FROM traversée
+    INNER JOIN bateau ON traversée.id_bateau = bateau.id_bateau
+    INNER JOIN PlaceDispoPassager ON traversée.id_travers = PlaceDispoPassager.id_travers
+    INNER JOIN PlaceDispoVéhiculeInf2m ON traversée.id_travers = PlaceDispoVéhiculeInf2m.id_travers
+    INNER JOIN PlaceDispoVéhiculeSup2m ON traversée.id_travers = PlaceDispoVéhiculeSup2m.id_travers
+    INNER JOIN liaison on traversée.id_travers = liaison.id_travers
+    INNER JOIN secteur on liaison.id_secteur = secteur.id_secteur";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function GetInfo1Option($nom_secteur) {
+    $servername = "localhost"; 
+    $username = "root";
+    $password = "";
+    $dbname = "marieteam";
+
+    $pdo = connexionBase($servername, $username, $password, $dbname);
+
+    $sql = "SELECT traversée.id_travers, heure_travers, nom_bateau, PlaceDispoPassager.PlaceDispo AS 'Passager', PlaceDispoVéhiculeInf2m.PlaceDispo AS 'véhicule inf2m', PlaceDispoVéhiculeSup2m.PlaceDispo AS 'véhicule sup2m'
+    FROM traversée
+    INNER JOIN bateau ON traversée.id_bateau = bateau.id_bateau
+    INNER JOIN PlaceDispoPassager ON traversée.id_travers = PlaceDispoPassager.id_travers
+    INNER JOIN PlaceDispoVéhiculeInf2m ON traversée.id_travers = PlaceDispoVéhiculeInf2m.id_travers
+    INNER JOIN PlaceDispoVéhiculeSup2m ON traversée.id_travers = PlaceDispoVéhiculeSup2m.id_travers
+    INNER JOIN liaison on traversée.id_travers = liaison.id_travers
+    INNER JOIN secteur on liaison.id_secteur = secteur.id_secteur
+    WHERE secteur.nom_secteur = :nom_secteur";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':nom_secteur', $nom_secteur, PDO::PARAM_STR);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function GetInfo2option($nom_secteur, $desc_travers) {
     $servername = "localhost"; 
     $username = "root";
     $password = "";
@@ -112,9 +160,38 @@ function GetInfo($desc_travers, $date_travers) {
     INNER JOIN placedispopassager ON traversée.id_travers = placedispopassager.id_travers
     INNER JOIN placedispovéhiculeinf2m ON traversée.id_travers = placedispovéhiculeinf2m.id_travers
     INNER JOIN placedispovéhiculesup2m ON traversée.id_travers = placedispovéhiculesup2m.id_travers
-    WHERE traversée.desc_travers = :desc_travers AND traversée.date_travers = :date_travers";
+    INNER JOIN liaison on traversée.id_travers = liaison.id_travers
+    INNER JOIN secteur on liaison.id_secteur = secteur.id_secteur
+    WHERE secteur.nom_secteur = :nom_secteur AND traversée.desc_travers = :desc_travers";
 
     $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':nom_secteur', $nom_secteur, PDO::PARAM_STR);
+    $stmt->bindParam(':desc_travers', $desc_travers, PDO::PARAM_STR);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function GetInfo3option($nom_secteur, $desc_travers, $date_travers) {
+    $servername = "localhost"; 
+    $username = "root";
+    $password = "";
+    $dbname = "marieteam";
+
+    $pdo = connexionBase($servername, $username, $password, $dbname);
+
+    $sql = "SELECT traversée.id_travers, heure_travers, nom_bateau, placedispopassager.PlaceDispo AS 'Passager', placedispovéhiculeinf2m.PlaceDispo AS 'véhicule inf2m', placedispovéhiculesup2m.PlaceDispo AS 'véhicule sup2m'
+    FROM traversée
+    INNER JOIN bateau ON traversée.id_bateau = bateau.id_bateau
+    INNER JOIN placedispopassager ON traversée.id_travers = placedispopassager.id_travers
+    INNER JOIN placedispovéhiculeinf2m ON traversée.id_travers = placedispovéhiculeinf2m.id_travers
+    INNER JOIN placedispovéhiculesup2m ON traversée.id_travers = placedispovéhiculesup2m.id_travers
+    INNER JOIN liaison on traversée.id_travers = liaison.id_travers
+    INNER JOIN secteur on liaison.id_secteur = secteur.id_secteur
+    WHERE secteur.nom_secteur = :nom_secteur AND traversée.desc_travers = :desc_travers AND traversée.date_travers = :date_travers";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':nom_secteur', $nom_secteur, PDO::PARAM_STR);
     $stmt->bindParam(':desc_travers', $desc_travers, PDO::PARAM_STR);
     $stmt->bindParam(':date_travers', $date_travers, PDO::PARAM_STR);
     $stmt->execute();
