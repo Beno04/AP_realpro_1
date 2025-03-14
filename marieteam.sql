@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le : jeu. 13 mars 2025 à 19:54
--- Version du serveur : 10.4.32-MariaDB
--- Version de PHP : 8.2.12
+-- Hôte : localhost
+-- Généré le : ven. 14 mars 2025 à 10:58
+-- Version du serveur : 10.3.39-MariaDB-0+deb10u1
+-- Version de PHP : 8.2.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -32,17 +32,16 @@ CREATE TABLE `bateau` (
   `nom_bateau` varchar(50) DEFAULT NULL,
   `long_bateau` decimal(4,2) DEFAULT NULL,
   `larg_bateau` decimal(4,2) DEFAULT NULL,
-  `vitesse_bateau` int(11) DEFAULT NULL,
-  `image_url` varchar(500) NOT NULL
+  `vitesse_bateau` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `bateau`
 --
 
-INSERT INTO `bateau` (`id_bateau`, `nom_bateau`, `long_bateau`, `larg_bateau`, `vitesse_bateau`, `image_url`) VALUES
-(1, 'Luce Isle', 37.20, 8.60, 26, 'https://www.ferrybookings.com/wp-content/uploads/2016/05/header-image.jpg'),
-(2, 'Al\'xi', 25.00, 7.00, 16, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVbzjFa7-yin9l9P2exKMZ9MuBxGMi7p123A&s');
+INSERT INTO `bateau` (`id_bateau`, `nom_bateau`, `long_bateau`, `larg_bateau`, `vitesse_bateau`) VALUES
+(1, 'Luce Isle', 37.20, 8.60, '26 noeuds'),
+(2, 'Al\'xi', 25.00, 7.00, '16 noeuds');
 
 -- --------------------------------------------------------
 
@@ -266,10 +265,10 @@ INSERT INTO `liaison` (`id_liaison`, `dist_milles`, `id_port`, `id_port_1`, `id_
 -- --------------------------------------------------------
 
 --
--- Doublure de structure pour la vue `nbpassagerresa`
+-- Doublure de structure pour la vue `nbPassagerResa`
 -- (Voir ci-dessous la vue réelle)
 --
-CREATE TABLE `nbpassagerresa` (
+CREATE TABLE `nbPassagerResa` (
 `id_travers` int(11)
 ,`NbPersonneResa` double
 );
@@ -277,10 +276,10 @@ CREATE TABLE `nbpassagerresa` (
 -- --------------------------------------------------------
 
 --
--- Doublure de structure pour la vue `nbvéhiculeinf2mresa`
+-- Doublure de structure pour la vue `nbVéhiculeInf2mResa`
 -- (Voir ci-dessous la vue réelle)
 --
-CREATE TABLE `nbvéhiculeinf2mresa` (
+CREATE TABLE `nbVéhiculeInf2mResa` (
 `id_travers` int(11)
 ,`NbVéhiculeResa` double
 );
@@ -288,32 +287,21 @@ CREATE TABLE `nbvéhiculeinf2mresa` (
 -- --------------------------------------------------------
 
 --
--- Doublure de structure pour la vue `nbvéhiculesup2mresa`
+-- Doublure de structure pour la vue `NbVéhiculeSup2mResa`
 -- (Voir ci-dessous la vue réelle)
 --
-CREATE TABLE `nbvéhiculesup2mresa` (
+CREATE TABLE `NbVéhiculeSup2mResa` (
 `id_travers` int(11)
-,`NbVéhiculeSup2mResa` double
+,`NbVéhiculeResa` double
 );
 
 -- --------------------------------------------------------
 
 --
--- Doublure de structure pour la vue `placedispopassager`
+-- Doublure de structure pour la vue `PlaceDispoPassager`
 -- (Voir ci-dessous la vue réelle)
 --
-CREATE TABLE `placedispopassager` (
-`id_travers` int(11)
-,`PlaceDispo` double
-);
-
--- --------------------------------------------------------
-
---
--- Doublure de structure pour la vue `placedispovéhiculeinf2m`
--- (Voir ci-dessous la vue réelle)
---
-CREATE TABLE `placedispovéhiculeinf2m` (
+CREATE TABLE `PlaceDispoPassager` (
 `id_travers` int(11)
 ,`PlaceDispo` double
 );
@@ -321,10 +309,21 @@ CREATE TABLE `placedispovéhiculeinf2m` (
 -- --------------------------------------------------------
 
 --
--- Doublure de structure pour la vue `placedispovéhiculesup2m`
+-- Doublure de structure pour la vue `PlaceDispoVéhiculeInf2m`
 -- (Voir ci-dessous la vue réelle)
 --
-CREATE TABLE `placedispovéhiculesup2m` (
+CREATE TABLE `PlaceDispoVéhiculeInf2m` (
+`id_travers` int(11)
+,`PlaceDispo` double
+);
+
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue `PlaceDispoVéhiculeSup2m`
+-- (Voir ci-dessous la vue réelle)
+--
+CREATE TABLE `PlaceDispoVéhiculeSup2m` (
 `id_travers` int(11)
 ,`PlaceDispo` double
 );
@@ -554,56 +553,56 @@ INSERT INTO `être_équipé` (`id_bateau`, `id_equip`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la vue `nbpassagerresa`
+-- Structure de la vue `nbPassagerResa`
 --
-DROP TABLE IF EXISTS `nbpassagerresa`;
+DROP TABLE IF EXISTS `nbPassagerResa`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`marieteam`@`localhost` SQL SECURITY DEFINER VIEW `nbpassagerresa`  AS SELECT `reservation`.`id_travers` AS `id_travers`, sum(`enregistrer`.`quantité`) AS `NbPersonneResa` FROM (`enregistrer` join `reservation` on(`enregistrer`.`id_resa` = `reservation`.`id_resa`)) WHERE `enregistrer`.`id_type` in (1,2,3) GROUP BY `reservation`.`id_travers` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`marieteam`@`localhost` SQL SECURITY DEFINER VIEW `nbPassagerResa`  AS SELECT `t`.`id_travers` AS `id_travers`, coalesce(sum(`e`.`quantité`),0) AS `NbPersonneResa` FROM ((`traversée` `t` left join `reservation` `r` on(`t`.`id_travers` = `r`.`id_travers`)) left join `enregistrer` `e` on(`r`.`id_resa` = `e`.`id_resa` and `e`.`id_type` in (1,2,3))) WHERE `t`.`date_travers` > curdate() GROUP BY `t`.`id_travers` ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la vue `nbvéhiculeinf2mresa`
+-- Structure de la vue `nbVéhiculeInf2mResa`
 --
-DROP TABLE IF EXISTS `nbvéhiculeinf2mresa`;
+DROP TABLE IF EXISTS `nbVéhiculeInf2mResa`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`marieteam`@`localhost` SQL SECURITY DEFINER VIEW `nbvéhiculeinf2mresa`  AS SELECT `reservation`.`id_travers` AS `id_travers`, sum(`enregistrer`.`quantité`) AS `NbVéhiculeResa` FROM (`enregistrer` join `reservation` on(`enregistrer`.`id_resa` = `reservation`.`id_resa`)) WHERE `enregistrer`.`id_type` in (4,5) GROUP BY `reservation`.`id_travers` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`marieteam`@`localhost` SQL SECURITY DEFINER VIEW `nbVéhiculeInf2mResa`  AS SELECT `t`.`id_travers` AS `id_travers`, coalesce(sum(`e`.`quantité`),0) AS `NbVéhiculeResa` FROM ((`traversée` `t` left join `reservation` `r` on(`t`.`id_travers` = `r`.`id_travers`)) left join `enregistrer` `e` on(`r`.`id_resa` = `e`.`id_resa` and `e`.`id_type` in (4,5))) WHERE `t`.`date_travers` > curdate() GROUP BY `t`.`id_travers` ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la vue `nbvéhiculesup2mresa`
+-- Structure de la vue `NbVéhiculeSup2mResa`
 --
-DROP TABLE IF EXISTS `nbvéhiculesup2mresa`;
+DROP TABLE IF EXISTS `NbVéhiculeSup2mResa`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`marieteam`@`localhost` SQL SECURITY DEFINER VIEW `nbvéhiculesup2mresa`  AS SELECT `reservation`.`id_travers` AS `id_travers`, sum(`enregistrer`.`quantité`) AS `NbVéhiculeSup2mResa` FROM (`enregistrer` join `reservation` on(`enregistrer`.`id_resa` = `reservation`.`id_resa`)) WHERE `enregistrer`.`id_type` in (6,7,8) GROUP BY `reservation`.`id_travers` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`marieteam`@`localhost` SQL SECURITY DEFINER VIEW `NbVéhiculeSup2mResa`  AS SELECT `t`.`id_travers` AS `id_travers`, coalesce(sum(`e`.`quantité`),0) AS `NbVéhiculeResa` FROM ((`traversée` `t` left join `reservation` `r` on(`t`.`id_travers` = `r`.`id_travers`)) left join `enregistrer` `e` on(`r`.`id_resa` = `e`.`id_resa` and `e`.`id_type` in (6,7,8))) WHERE `t`.`date_travers` > curdate() GROUP BY `t`.`id_travers` ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la vue `placedispopassager`
+-- Structure de la vue `PlaceDispoPassager`
 --
-DROP TABLE IF EXISTS `placedispopassager`;
+DROP TABLE IF EXISTS `PlaceDispoPassager`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`marieteam`@`localhost` SQL SECURITY DEFINER VIEW `placedispopassager`  AS SELECT `traversée`.`id_travers` AS `id_travers`, `contenir`.`capac_bateau_pass`- `nbpassagerresa`.`NbPersonneResa` AS `PlaceDispo` FROM (((`nbpassagerresa` join `traversée` on(`nbpassagerresa`.`id_travers` = `traversée`.`id_travers`)) join `bateau` on(`traversée`.`id_bateau` = `bateau`.`id_bateau`)) join `contenir` on(`bateau`.`id_bateau` = `contenir`.`id_bateau`)) WHERE `contenir`.`id_cat` = 1 ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`marieteam`@`localhost` SQL SECURITY DEFINER VIEW `PlaceDispoPassager`  AS SELECT `traversée`.`id_travers` AS `id_travers`, `contenir`.`capac_bateau_pass`- `nbPassagerResa`.`NbPersonneResa` AS `PlaceDispo` FROM (((`nbPassagerResa` join `traversée` on(`nbPassagerResa`.`id_travers` = `traversée`.`id_travers`)) join `bateau` on(`traversée`.`id_bateau` = `bateau`.`id_bateau`)) join `contenir` on(`bateau`.`id_bateau` = `contenir`.`id_bateau`)) WHERE `contenir`.`id_cat` = 1 ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la vue `placedispovéhiculeinf2m`
+-- Structure de la vue `PlaceDispoVéhiculeInf2m`
 --
-DROP TABLE IF EXISTS `placedispovéhiculeinf2m`;
+DROP TABLE IF EXISTS `PlaceDispoVéhiculeInf2m`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`marieteam`@`localhost` SQL SECURITY DEFINER VIEW `placedispovéhiculeinf2m`  AS SELECT `traversée`.`id_travers` AS `id_travers`, `contenir`.`capac_bateau_pass`- `nbvéhiculeinf2mresa`.`NbVéhiculeResa` AS `PlaceDispo` FROM (((`nbvéhiculeinf2mresa` join `traversée` on(`nbvéhiculeinf2mresa`.`id_travers` = `traversée`.`id_travers`)) join `bateau` on(`traversée`.`id_bateau` = `bateau`.`id_bateau`)) join `contenir` on(`bateau`.`id_bateau` = `contenir`.`id_bateau`)) WHERE `contenir`.`id_cat` = 2 ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`marieteam`@`localhost` SQL SECURITY DEFINER VIEW `PlaceDispoVéhiculeInf2m`  AS SELECT `traversée`.`id_travers` AS `id_travers`, `contenir`.`capac_bateau_pass`- `nbVéhiculeInf2mResa`.`NbVéhiculeResa` AS `PlaceDispo` FROM (((`nbVéhiculeInf2mResa` join `traversée` on(`nbVéhiculeInf2mResa`.`id_travers` = `traversée`.`id_travers`)) join `bateau` on(`traversée`.`id_bateau` = `bateau`.`id_bateau`)) join `contenir` on(`bateau`.`id_bateau` = `contenir`.`id_bateau`)) WHERE `contenir`.`id_cat` = 2 ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la vue `placedispovéhiculesup2m`
+-- Structure de la vue `PlaceDispoVéhiculeSup2m`
 --
-DROP TABLE IF EXISTS `placedispovéhiculesup2m`;
+DROP TABLE IF EXISTS `PlaceDispoVéhiculeSup2m`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`marieteam`@`localhost` SQL SECURITY DEFINER VIEW `placedispovéhiculesup2m`  AS SELECT `traversée`.`id_travers` AS `id_travers`, `contenir`.`capac_bateau_pass`- `nbvéhiculesup2mresa`.`NbVéhiculeSup2mResa` AS `PlaceDispo` FROM (((`nbvéhiculesup2mresa` join `traversée` on(`nbvéhiculesup2mresa`.`id_travers` = `traversée`.`id_travers`)) join `bateau` on(`traversée`.`id_bateau` = `bateau`.`id_bateau`)) join `contenir` on(`bateau`.`id_bateau` = `contenir`.`id_bateau`)) WHERE `contenir`.`id_cat` = 3 ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`marieteam`@`localhost` SQL SECURITY DEFINER VIEW `PlaceDispoVéhiculeSup2m`  AS SELECT `traversée`.`id_travers` AS `id_travers`, `contenir`.`capac_bateau_pass`- `NbVéhiculeSup2mResa`.`NbVéhiculeResa` AS `PlaceDispo` FROM (((`NbVéhiculeSup2mResa` join `traversée` on(`NbVéhiculeSup2mResa`.`id_travers` = `traversée`.`id_travers`)) join `bateau` on(`traversée`.`id_bateau` = `bateau`.`id_bateau`)) join `contenir` on(`bateau`.`id_bateau` = `contenir`.`id_bateau`)) WHERE `contenir`.`id_cat` = 3 ;
 
 --
 -- Index pour les tables déchargées
