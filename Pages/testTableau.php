@@ -32,5 +32,40 @@
         </div>
     </div>
 
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <table>
+        <thead>
+            <tr>
+                <th colspan="3">Traversée</th>
+                <th colspan="3">Places disponibles</th>
+                <th>Sélectionner</th>
+            </tr>
+            <tr>
+                <th>N°</th>
+                <th>Heure</th>
+                <th>Bateau</th>
+                <th>Passager</th>
+                <th>Véhicule Inf 2m</th>
+                <th>Véhicule Sup 2m</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
     
-<script src="../JavaScript/ScriptRéserver.js"></script>
+    <script src="../JavaScript/ScriptRéserver.js"></script>
