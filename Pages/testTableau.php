@@ -5,6 +5,7 @@
         $id_secteur = 2; // À remplacer par la vraie valeur
         $descriptions = getDescTraversées($id_secteur);
         $secteurs = getSecteurs();
+        $infos = GetInfo();
     ?>
 
     <div class="blockR">
@@ -46,6 +47,7 @@
             background-color: #f2f2f2;
         }
     </style>
+    <form id="selectionForm" action="reservation.php" method="GET">
     <table>
         <thead>
             <tr>
@@ -64,8 +66,22 @@
             </tr>
         </thead>
         <tbody>
+        <?php foreach ($infos as $info) : ?>
+            <tr>
+                <td><?= htmlspecialchars($info['id_travers']) ?></td>
+                <td><?= htmlspecialchars($info['heure_travers']) ?></td>
+                <td><?= htmlspecialchars($info['nom_bateau']) ?></td>
+                <td><?= htmlspecialchars($info['Passager']) ?></td>
+                <td><?= htmlspecialchars($info['véhicule inf2m']) ?></td>
+                <td><?= htmlspecialchars($info['véhicule sup2m']) ?></td>
+                <td>
+                <input type="radio" name="id_travers" value="<?= htmlspecialchars($info['id_travers']) ?>">
+                </td>
+            </tr>
+        <?php endforeach; ?>
         </tbody>
     </table>
-
+    <button type="submit">Valider la sélection</button>
+    </form>
     
     <script src="../JavaScript/ScriptRéserver.js"></script>
