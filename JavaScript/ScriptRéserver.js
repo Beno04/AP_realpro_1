@@ -111,3 +111,67 @@ function selectionnerTraversee(descTravers) {
         })
         .catch(error => console.error('Erreur AJAX (infos) :', error));
 }
+
+function selectionnerDate(dateTravers) {
+    let descTravers = document.querySelector('select[name="traversee"]').value;
+
+    if (!dateTravers || !descTravers || !secteurSelectionne) {
+        console.error("Erreur : Sélection incomplète !");
+        return;
+    }
+
+    console.log(`🔍 Mise à jour du tableau avec : Secteur = ${secteurSelectionne}, Traversée = ${descTravers}, Date = ${dateTravers}`);
+
+    fetch(`get_infos.php?nom_secteur=${encodeURIComponent(secteurSelectionne)}&desc_travers=${encodeURIComponent(descTravers)}&date_travers=${encodeURIComponent(dateTravers)}`)
+        .then(response => response.json())
+        .then(data => {
+            let tbody = document.querySelector('tbody');
+            tbody.innerHTML = ""; // Vide le tableau avant d'insérer les nouvelles données
+
+            if (data.length === 0) {
+                tbody.innerHTML = "<tr><td colspan='7'>Aucune traversée disponible</td></tr>";
+                return;
+            }
+
+            data.forEach(info => {
+                let row = `<tr>
+                    <td>${info.id_travers}</td>
+                    <td>${info.heure_travers}</td>
+                    <td>${info.nom_bateau}</td>
+                    <td>${info.Passager}</td>
+                    <td>${info["véhicule inf2m"]}</td>
+                    <td>${info["véhicule sup2m"]}</td>
+                    <td><input type="radio" name="id_travers" value="${info.id_travers}"></td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        })
+        .catch(error => console.error('❌ Erreur AJAX (infos) :', error));
+}
+
+document.getElementById('date_traversee').addEventListener('change', function() {
+    selectionnerDate(this.value);
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    let form = document.getElementById("selectionForm");
+    let selectTraversee = document.querySelector('select[name="traversee"]');
+    let selectDate = document.getElementById('date_traversee');
+    let heureField = document.getElementById("heure_travers_field");
+
+    // Écouteur pour capter le changement de sélection du radio button
+    document.querySelector("tbody").addEventListener("change", function (event) {
+        if (event.target.name === "id_travers") {
+            let selectedRow = event.target.closest("tr"); // Récupère la ligne sélectionnée
+            let heureTravers = selectedRow.cells[1].textContent.trim(); // Récupère l'heure (2e colonne)
+            heureField.value = heureTravers; // Remplit le champ caché
+        }
+    });
+
+    form.addEventListener("submit", function () {
+        // Met à jour les champs cachés même si vides
+        document.getElementById('desc_travers_field').value = selectTraversee.value || "";
+        document.getElementById('date_travers_field').value = selectDate.value || "";
+    });
+});
