@@ -21,7 +21,7 @@
         </div>
 
         <div class="tableauReservation">
-            <select name="traversee" onchange="selectionnerTraversee(this.value)">
+            <select name="traversee" data-nom-secteur="<?= htmlspecialchars($nom_secteur) ?>" onchange="selectionnerTraversee(this.value)">
                 <option value="">Sélectionner une traversée</option>
                 <?php foreach ($descriptions as $desc) : ?>
                     <option value="<?= htmlspecialchars($desc) ?>"><?= htmlspecialchars($desc) ?></option>
