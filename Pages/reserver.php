@@ -71,11 +71,11 @@
             </select>
         </div>
     </div>
-    <form id="selectionForm" action="reservation.php" method="GET">
-    <!-- Champs cachés pour stocker les infos -->
-    <input type="hidden" name="desc_travers" id="desc_travers_field">
-    <input type="hidden" name="date_travers" id="date_travers_field">
-    <input type="hidden" name="heure_travers" id="heure_travers_field">
+    <form id="selectionForm" action="reservation.php" method="POST">
+        <!-- Champs cachés pour stocker les infos -->
+        <input type="hidden" name="desc_travers" id="desc_travers_field">
+        <input type="hidden" name="date_travers" id="date_travers_field">
+        <input type="hidden" name="heure_travers" id="heure_travers_field">
 
         <table>
             <thead>
@@ -95,22 +95,24 @@
                 </tr>
             </thead>
             <tbody>
-            <?php foreach ($infos as $info) : ?>
-                <tr>
-                    <td><?= htmlspecialchars($info['id_travers']) ?></td>
-                    <td><?= htmlspecialchars($info['heure_travers']) ?></td>
-                    <td><?= htmlspecialchars($info['nom_bateau']) ?></td>
-                    <td><?= htmlspecialchars($info['Passager']) ?></td>
-                    <td><?= htmlspecialchars($info['véhicule inf2m']) ?></td>
-                    <td><?= htmlspecialchars($info['véhicule sup2m']) ?></td>
-                    <td>
-                        <input type="radio" name="id_travers" value="<?= htmlspecialchars($info['id_travers']) ?>">
-                    </td>
-                </tr>
-            <?php endforeach; ?>
+                <?php foreach ($infos as $info) : ?>
+                    <tr>
+                        <td><?= htmlspecialchars($info['id_travers']) ?></td>
+                        <td><?= htmlspecialchars($info['heure_travers']) ?></td>
+                        <td><?= htmlspecialchars($info['nom_bateau']) ?></td>
+                        <td><?= htmlspecialchars($info['Passager']) ?></td>
+                        <td><?= htmlspecialchars($info['véhicule inf2m']) ?></td>
+                        <td><?= htmlspecialchars($info['véhicule sup2m']) ?></td>
+                        <td>
+                            <input type="radio" name="id_travers" value="<?= htmlspecialchars($info['id_travers']) ?>">
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
         <button type="submit">Valider la sélection</button>
+    </form>
+
     
     <script src="../JavaScript/ScriptRéserver.js"></script>
 
