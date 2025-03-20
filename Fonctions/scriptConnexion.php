@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if (!$user) { // L'utilisateur n'existe pas
                 $_SESSION['error'] = "Email ou mot de passe incorrect.";
-                header("Location: connexion.php");
+                header("Location: ../Pages/connexion.php");
                 exit();
             }
 
