@@ -9,27 +9,21 @@ if (isset($_GET['nom_secteur']) && !empty($_GET['nom_secteur'])) {
     if (isset($_GET['desc_travers']) && !empty($_GET['desc_travers'])) {
         $desc_travers = htmlspecialchars($_GET['desc_travers'], ENT_QUOTES, 'UTF-8');
 
-        // 🔍 Log PHP au lieu d'afficher directement
-        error_log("Secteur sélectionné: " . $nom_secteur);
-        error_log("Traversée sélectionnée: " . $desc_travers);
+        if (isset($_GET['date_travers']) && !empty($_GET['date_travers'])) {
+            $date_travers = htmlspecialchars($_GET['date_travers'], ENT_QUOTES, 'UTF-8');
 
-        $start_time = microtime(true);
-        $infos = GetInfo2Option($nom_secteur, $desc_travers);
-        $end_time = microtime(true);
-
-        error_log("Résultat SQL: " . print_r($infos, true));
+            // Exécute la fonction avec 3 paramètres
+            $infos = GetInfo3option($nom_secteur, $desc_travers, $date_travers);
+        } else {
+            // Exécute la fonction avec 2 paramètres
+            $infos = GetInfo2Option($nom_secteur, $desc_travers);
+        }
     } else {
-        $start_time = microtime(true);
+        // Exécute la fonction avec 1 paramètre
         $infos = GetInfo1Option($nom_secteur);
-        $end_time = microtime(true);
     }
 
-    // Calcul du temps d'exécution
-    $execution_time = $end_time - $start_time;
-    error_log("Temps d'exécution SQL: " . $execution_time . " secondes");
-
-    // Vérification et retour des données JSON valides
-    echo json_encode($infos ?: []); // Retourne un tableau vide si aucune donnée
+    echo json_encode($infos ?: []);
 } else {
     echo json_encode(["error" => "Nom du secteur manquant"]);
 }
