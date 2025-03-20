@@ -1,5 +1,6 @@
 <?php
 // Démarrer la session pour accéder aux variables de session
+ob_start();
 session_start();
 
 // Vérifier si l'utilisateur est connecté
@@ -32,13 +33,13 @@ if (isset($_SESSION['user_id'])) {
         } else {
             // Si l'utilisateur n'est pas trouvé dans la base de données, rediriger vers la page de connexion
             $_SESSION['error'] = "Utilisateur non trouvé.";
-            header("Location: connexion.php");
+            header("Location: ../Pages/connexion.php");
             exit();
         }
     } catch (PDOException $e) {
         // Si une erreur se produit lors de la connexion à la base de données
         $_SESSION['error'] = "Erreur de connexion à la base de données : " . $e->getMessage();
-        header("Location: connexion.php");
+        header("Location: ../Pages/connexion.php");
         exit();
     }
 } else {

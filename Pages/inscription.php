@@ -1,3 +1,7 @@
+<?php
+  include '../Fonctions/scriptInscription.php'; // Inclure le fichier PHP
+?>
+
 <html lang="fr">
 <head>
     <link rel="stylesheet" type="text/css" href="../Style/style.css" />
@@ -6,9 +10,6 @@
     <script src="../JavaScript/validInscription.js" defer></script> <!-- Inclure le fichier JavaScript -->
 </head>
 <body>
-    <?php
-    include '../Fonctions/scriptInscription.php'; // Inclure le fichier PHP
-    ?>
 
     <!-- Barre de navigation -->
     <nav class="menu">

@@ -10,7 +10,7 @@ function connexionBase($servername, $username, $password, $dbname) {
         ]);
     } catch (PDOException $e) {
         $_SESSION['error'] = "Impossible de se connecter à la base de données. Veuillez réessayer plus tard.";
-        header("Location: connexion.php");
+        header("Location: ../Pages/connexion.php");
         exit();
     }
 }
@@ -79,11 +79,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit();
             } else {
                 $_SESSION['error'] = "Email ou mot de passe incorrect.";
-                header("Location: connexion.php");
+                header("../Pages/connexion.php");
                 exit();
             }
         } else {
-            header("Location: connexion.php");
+            header("../Pages/connexion.php");
             exit();
         }
     }

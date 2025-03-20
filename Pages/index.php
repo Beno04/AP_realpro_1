@@ -1,3 +1,6 @@
+<?php
+include '../Fonctions/scriptUserConnecte.php';
+?>
 <html lang="fr">
   <head>
     <link rel="stylesheet" type="text/css" href="../Style/style.css" />
@@ -6,11 +9,6 @@
   </head>
 
   <body>
-
-    <?php
-    // Inclure le fichier qui vérifie si l'utilisateur est connecté et récupère son prénom et nom
-    include '../Fonctions/scriptUserConnecte.php'; 
-    ?>
 
     <!-- Barre de navigation -->
     <nav class="menu">

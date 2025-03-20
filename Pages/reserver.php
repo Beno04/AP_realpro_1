@@ -1,3 +1,8 @@
+<?php
+    // Inclure le fichier qui vérifie si l'utilisateur est connecté et récupère son prénom et nom
+    include '../Fonctions/scriptUserConnecte.php'; 
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,12 +11,6 @@
     <title>MarieTeam</title>
 </head>
 <body>
-
-
-    <?php
-    // Inclure le fichier qui vérifie si l'utilisateur est connecté et récupère son prénom et nom
-    include '../Fonctions/scriptUserConnecte.php'; 
-    ?>
 
     
     <!-- Barre de navigation -->
