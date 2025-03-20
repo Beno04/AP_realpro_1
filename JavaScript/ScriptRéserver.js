@@ -164,13 +164,12 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelector("tbody").addEventListener("change", function (event) {
         if (event.target.name === "id_travers") {
             let selectedRow = event.target.closest("tr"); // Récupère la ligne sélectionnée
-            let heureTravers = selectedRow.cells[1].textContent.trim(); // Récupère l'heure (2e colonne)
+            let heureTravers = selectedRow.cells[1].textContent.trim(); // Récupère l'heure
             heureField.value = heureTravers; // Remplit le champ caché
         }
     });
 
     form.addEventListener("submit", function () {
-        // Met à jour les champs cachés même si vides
         document.getElementById('desc_travers_field').value = selectTraversee.value || "";
         document.getElementById('date_travers_field').value = selectDate.value || "";
     });

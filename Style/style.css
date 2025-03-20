@@ -268,3 +268,84 @@ th, td {
 th {
     background-color: #f2f2f2;
 }
+
+
+/** page de reservation
+
+/* Styles spécifiques à la réservation */
+._reservation-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+}
+
+._reservation-title {
+    color: #2d3e50;
+}
+
+._reservation-info {
+    font-weight: bold;
+    color: #2d3e50;
+}
+
+._reservation-text {
+    margin-bottom: 10px;
+}
+
+._reservation-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+._reservation-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 45%;
+}
+
+._reservation-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+._reservation-table th, ._reservation-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+._reservation-table th {
+    background-color: #2d3e50;
+    color: white;
+}
+
+._reservation-quantity {
+    width: 50px;
+    text-align: center;
+}
+._reservation-button {
+    background-color: white;
+    border: 2px solid #2d3e50;
+    color: #2d3e50;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+    transition: 0.3s ease-in-out;
+}
+
+._reservation-button:hover {
+    background-color: #2d3e50;
+    color: white;
+}
