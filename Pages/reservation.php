@@ -77,10 +77,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 
+<!--<div id="reservation-data"
+    data-maxp="<?= $maxP; ?>"
+    data-maxvi="<?= $maxVi; ?>"
+    data-maxvs="<?= $maxVs; ?>">
+</div>
+-->
 <?php
 // Récupere les infos
 $prix = Prix($id_travers);
 $max = MaxPlace($id_travers);
+
 
 // Récupérer les Prix
 $prixA   = $prix['Adulte'] ?? 0;
@@ -93,10 +100,9 @@ $prixCc  = $prix['Camping Car'] ?? 0;
 $prixC   = $prix['Camion'] ?? 0;
 
 // Récupérer les quantités maximales
-$maxP;
-$maxVi;
-$maxVs;
-
+$maxP = $max['PlaceDispoPassagers'] ?? 0;
+$maxVi = $max['PlaceDispoVehiculesInf2m'] ?? 0;
+$maxVs = $max['PlaceDispoVehiculesSup2m'] ?? 0;
 
 
 ?>
@@ -120,64 +126,64 @@ $maxVs;
                 <tr>
                     <td>Adulte</td>
                     <td><?php echo $prixA ?></td>
-                    <td><input type="number" value="" min="0" max="<?php echo $maxA; ?>" 
-       oninput="if (this.value > <?php echo $maxA; ?>) this.value = <?php echo $maxA; ?>; 
+                    <td><input type="number" value="" min="0" max="<?php echo $maxP; ?>" 
+       oninput="if (this.value > <?php echo $maxP; ?>) this.value = <?php echo $maxP; ?>; 
                 if (this.value < 0) this.value = 0;" 
        class="_reservation-quantity"></td>
                 </tr>
                 <tr>
                     <td>Junior 8 à 18 ans</td>
                     <td><?php echo $prixJ ?></td>
-                    <td><input type="number" value="" min="0" max="<?php echo $maxJ; ?>" 
-       oninput="if (this.value > <?php echo $maxJ; ?>) this.value = <?php echo $maxJ; ?>; 
+                    <td><input type="number" value="" min="0" max="<?php echo $maxP; ?>" 
+       oninput="if (this.value > <?php echo $maxP; ?>) this.value = <?php echo $maxP; ?>; 
                 if (this.value < 0) this.value = 0;" 
        class="_reservation-quantity"></td>
                 </tr>
                 <tr>
                     <td>Enfant 0 à 7 ans</td>
                     <td><?php echo $prixE ?></td>
-                    <td><input type="number" value="" min="0" max="<?php echo $maxE; ?>" 
-       oninput="if (this.value > <?php echo $maxE; ?>) this.value = <?php echo $maxE; ?>; 
+                    <td><input type="number" value="" min="0" max="<?php echo $maxP; ?>" 
+       oninput="if (this.value > <?php echo $maxP; ?>) this.value = <?php echo $maxP; ?>; 
                 if (this.value < 0) this.value = 0;" 
        class="_reservation-quantity"></td>
                 </tr>
                 <tr>
                     <td>Voiture long. inf. 4m</td>
                     <td><?php echo $prixVi4 ?></td>
-                    <td><input type="number" value="" min="0" max="<?php echo $maxVi4; ?>" 
-       oninput="if (this.value > <?php echo $maxVi4; ?>) this.value = <?php echo $maxVi4; ?>; 
+                    <td><input type="number" value="" min="0" max="<?php echo $maxVi; ?>" 
+       oninput="if (this.value > <?php echo $maxVi; ?>) this.value = <?php echo $maxVi; ?>; 
                 if (this.value < 0) this.value = 0;" 
        class="_reservation-quantity"></td>
                 </tr>
                 <tr>
                     <td>Voiture long. inf. 5m</td>
                     <td><?php echo $prixVi5 ?></td>
-                    <td><input type="number" value="" min="0" max="<?php echo $maxVi5; ?>" 
-       oninput="if (this.value > <?php echo $maxVi5; ?>) this.value = <?php echo $maxVi5; ?>; 
+                    <td><input type="number" value="" min="0" max="<?php echo $maxVi; ?>" 
+       oninput="if (this.value > <?php echo $maxVi; ?>) this.value = <?php echo $maxVi; ?>; 
                 if (this.value < 0) this.value = 0;" 
        class="_reservation-quantity"></td>
                 </tr>
                 <tr>
                     <td>Fourgon</td>
                     <td><?php echo $prixF ?></td>
-                    <td><input type="number" value="" min="0" max="<?php echo $maxF; ?>" 
-       oninput="if (this.value > <?php echo $maxF; ?>) this.value = <?php echo $maxF; ?>; 
+                    <td><input type="number" value="" min="0" max="<?php echo $maxVs; ?>" 
+       oninput="if (this.value > <?php echo $maxVs; ?>) this.value = <?php echo $maxVs; ?>; 
                 if (this.value < 0) this.value = 0;" 
        class="_reservation-quantity"></td>
                 </tr>
                 <tr>
                     <td>Camping Car</td>
                     <td><?php echo $prixCc ?></td>
-                    <td><input type="number" value="" min="0" max="<?php echo $maxCc; ?>" 
-       oninput="if (this.value > <?php echo $maxCc; ?>) this.value = <?php echo $maxCc; ?>; 
+                    <td><input type="number" value="" min="0" max="<?php echo $maxVs; ?>" 
+       oninput="if (this.value > <?php echo $maxVs; ?>) this.value = <?php echo $maxVs; ?>; 
                 if (this.value < 0) this.value = 0;" 
        class="_reservation-quantity"></td>
                 </tr>
                 <tr>
                     <td>Camion</td>
                     <td><?php echo $prixC ?></td>
-                    <td><input type="number" value="" min="0" max="<?php echo $maxC; ?>" 
-       oninput="if (this.value > <?php echo $maxC; ?>) this.value = <?php echo $maxC; ?>; 
+                    <td><input type="number" value="" min="0" max="<?php echo $maxVs; ?>" 
+       oninput="if (this.value > <?php echo $maxVs; ?>) this.value = <?php echo $maxVs; ?>; 
                 if (this.value < 0) this.value = 0;" 
        class="_reservation-quantity"></td>
                 </tr>
@@ -185,5 +191,5 @@ $maxVs;
         </table>
         <button class="_reservation-button" type="submit">Enregistrer la réservation</button>
     </div>
-
+    <!--<script src="../JavaScript/scriptReservation.js"></script>-->
 </body>
