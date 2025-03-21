@@ -256,6 +256,8 @@ input {
     text-align: center;
     margin-top: 10px;
 }
+
+/* page reserver */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -329,7 +331,7 @@ th {
 }
 
 ._reservation-quantity {
-    width: 50px;
+    width: 65px;
     text-align: center;
 }
 ._reservation-button {

@@ -174,3 +174,10 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('date_travers_field').value = selectDate.value || "";
     });
 });
+document.getElementById("selectionForm").addEventListener("submit", function(event) {
+    let selectedTravers = document.querySelector('input[name="id_travers"]:checked');
+    if (!selectedTravers) {
+        event.preventDefault(); // Empêche l'envoi du formulaire
+        alert("Veuillez sélectionner une traversée avant de valider.");
+    }
+});

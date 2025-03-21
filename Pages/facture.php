@@ -102,70 +102,7 @@ $maxVs = $max['PlaceDispoVehiculesSup2m'] ?? 0;
 
 
 ?>
-<div id="reservation-data"
-    data-maxp="<?= $maxP; ?>"
-    data-maxvi="<?= $maxVi; ?>"
-    data-maxvs="<?= $maxVs; ?>">
-</div>
-<form class="_reservation-form" action="facture.php" method="POST">
-            <input type="text" placeholder="Nom" class="_reservation-input">
-            <input type="text" placeholder="Adresse" class="_reservation-input">
-            <input type="text" placeholder="CP" class="_reservation-input">
-            <input type="text" placeholder="Ville" class="_reservation-input">
-        </form>
 
-        <table class="_reservation-table">
-            <thead>
-                <tr>
-                    <th>Catégorie</th>
-                    <th>Tarif en €</th>
-                    <th>Quantité</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Adulte</td>
-                    <td><?php echo $prixA ?></td>
-                    <td><input type="number" value="" min="0" max="<?php echo $maxP; ?>" class="_reservation-quantity"></td>
-                </tr>
-                <tr>
-                    <td>Junior 8 à 18 ans</td>
-                    <td><?php echo $prixJ ?></td>
-                    <td><input type="number" value="" min="0" max="<?php echo $maxP; ?>" class="_reservation-quantity"></td>
-                </tr>
-                <tr>
-                    <td>Enfant 0 à 7 ans</td>
-                    <td><?php echo $prixE ?></td>
-                    <td><input type="number" value="" min="0" max="<?php echo $maxP; ?>" class="_reservation-quantity"></td>
-                </tr>
-                <tr>
-                    <td>Voiture long. inf. 4m</td>
-                    <td><?php echo $prixVi4 ?></td>
-                    <td><input type="number" value="" min="0" max="<?php echo $maxVi; ?>" class="_reservation-quantity"></td>
-                </tr>
-                <tr>
-                    <td>Voiture long. inf. 5m</td>
-                    <td><?php echo $prixVi5 ?></td>
-                    <td><input type="number" value="" min="0" max="<?php echo $maxVi; ?>" class="_reservation-quantity"></td>
-                </tr>
-                <tr>
-                    <td>Fourgon</td>
-                    <td><?php echo $prixF ?></td>
-                    <td><input type="number" value="" min="0" max="<?php echo $maxVs; ?>" class="_reservation-quantity"></td>
-                </tr>
-                <tr>
-                    <td>Camping Car</td>
-                    <td><?php echo $prixCc ?></td>
-                    <td><input type="number" value="" min="0" max="<?php echo $maxVs; ?>" class="_reservation-quantity"></td>
-                </tr>
-                <tr>
-                    <td>Camion</td>
-                    <td><?php echo $prixC ?></td>
-                    <td><input type="number" value="" min="0" max="<?php echo $maxVs; ?>" class="_reservation-quantity"></td>
-                </tr>
-            </tbody>
-        </table>
-        <button class="_reservation-button" type="submit">Enregistrer la réservation</button>
+        <button class="_reservation-button" type="submit">Payer</button>
     </div>
-    <script src="../JavaScript/scriptReservation.js"></script>
 </body>
