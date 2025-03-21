@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <?php
 // Récupere les infos
 $prix = Prix($id_travers);
-//$max = Max($id_travers);
+$max = MaxPlace($id_travers);
 
 // Récupérer les Prix
 $prixA   = $prix['Adulte'] ?? 0;

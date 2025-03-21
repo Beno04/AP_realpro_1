@@ -45,7 +45,7 @@ function Prix($id_travers) {
     return $prix;
 }
 
-Function Max($id){
+Function MaxPlace($id){
     $servername = "localhost"; 
     $username = "root";
     $password = "";
